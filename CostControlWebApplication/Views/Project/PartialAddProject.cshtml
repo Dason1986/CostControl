@@ -1,0 +1,308 @@
+﻿
+@{
+
+
+}
+<style>
+    .box-card {
+        width: 100%;
+    }
+</style>
+<script type="text/x-template" id="addproject">
+
+    <el-dialog width="90%"
+               title="新增工程项目"
+               :visible.sync="eldialogvisible"
+               append-to-body>
+        <span slot="footer" class="dialog-footer">
+            <el-button @@click="eldialogvisible = false">取 消</el-button>
+            <el-button type="danger" @@click="onSumbit()">保存</el-button>
+        </span>
+        <el-container>
+            <el-main>
+
+                <el-card class="box-card">
+
+
+                    <el-divider content-position="left">基礎信息</el-divider>
+
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <label>項目代碼</label>
+                                    <input type="text" class="form-control" placeholder="項目代碼">
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>項目名稱</label>
+                                <input type="text" class="form-control" placeholder="項目名稱">
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>合同金額</label>
+                                <el-input-number placeholder="合同金額" controls-position="right" min="0" step="1000">
+                                </el-input-number>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <label>目標成本</label>
+                                    <el-input-number placeholder="目標成本" controls-position="right" min="0" step="1000">
+                                    </el-input-number>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <label>項目經理</label>
+                                    <el-select placeholder="項目經理" filterable>
+                                    </el-select>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>最終責任人</label>
+                                <el-select placeholder="最終責任人" filterable>
+                                </el-select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+
+                        <div class="col-md-12 form-inline">
+                            <div class="form-group">
+
+                                <label>項目地址</label>
+                                <input type="text" class="form-control" style="width: 700px;" placeholder="項目地址">
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <label>項目主體</label>
+                                    <el-select placeholder="項目主體">
+                                    </el-select>
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>項目类型</label>
+                                <el-select placeholder="項目类型" filterable>
+                                </el-select>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>項目合約</label>
+                                <el-select placeholder="項目合約" filterable>
+                                </el-select>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>承接类型</label>
+                                <el-select placeholder="承接类型" filterable>
+                                </el-select>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <el-divider content-position="left">判給關係</el-divider>
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>定作人</label>
+                                <el-select placeholder="定作人" filterable>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>承建商</label>
+                                <el-select placeholder="承建商" filterable>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>第一分判</label>
+                                <el-select placeholder="第一分判" filterable>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>第二分判</label>
+                                <el-select placeholder="第二分判" filterable>
+                                </el-select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <el-divider content-position="left">時間</el-divider>
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>實際開始</label>
+                                <el-date-picker type="date"
+                                                placeholder="實際開始時間">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>實際結束</label>
+                                <el-date-picker type="date"
+                                                placeholder="實際結束時間">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>評估開始</label>
+                                <el-date-picker type="date"
+                                                placeholder="評估開始時間">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>評估結束</label>
+                                <el-date-picker type="date"
+                                                placeholder="評估結束時間">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </el-card>
+
+
+
+
+
+            </el-main>
+        </el-container>
+    </el-dialog>
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('el-add-project',
+        {
+
+            template: '#addproject',
+            data: function () {
+                return {
+                    eldialogvisible: this.visible,
+                    innerDrawer: false,
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+
+
+
+                onSumbit: async function () {
+
+                    await this.$http.post("/api/BatchPackage/CompareResult/Approve/" + compareResult.id);
+                    this.eldialogvisible = false;
+                    this.$emit('closed', true);
+
+                },
+
+
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+                visible: function (val) {
+
+                    this.eldialogvisible = val;
+                },
+                eldialogvisible: function (val) {
+
+                    if (val) return;
+
+                    this.$emit('update:visible', val)
+                }
+
+            },
+            props: {
+
+                visible: Boolean
+            }
+        });
+
+
+</script>

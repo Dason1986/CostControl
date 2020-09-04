@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "_ManagmentLayout";
+
+}
+
+<div class="login-page">
+    <div class="page-header">
+        <h1>无权限</h1>
+
+    </div>
+
+
+
+    <div class="row">
+
+
+
+        <div class="col-sm-6">
+            <div class="panel panel-default">
+
+                <div class="panel-body">
+                    无操作权限
+                    @this.Context.Request.Query["ReturnUrl"]
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>

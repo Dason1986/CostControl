@@ -1,0 +1,106 @@
+﻿
+@{
+
+
+}
+<script type="text/x-template" id="editproject">
+
+    <el-dialog width="90%"
+               title="工程项目明細"
+               :visible.sync="eldialogvisible"
+               append-to-body>
+
+
+
+        <el-card>
+         
+            
+            <div class="card-body">
+                <h5 class="card-title">{{project.name}}[{{project.code}}]</h5>
+                <p class="card-text">地址: {{project.address}}</p>
+                <p class="card-text">項目經理:{{project.managerName}} </p>
+                <p class="card-text">最終責任人:{{project.supremeManagerName}} </p>
+            </div>
+          
+            <div class="row" style="padding:  5px;">
+                <el-button @@click="innerDrawer = true">打开里面的!</el-button>
+                <el-drawer title="我是里面的"
+                           :append-to-body="true"
+                           :visible.sync="innerDrawer">
+                    <p>_(:зゝ∠)_</p>
+                </el-drawer>
+                <div class="col-md-4 form-inline">
+                    <div class="form-group">
+
+                        <div class="form-group">
+                            <label>物料代码</label>
+                            <input type="text" class="form-control" placeholder="物料代码"  >
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </el-card>
+    </el-dialog>
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('el-edit-project',
+        {
+
+            template: '#editproject',
+            data: function () {
+                return {
+                    eldialogvisible: this.visible,
+                    innerDrawer: false,
+                    project: { name: '項目1', code: 'Mi-gghfsd009', address: '黑沙XXX路', managerName: '林', supremeManagerName:'子'}
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+
+               
+                 
+                onSumbit: async function ( ) {
+                   
+                    await this.$http.post("/api/BatchPackage/CompareResult/Approve/" + compareResult.id);
+                    this.eldialogvisible = false;
+                    this.$emit('closed', true);
+
+                },
+                
+
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+                visible: function (val) {
+                  
+                    this.eldialogvisible = val;
+                },
+                eldialogvisible: function (val) {
+
+                    if (val) return;
+                  
+                    this.$emit('update:visible', val)
+                }
+
+            },
+            props: {
+              
+                visible: Boolean
+            }
+        });
+
+
+</script>
