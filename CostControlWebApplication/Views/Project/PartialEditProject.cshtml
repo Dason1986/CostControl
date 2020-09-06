@@ -3,6 +3,25 @@
 
 
 }
+<style>
+    .demo-drawer__content {
+        display: flex;
+        flex-direction: column;
+        height: 100%
+    }
+
+        .demo-drawer__content form {
+            flex: 1
+        }
+
+    .demo-drawer__footer {
+        display: flex
+    }
+
+        .demo-drawer__footer button {
+            flex: 1
+        }
+</style>
 <script type="text/x-template" id="editproject">
 
     <el-dialog width="90%"
@@ -10,37 +29,411 @@
                :visible.sync="eldialogvisible"
                append-to-body>
 
-
+        <span slot="footer" class="dialog-footer">
+            <el-button @@click="eldialogvisible = false">取 消</el-button>
+            <el-button type="danger" @@click="onSumbit()">保存</el-button>
+        </span>
 
         <el-card>
-         
-            
-            <div class="card-body">
-                <h5 class="card-title">{{project.name}}[{{project.code}}]</h5>
-                <p class="card-text">地址: {{project.address}}</p>
-                <p class="card-text">項目經理:{{project.managerName}} </p>
-                <p class="card-text">最終責任人:{{project.supremeManagerName}} </p>
-            </div>
-          
-            <div class="row" style="padding:  5px;">
-                <el-button @@click="innerDrawer = true">打开里面的!</el-button>
-                <el-drawer title="我是里面的"
-                           :append-to-body="true"
-                           :visible.sync="innerDrawer">
-                    <p>_(:зゝ∠)_</p>
-                </el-drawer>
-                <div class="col-md-4 form-inline">
-                    <div class="form-group">
 
+            <el-drawer :visible.sync="innerDrawer" :append-to-body="true" title="项目变更"
+                       custom-class="demo-drawer" ref="drawer">
+                <div class="demo-drawer__content">
+                    <el-form :model="form">
+                        <el-form-item label="項目名称">
+
+                            <el-input v-model="form.name" placeholder="項目名称">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="項目地址">
+
+                            <el-input v-model="form.address" placeholder="項目地址">
+                            </el-input>
+                        </el-form-item>
+                        <el-form-item label="項目經理">
+
+                            <el-select v-model="form.managerId" placeholder="項目經理">
+                                <el-option label="区域一" value="shanghai"></el-option>
+                                <el-option label="区域二" value="beijing"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="最終責任人">
+                            <el-select v-model="form.supremeManagerId" placeholder="最終責任人">
+                                <el-option label="区域一" value="shanghai"></el-option>
+                                <el-option label="区域二" value="beijing"></el-option>
+                            </el-select>
+                        </el-form-item>
+                        <el-form-item label="合同金額">
+                            <el-input-number placeholder="合同金額" v-model="form.contractAmount" controls-position="right">
+                            </el-input-number>
+                        </el-form-item>
+                        <el-form-item label="目標成本">
+                            <el-input-number placeholder="目標成本" v-model="form.costAmount" controls-position="right">
+                            </el-input-number>
+                        </el-form-item>
+                    </el-form>
+
+                    <div class="demo-drawer__footer">
+                        <el-button>  取 消   </el-button>
+                        <el-button type="primary">  确 定   </el-button>
+                    </div>
+                </div>
+            </el-drawer>
+            <div class="card-body">
+                <h5 class="card-title">{{project.name}}[{{project.code}}] <el-button size="small" @@click="innerDrawer=true" icon="el-icon-setting">项目变更【管理员使用】</el-button></h5>
+                <p class="card-text">地址: {{project.address}}</p>
+
+                <div class="row">
+
+                    <div class="col-md-3 form-inline">
                         <div class="form-group">
-                            <label>物料代码</label>
-                            <input type="text" class="form-control" placeholder="物料代码"  >
+
+                            <div class="form-group">
+                                <label>現金流入</label>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>現金流出</label>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>   <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>應收賬款</label>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>應付賬款</label>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>工程进度</label>
+                                30%
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>項目經理</label>
+                                {{project.managerName}}
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <label>最終責任人</label>   {{project.supremeManagerName}}
+
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>审批文件</label>
+
+                                <el-upload class="upload-demo"
+                                           action="/api/file/posts"
+                                           :show-file-list="false"
+                                           :data="fileData"  
+                                           :on-success="handleUploadExceed">
+                                    <el-button size="small" icon="el-icon-upload" v-if="isDisabled">点击上传</el-button>
+
+                                </el-upload>
+                                <el-button type="text" style="padding: 0px;">
+                                    {{fileName}}
+                                </el-button>
+                            </div>
+
                         </div>
 
                     </div>
 
                 </div>
+
             </div>
+
+            <el-tabs v-model="activeName">
+                <el-tab-pane label="基本信息" name="first">
+                    <div>
+                        <div class="row">
+
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+
+                                    <label>合同金額</label>
+                                    <el-input-number placeholder="合同金額" v-model="project.contractAmount" controls-position="right">
+                                    </el-input-number>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+
+                                    <div class="form-group">
+                                        <label>目標成本</label>
+                                        <el-input-number placeholder="目標成本" v-model="project.costAmount" controls-position="right">
+                                        </el-input-number>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+
+                                    <label>保固應收</label>
+                                    <el-input-number placeholder="保固金比例" v-model="project.securingAmount" controls-position="right">
+                                    </el-input-number>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+
+                                    <label>保固金比例</label>
+                                    <el-input-number placeholder="保固金比例" v-model="project.securingAmountRate" controls-position="right">
+                                    </el-input-number>
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+
+                                    <label>保固應付</label>
+                                    <el-input-number placeholder="保固金比例" v-model="project.securingPayableAmount" controls-position="right">
+                                    </el-input-number>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+
+                                    <div class="form-group">
+                                        <label>項目主體</label>
+                                        <el-select placeholder="項目主體" v-model="project.projectMainId">
+                                        </el-select>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+
+                                    <label>項目类型</label>
+                                    <el-select placeholder="項目类型" v-model="project.projectTypeId" filterable>
+                                    </el-select>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+
+                                    <label>項目合約</label>
+                                    <el-select placeholder="項目合約" v-model="project.contractTypeId" filterable>
+                                    </el-select>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+
+                                    <label>承接类型</label>
+                                    <el-select placeholder="承接类型" v-model="project.undertakingId" filterable>
+                                    </el-select>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+
+                                    <label>合約結算方式</label>
+                                    <el-select placeholder="合約結算方式" v-model="project.settlementMethodId" filterable>
+                                    </el-select>
+
+                                </div>
+
+                            </div>
+                        </div>
+                        <el-divider content-position="left">判給關係</el-divider>
+                        <div class="row">
+
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>定作人</label>
+                                    <el-select placeholder="定作人" v-model="project.setterId" filterable>
+                                    </el-select>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>承建商</label>
+                                    <el-select placeholder="承建商" v-model="project.contractorsId" filterable>
+                                    </el-select>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>第一分判</label>
+                                    <el-select placeholder="第一分判" v-model="project.firstId" filterable>
+                                    </el-select>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>第二分判</label>
+                                    <el-select placeholder="第二分判" v-model="project.secondId" filterable>
+                                    </el-select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <el-divider content-position="left">時間</el-divider>
+                        <div class="row">
+
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>實際開始</label>
+                                    <el-date-picker type="date" v-model="project.beginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="實際開始時間">
+                                    </el-date-picker>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>實際結束</label>
+                                    <el-date-picker type="date" v-model="project.endDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="實際結束時間">
+                                    </el-date-picker>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>評估開始</label>
+                                    <el-date-picker type="date" v-model="project.estimatedBeginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估開始時間">
+                                    </el-date-picker>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>評估結束</label>
+                                    <el-date-picker type="date" v-model="project.estimatedEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估結束時間">
+                                    </el-date-picker>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12 form-inline">
+                                <div class="form-group">
+
+                                    <label>備註</label>
+                                    <el-input type="textarea"
+                                              :autosize="{ minRows: 3, maxRows: 7}" style="width: 700px;"
+                                              placeholder="備註"
+                                              v-model="project.remark">
+                                    </el-input>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="目標成本" name="second" :disabled="isDisabled">
+                    <el-row>
+                        <el-button icon="el-icon-search" circle></el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle></el-button>
+
+                    </el-row>
+                </el-tab-pane>
+                <el-tab-pane label="成本支出" name="second2" :disabled="isDisabled">
+                    <el-costout :projectid="project.id"></el-costout>
+                </el-tab-pane>
+                <el-tab-pane label="成本收入" name="second3" :disabled="isDisabled">
+
+                    <el-costin :projectid="project.id"></el-costin>
+                </el-tab-pane>
+
+                <el-tab-pane label="項目臺帳" name="second4" :disabled="isDisabled">
+                    <el-row>
+                        <el-button icon="el-icon-search" circle></el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle></el-button>
+
+                    </el-row>
+                </el-tab-pane>
+                <el-tab-pane label="相關文件" name="second5" :disabled="isDisabled">
+                    <el-aboutfiles :projectid="project.id"></el-aboutfiles>
+                  
+                </el-tab-pane>
+            </el-tabs>
+
 
         </el-card>
     </el-dialog>
@@ -59,7 +452,12 @@
                 return {
                     eldialogvisible: this.visible,
                     innerDrawer: false,
-                    project: { name: '項目1', code: 'Mi-gghfsd009', address: '黑沙XXX路', managerName: '林', supremeManagerName:'子'}
+                    fileName: "",
+                    activeName: "first",
+                    isDisabled: true,
+                    form: {},
+                    project: { id: '11', name: '項目1', code: 'Mi-gghfsd009', address: '黑沙XXX路', managerName: '林', supremeManagerName: '子' },
+                    fileData: { fileType: '審批文件', projectid: '1' },
                 };
             },
             filters: {
@@ -67,16 +465,22 @@
             },
             methods: {
 
-               
-                 
-                onSumbit: async function ( ) {
-                   
+                getProjectInfo: async function () {
+                    this.project = await this.$http.post("/api/Project/" + this.projectid);
+                    this.fileData.projectid = this.id;
+                },
+
+                onSumbit: async function () {
+
                     await this.$http.post("/api/BatchPackage/CompareResult/Approve/" + compareResult.id);
                     this.eldialogvisible = false;
                     this.$emit('closed', true);
 
                 },
-                
+                handleUploadExceed: async function (response, file, fileList) {
+                    this.fileName = file.name;
+                    this.isDisabled = false
+                },
 
 
             },
@@ -85,19 +489,21 @@
             },
             watch: {
                 visible: function (val) {
-                  
+                    if (val && this.projectid) {
+                        this.getProjectInfo();
+                    }
                     this.eldialogvisible = val;
                 },
                 eldialogvisible: function (val) {
 
                     if (val) return;
-                  
+
                     this.$emit('update:visible', val)
                 }
 
             },
             props: {
-              
+                projectid: String,
                 visible: Boolean
             }
         });

@@ -1,0 +1,307 @@
+﻿
+@{
+
+
+}
+<style>
+    .box-card {
+        width: 100%;
+    }
+</style>
+<script type="text/x-template" id="addcostin">
+
+    <el-dialog width="80%"
+               title="成本收入"
+               :visible.sync="eldialogvisible"
+               append-to-body>
+        <span slot="footer" class="dialog-footer">
+            <el-button @@click="eldialogvisible = false">取 消</el-button>
+            <el-button type="danger" @@click="onSumbit()">保存</el-button>
+        </span>
+        <el-container>
+            <el-main>
+
+                <el-card class="box-card">
+
+
+
+
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>開票日期</label>
+                                <el-date-picker type="date" v-model="rec.createDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="開票日期">
+                                </el-date-picker>
+                            </div>
+
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+
+                            <div class="form-group">
+                                <label>上家</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="上家"></el-input>
+                            </div>
+
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>摘要</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="摘要"></el-input>
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>合約金額</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="合約金額"></el-input>
+                            </div>
+
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>結算金額</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="結算金額"></el-input>
+                            </div>
+
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>原合約申請金額</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="原合約申請金額"></el-input>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>後加申請金額</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="後加申請金額"></el-input>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>發票申請金額</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="發票申請金額"></el-input>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>保固金比例</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="保固金比例"></el-input>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>扣減保固金</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="扣減保固金"></el-input>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>扣減預付款</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="扣減預付款"></el-input>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>扣除其他款項</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="扣除其他款項"></el-input>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>應收發票金額</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="應收發票金額"></el-input>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>已收工程款金額</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="已收工程款金額"></el-input>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>收款日期（工程款）</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="收款日期（工程款）"></el-input>
+                            </div>
+
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>已收保固金金額</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="已收保固金金額"></el-input>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>收款日期（保固金）</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="收款日期（保固金）"></el-input>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>餘額（工程款）</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="餘額（工程款）"></el-input>
+                            </div>
+
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>餘額（保固金）</label>
+                                <el-input type="text" v-model="rec.orderNo" placeholder="餘額（保固金）"></el-input>
+                            </div>
+
+
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-12 form-inline">
+                            <div class="form-group">
+
+                                <label>備註</label>
+                                <el-input type="textarea"
+                                          :autosize="{ minRows: 3, maxRows: 7}" style="width: 700px;"
+                                          placeholder="備註"
+                                          v-model="rec.remark">
+                                </el-input>
+                            </div>
+
+                        </div>
+                    </div>
+                </el-card>
+
+            </el-main>
+        </el-container>
+    </el-dialog>
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('el-add-costin',
+        {
+
+            template: '#addcostin',
+            data: function () {
+                return {
+                    eldialogvisible: this.visible,
+
+                    rec: {}
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+
+
+
+                onSumbit: async function () {
+
+                    await this.$http.post("/api/BatchPackage/CompareResult/Approve/" + compareResult.id);
+                    this.eldialogvisible = false;
+                    this.$emit('closed', true);
+
+                },
+
+
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+                visible: function (val) {
+
+
+                    this.eldialogvisible = val;
+                },
+                eldialogvisible: function (val) {
+
+                    if (val) return;
+
+                    this.$emit('update:visible', val)
+                }
+
+            },
+            props: {
+
+                projectid: String,
+                visible: Boolean
+            }
+        });
+
+
+</script>

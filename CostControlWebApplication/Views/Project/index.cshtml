@@ -4,7 +4,11 @@
 
 }
 
+
 <style>
+    .box-card {
+        width: 100%;
+    }
 
 
 
@@ -57,8 +61,8 @@
                 <div class="box box-info">
                     <div class="box-header with-border">
                         <h3 class="box-title">查询</h3>
-                        <el-button icon="el-icon-circle-plus" @@click="onAddProject()">新增项目</el-button>
 
+                        <el-button type="primary" icon="el-icon-edit" size="mini" @@click="onAddProject()"></el-button>
                     </div>
                     <div class="box-body">
 
@@ -190,9 +194,9 @@
 
                             </el-table-column>
                             <el-table-column label="完工百分比" prop="stateDisplay"></el-table-column>
-                         
+
                         </el-table>
-                        <el-add-project :visible.sync="innerVisibleAddProject" v-on:closed="onSearchBatch"></el-add-project> 
+                        <el-add-project :visible.sync="innerVisibleAddProject" v-on:closed="onSearchBatch"></el-add-project>
                         <el-edit-project :visible.sync="innerVisibleEditProject" v-on:closed="onSearchBatch"></el-edit-project>
                     </div>
                 </div>
@@ -208,6 +212,11 @@
 </script>
 <partial name="~/Views/Project/PartialAddProject.cshtml" />
 <partial name="~/Views/Project/PartialEditProject.cshtml" />
+<partial name="~/Views/Project/PartialCostIn.cshtml" />
+<partial name="~/Views/Project/PartialCostout.cshtml" />
+<partial name="~/Views/Project/PartialAddCostIn.cshtml" />
+<partial name="~/Views/Project/PartialAddCostout.cshtml" />
+<partial name="~/Views/Project/PartialAboutFiles.cshtml" />
 
 
 <script type="text/javascript">

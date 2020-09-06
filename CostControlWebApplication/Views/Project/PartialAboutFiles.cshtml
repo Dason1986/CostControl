@@ -1,0 +1,134 @@
+﻿
+@{
+
+
+}
+<style>
+    .box-card {
+        width: 100%;
+    }
+</style>
+<script type="text/x-template" id="aboutfiles">
+
+    <div>
+        <el-dialog width="300px"
+                   title="上傳文件"
+                   :visible.sync="innerVisiblecostout"
+                   append-to-body>
+            <div>
+
+
+                <div class="row">
+                    <div class="col-md-3 form-inline">
+
+
+                        <div class="form-group">
+                            <label>文件類型</label>
+                            <el-select v-model="fileData.fileType" placeholder="文件類型">
+                                <el-option  label="item.label" value="item.value"> </el-option>
+                            </el-select>
+                        </div>
+
+                    </div>
+                
+                </div>
+                <div class="row">
+                    <el-upload class="upload-demo"
+                               ref="upload" action="/api/file/posts" :data="fileData"  
+                               :multiple="false" :show-file-list="false"
+                               :on-success="handleUploadExceed"  :before-upload="checkupload"  
+                               :auto-upload="false">
+                        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+
+
+                    </el-upload>
+                    <el-button style="margin-left: 10px;" size="small" type="success" @@click="submitUpload">上传到服务器</el-button>
+
+                </div>
+            </div>
+        </el-dialog>
+        <el-row>
+
+
+            <el-button icon="el-icon-search" circle></el-button>
+            <el-button size="small" icon="el-icon-upload" @@click="innerVisiblecostout=true">点击上传</el-button>
+
+        </el-row>
+        <el-table style="width: 100%">
+            <el-table-column prop="date" label="上傳日期">
+            </el-table-column>
+            <el-table-column prop="name" label="文件名稱">
+            </el-table-column>
+            <el-table-column prop="name" label="上傳人員">
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <button> 下載</button>
+                    <button> 刪除</button>
+                </template>
+            </el-table-column>
+        </el-table>
+
+    </div>
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('el-aboutfiles',
+        {
+
+            template: '#aboutfiles',
+            data: function () {
+                return {
+                    eldialogvisible: this.visible,
+                    fileData: { fileType: '', projectid: this.projectid },
+                    innerVisiblecostout: false,
+                    
+                    rec: {}
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+
+                onSearchCost: function () {
+
+                },
+                checkupload: function (file) {
+                    if ((this.fileData.fileType==='') ) {
+                        Vue.prototype.$notify({ title: "請選擇上傳文件的類型！",   type: "error" });
+                        return false;
+                    }
+
+                    return true;
+                }, 
+                submitUpload: function () {
+                   
+                   
+
+                    this.$refs.upload.submit();
+                },
+                handleUploadExceed: function (response, file, fileList) {
+                    this.innerVisiblecostout = false;
+                    this.onSearchCost();
+                } 
+            },
+            updated: function () {
+
+            },
+            watch: {
+
+
+            },
+            props: {
+
+                projectid: String,
+
+            }
+        });
+
+
+</script>

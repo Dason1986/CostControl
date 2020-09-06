@@ -3,11 +3,6 @@
 
 
 }
-<style>
-    .box-card {
-        width: 100%;
-    }
-</style>
 <script type="text/x-template" id="addproject">
 
     <el-dialog width="90%"
@@ -33,7 +28,7 @@
 
                                 <div class="form-group">
                                     <label>項目代碼</label>
-                                    <input type="text" class="form-control" placeholder="項目代碼">
+                                    <input type="text" class="form-control" v-model="project.code" placeholder="項目代碼">
                                 </div>
 
                             </div>
@@ -43,7 +38,7 @@
                             <div class="form-group">
 
                                 <label>項目名稱</label>
-                                <input type="text" class="form-control" placeholder="項目名稱">
+                                <input type="text" class="form-control" v-model="project.name" placeholder="項目名稱">
 
                             </div>
 
@@ -51,46 +46,9 @@
                         <div class="col-md-3 form-inline">
                             <div class="form-group">
 
-                                <label>合同金額</label>
-                                <el-input-number placeholder="合同金額" controls-position="right" min="0" step="1000">
-                                </el-input-number>
-                            </div>
-
-                        </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
-
-                                <div class="form-group">
-                                    <label>目標成本</label>
-                                    <el-input-number placeholder="目標成本" controls-position="right" min="0" step="1000">
-                                    </el-input-number>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
-
-                                <div class="form-group">
-                                    <label>項目經理</label>
-                                    <el-select placeholder="項目經理" filterable>
-                                    </el-select>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
-
-                                <label>最終責任人</label>
-                                <el-select placeholder="最終責任人" filterable>
-                                </el-select>
+                                <label>必需上传審批單</label>
+                                <el-switch placeholder="材料採購審批單" v-model="project.mustApprovelFile">
+                                </el-switch>
                             </div>
 
                         </div>
@@ -102,8 +60,32 @@
                             <div class="form-group">
 
                                 <label>項目地址</label>
-                                <input type="text" class="form-control" style="width: 700px;" placeholder="項目地址">
+                                <input type="text" class="form-control" v-model="project.address" style="width: 700px;" placeholder="項目地址">
 
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <label>項目經理</label>
+                                    <el-select placeholder="項目經理" v-model="project.managerId" filterable>
+                                    </el-select>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>最終責任人</label>
+                                <el-select placeholder="最終責任人" v-model="project.supremeManagerId" filterable>
+                                </el-select>
                             </div>
 
                         </div>
@@ -113,40 +95,105 @@
                         <div class="col-md-3 form-inline">
                             <div class="form-group">
 
+                                <label>合同金額</label>
+                                <el-input-number placeholder="合同金額" v-model="project.contractAmount" controls-position="right">
+                                </el-input-number>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <label>目標成本</label>
+                                    <el-input-number placeholder="目標成本" v-model="project.costAmount" controls-position="right">
+                                    </el-input-number>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 form-inline">
+                            <div class="form-group">
+
+                                <label>保固應收</label>
+                                <el-input-number placeholder="保固金比例" v-model="project.securingAmount" controls-position="right">
+                                </el-input-number>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4 form-inline">
+                            <div class="form-group">
+
+                                <label>保固金比例</label>
+                                <el-input-number placeholder="保固金比例" v-model="project.securingAmountRate" controls-position="right">
+                                </el-input-number>
+                            </div>
+
+                        </div>
+                        <div class="col-md-4 form-inline">
+                            <div class="form-group">
+
+                                <label>保固應付</label>
+                                <el-input-number placeholder="保固金比例" v-model="project.securingPayableAmount" controls-position="right">
+                                </el-input-number>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-4 form-inline">
+                            <div class="form-group">
+
                                 <div class="form-group">
                                     <label>項目主體</label>
-                                    <el-select placeholder="項目主體">
+                                    <el-select placeholder="項目主體" v-model="project.projectMainId">
                                     </el-select>
                                 </div>
 
                             </div>
 
                         </div>
-                        <div class="col-md-3 form-inline">
+                        <div class="col-md-4 form-inline">
                             <div class="form-group">
 
                                 <label>項目类型</label>
-                                <el-select placeholder="項目类型" filterable>
+                                <el-select placeholder="項目类型" v-model="project.projectTypeId" filterable>
                                 </el-select>
 
                             </div>
 
                         </div>
-                        <div class="col-md-3 form-inline">
+                        <div class="col-md-4 form-inline">
                             <div class="form-group">
 
                                 <label>項目合約</label>
-                                <el-select placeholder="項目合約" filterable>
+                                <el-select placeholder="項目合約" v-model="project.contractTypeId" filterable>
                                 </el-select>
 
                             </div>
 
                         </div>
-                        <div class="col-md-3 form-inline">
+                        <div class="col-md-4 form-inline">
                             <div class="form-group">
 
                                 <label>承接类型</label>
-                                <el-select placeholder="承接类型" filterable>
+                                <el-select placeholder="承接类型" v-model="project.undertakingId" filterable>
+                                </el-select>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-4 form-inline">
+                            <div class="form-group">
+
+                                <label>合約結算方式</label>
+                                <el-select placeholder="合約結算方式" v-model="project.settlementMethodId" filterable>
                                 </el-select>
 
                             </div>
@@ -160,7 +207,7 @@
                             <div class="form-group">
 
                                 <label>定作人</label>
-                                <el-select placeholder="定作人" filterable>
+                                <el-select placeholder="定作人" v-model="project.setterId" filterable>
                                 </el-select>
                             </div>
 
@@ -169,7 +216,7 @@
                             <div class="form-group">
 
                                 <label>承建商</label>
-                                <el-select placeholder="承建商" filterable>
+                                <el-select placeholder="承建商" v-model="project.contractorsId" filterable>
                                 </el-select>
                             </div>
 
@@ -178,7 +225,7 @@
                             <div class="form-group">
 
                                 <label>第一分判</label>
-                                <el-select placeholder="第一分判" filterable>
+                                <el-select placeholder="第一分判" v-model="project.firstId" filterable>
                                 </el-select>
                             </div>
 
@@ -187,7 +234,7 @@
                             <div class="form-group">
 
                                 <label>第二分判</label>
-                                <el-select placeholder="第二分判" filterable>
+                                <el-select placeholder="第二分判" v-model="project.secondId" filterable>
                                 </el-select>
                             </div>
 
@@ -200,8 +247,7 @@
                             <div class="form-group">
 
                                 <label>實際開始</label>
-                                <el-date-picker type="date"
-                                                placeholder="實際開始時間">
+                                <el-date-picker type="date" v-model="project.beginDate"  format="yyyy-MM-dd"  value-format="yyyy-MM-dd" placeholder="實際開始時間">
                                 </el-date-picker>
                             </div>
 
@@ -210,8 +256,7 @@
                             <div class="form-group">
 
                                 <label>實際結束</label>
-                                <el-date-picker type="date"
-                                                placeholder="實際結束時間">
+                                <el-date-picker type="date" v-model="project.endDate"  format="yyyy-MM-dd"  value-format="yyyy-MM-dd" placeholder="實際結束時間">
                                 </el-date-picker>
                             </div>
 
@@ -220,8 +265,7 @@
                             <div class="form-group">
 
                                 <label>評估開始</label>
-                                <el-date-picker type="date"
-                                                placeholder="評估開始時間">
+                                <el-date-picker type="date" v-model="project.estimatedBeginDate"  format="yyyy-MM-dd"  value-format="yyyy-MM-dd" placeholder="評估開始時間">
                                 </el-date-picker>
                             </div>
 
@@ -230,14 +274,27 @@
                             <div class="form-group">
 
                                 <label>評估結束</label>
-                                <el-date-picker type="date"
-                                                placeholder="評估結束時間">
+                                <el-date-picker type="date" v-model="project.estimatedEndDate"   format="yyyy-MM-dd"  value-format="yyyy-MM-dd" placeholder="評估結束時間">
                                 </el-date-picker>
                             </div>
 
                         </div>
                     </div>
+                    <div class="row">
 
+                        <div class="col-md-12 form-inline">
+                            <div class="form-group">
+
+                                <label>備註</label>
+                                <el-input type="textarea"
+                                          :autosize="{ minRows: 3, maxRows: 7}" style="width: 700px;"
+                                          placeholder="備註"
+                                          v-model="project.remark">
+                                </el-input>
+                            </div>
+
+                        </div>
+                    </div>
                 </el-card>
 
 
@@ -262,6 +319,7 @@
                 return {
                     eldialogvisible: this.visible,
                     innerDrawer: false,
+                    project: {}
                 };
             },
             filters: {
@@ -270,7 +328,7 @@
             methods: {
 
 
-
+             
                 onSumbit: async function () {
 
                     await this.$http.post("/api/BatchPackage/CompareResult/Approve/" + compareResult.id);
@@ -288,6 +346,7 @@
             watch: {
                 visible: function (val) {
 
+                 
                     this.eldialogvisible = val;
                 },
                 eldialogvisible: function (val) {
@@ -299,7 +358,8 @@
 
             },
             props: {
-
+            
+                projectid: String,
                 visible: Boolean
             }
         });

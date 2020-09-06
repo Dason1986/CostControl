@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authorization;
 using BingoX.ComponentModel.Data;
 using CostControlWebApplication.Services;
 using CostControlWebApplication.Application.Services.Dtos;
+using BingoX;
 
 namespace CostControlWebApplication.Controllers
 {
@@ -27,5 +28,19 @@ namespace CostControlWebApplication.Controllers
 
         
     }
-   
+    [Authorize]
+    public class FileController : Controller
+    {
+       
+        [Route("/api/file/posts")]
+        [HttpPost]
+        public void UploadFile([FromForm] Microsoft.AspNetCore.Http.IFormCollection form, [FromForm] string filetype , [FromForm] string projectId)
+        {
+            if (form.Files.Count == 0) throw new LogicException("");
+
+
+        }
+
+        
+    }
 }

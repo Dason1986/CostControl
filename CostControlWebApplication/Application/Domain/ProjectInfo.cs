@@ -121,6 +121,10 @@ namespace CostControlWebApplication.Domain
         public decimal ContractAmount { get; set; }
 
         /// <summary>
+        /// 必需上传審批單
+        /// </summary>
+        public bool MustApprovelFile { get; set; }
+        /// <summary>
         /// 成本金額L
         /// </summary>
         public decimal CostAmount { get; set; }

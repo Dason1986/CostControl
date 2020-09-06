@@ -1,0 +1,113 @@
+﻿
+@{
+
+
+}
+<style>
+    .box-card {
+        width: 100%;
+    }
+</style>
+<script type="text/x-template" id="costout">
+
+    <div>
+        <el-add-costout :visible.sync="innerVisiblecostout" v-on:closed="onSearchCost"></el-add-costout>
+        <el-row>
+            <el-button icon="el-icon-search" circle></el-button>
+            <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostout=true"></el-button>
+
+        </el-row>
+
+        <el-table style="width: 100%">
+            <el-table-column prop="date" label="日期">
+            </el-table-column>
+            <el-table-column prop="name" label="上家">
+            </el-table-column>
+            <el-table-column prop="address" label="摘要">
+            </el-table-column>
+            <el-table-column prop="date" label="發票編號">
+            </el-table-column>
+            <el-table-column prop="name" label="合約金額">
+            </el-table-column>
+            <el-table-column prop="address" label="結算金額">
+            </el-table-column>
+            <el-table-column prop="date" label="原合約申請金額">
+            </el-table-column>
+            <el-table-column prop="name" label="後加申請金額">
+            </el-table-column>
+            <el-table-column prop="address" label="發票申請金額">
+            </el-table-column>
+            <el-table-column prop="date" label="保固金比例">
+            </el-table-column>
+            <el-table-column prop="date" label="扣減保固金">
+            </el-table-column>
+            <el-table-column prop="name" label="扣減預付款">
+            </el-table-column>
+            <el-table-column prop="address" label="扣除其他款項">
+            </el-table-column>
+            <el-table-column prop="date" label="應收發票金額">
+            </el-table-column>
+            <el-table-column prop="date" label="已收工程款金額">
+            </el-table-column>
+            <el-table-column prop="name" label="收款日期（工程款）">
+            </el-table-column>
+            <el-table-column prop="address" label="已收保固金金額">
+            </el-table-column>
+            <el-table-column prop="date" label="收款日期（保固金）">
+            </el-table-column>
+            <el-table-column prop="date" label="餘額（工程款）">
+            </el-table-column>
+            <el-table-column prop="date" label="餘額（保固金）">
+            </el-table-column>
+            <el-table-column prop="date" label="備註">
+            </el-table-column>
+        </el-table>
+
+    </div>
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('el-costout',
+        {
+
+            template: '#costout',
+            data: function () {
+                return {
+                    eldialogvisible: this.visible,
+
+                    innerVisiblecostout: false,
+                    rec: {}
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+
+                onSearchCost: function () {
+
+                }
+
+
+
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+
+
+            },
+            props: {
+
+                projectid: String,
+
+            }
+        });
+
+
+</script>
