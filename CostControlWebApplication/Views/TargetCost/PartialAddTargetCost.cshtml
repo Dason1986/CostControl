@@ -1,0 +1,234 @@
+﻿
+@{
+
+
+}
+<style>
+    .box-card {
+        width: 100%;
+    }
+</style>
+<script type="text/x-template" id="addcostin">
+
+    <el-dialog width="80%"
+               title="添加目标成本"
+               :visible.sync="eldialogvisible"
+               append-to-body>
+        <span slot="footer" class="dialog-footer">
+            <el-button @@click="eldialogvisible = false">取 消</el-button>
+            <el-button type="danger" @@click="onSumbit()">保存</el-button>
+        </span>
+        <el-container>
+            <el-main>
+
+                <el-card class="box-card">
+
+                    <el-divider content-position="left">基礎信息</el-divider>
+
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <label>項目代碼</label>
+                                    <input type="text" class="form-control" v-model="rec.code" placeholder="項目代碼">
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>項目名稱</label>
+                                <input type="text" class="form-control" v-model="rec.name" placeholder="項目名稱">
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>上家</label>
+                                <input type="text" class="form-control" v-model="rec.name" placeholder="上家">
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>上传成本文件</label> 
+                                <el-upload class="upload-demo"
+                                                                 action="/api/file/temp"
+                                                                 :show-file-list="false"
+                                                                 :on-success="handleUploadExceed">
+                                    <el-button size="small" icon="el-icon-upload">点击上传</el-button>
+
+                                </el-upload>
+                                {{rec.fileName}}
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="col-md-12 form-inline">
+                            <div class="form-group">
+
+                                <label>項目地址</label>
+                                <input type="text" class="form-control" v-model="rec.address" style="width: 700px;" placeholder="項目地址">
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>建築總面積</label>
+                                <input type="text" class="form-control" v-model="rec.buildsize" placeholder="項目名稱">
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>建築面積單方成本造價</label>
+                                <input type="text" class="form-control" v-model="rec.buildCost" placeholder="項目名稱">
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>合約金額</label>
+                                <input type="text" class="form-control" v-model="rec.name" placeholder="合約金額">
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>合約內結算金額</label>
+                                <input type="text" class="form-control" v-model="rec.name" placeholder="合約內結算金額">
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>合約外後加減金額</label>
+                                <input type="text" class="form-control" v-model="rec.name" placeholder="合約外後加減金額">
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <el-divider content-position="left">時間</el-divider>
+                    <div class="row">
+
+
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>預計開始</label>
+                                <el-date-picker type="date" v-model="rec.estimatedBeginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估開始時間">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>預計結束</label>
+                                <el-date-picker type="date" v-model="rec.estimatedEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估結束時間">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </el-card>
+
+            </el-main>
+        </el-container>
+    </el-dialog>
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('el-add-targetcost',
+        {
+
+            template: '#addcostin',
+            data: function () {
+                return {
+                    eldialogvisible: this.visible,
+
+                    rec: { fileName:''}
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+
+
+
+                onSumbit: async function () {
+                    console.log('onSumbit');
+                    await this.$http.post("/api/TargetCost" ,this.rec);
+                    this.eldialogvisible = false;
+                    this.$emit('closed', true);
+
+                },
+                handleUploadExceed: function (response, file, fileList) {
+                    console.log('handleUploadExceed',response);
+                    this.rec.fileid = response.id;
+                    this.rec.fileName = response.fileName;
+                },
+
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+                visible: function (val) {
+
+
+                    this.eldialogvisible = val;
+                },
+                eldialogvisible: function (val) {
+
+                    if (val) return;
+
+                    this.$emit('update:visible', val)
+                }
+
+            },
+            props: {
+
+              
+                visible: Boolean
+            }
+        });
+
+
+</script>

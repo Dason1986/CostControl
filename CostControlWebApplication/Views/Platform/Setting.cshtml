@@ -1,0 +1,280 @@
+﻿@model  CostControlWebApplication.Application.Services.Dtos.SettingDto
+@{
+    Layout = "_ManagmentLayout";
+
+}
+<style>
+    .el-card {
+        margin-top: 5px;
+    }
+
+    .card-button {
+        float: right;
+        padding: 3px 0;
+        margin-left: 3px
+    }
+
+    .el-form-item {
+        margin-bottom: 5px;
+    }
+</style>
+<div id="appSetting">
+
+    @*<my-role v-bind:data="title"></my-role>*@
+    <section class="content-header">
+        <h1>
+            系统设置
+
+        </h1>
+        <ol class="breadcrumb">
+            <li>系统管理</li>
+            <li class="active">系统设置</li>
+        </ol>
+    </section>
+    <!-- 主內容 -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">查询</h3>
+                        <button class="btn btn-info" type="submit" v-on:click="onsearch(true)">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 刷新
+                        </button>
+                    </div>
+
+                    <div class="box-body">
+                        <div class="box box-success">
+                            <el-row :gutter="12">
+                                <el-col :span="8">
+                                    <el-card class="box-card">
+                                        <div slot="header" class="clearfix">
+                                            <span>文件同步</span>
+                                            <el-button class="card-button" type="text" v-on:click="onTestSetting(setting.fileSynchronization)">测试</el-button>
+                                            <el-button class="card-button" type="text" v-on:click="onUpdateSetting(setting.fileSynchronization,'fileSynchronization')">保存</el-button>
+                                        </div>
+                                        <div class="text item">
+                                            <el-form label-position="left" label-width="100px" :model="setting.fileSynchronization">
+
+                                                <el-form-item label="同步类型">
+                                                    <el-select v-model="setting.fileSynchronization.protocol" placeholder="同步类型">
+                                                        <el-option label="FTP" value="FTP"></el-option>
+                                                        <el-option label="Webdav" value="Webdav" disabled></el-option>
+                                                        <el-option label="Smb" value="Smb" disabled></el-option>
+                                                    </el-select>
+                                                </el-form-item>
+                                                <el-form-item label="主机">
+                                                    <el-input v-model="setting.fileSynchronization.hostName"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="端口">
+                                                    <el-input-number v-model="setting.fileSynchronization.port" controls-position="right" :min="1" :max="99999"></el-input-number>
+
+                                                </el-form-item>
+                                                <el-form-item label="无密码">
+                                                    <el-checkbox v-model="setting.fileSynchronization.isGuest"></el-checkbox>
+                                                </el-form-item>
+                                                <el-form-item label="帐号">
+                                                    <el-input v-model="setting.fileSynchronization.uid" :disabled="setting.fileSynchronization.isGuest"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="密码">
+                                                    <el-input v-model="setting.fileSynchronization.pwd" :disabled="setting.fileSynchronization.isGuest"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="远端根目录">
+                                                    <el-input v-model="setting.fileSynchronization.rootPath"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="启用">
+                                                    <el-checkbox v-model="setting.fileSynchronization.enabled"></el-checkbox>
+                                                </el-form-item>
+                                            </el-form>
+                                        </div>
+                                    </el-card>
+                                </el-col>
+                                <el-col :span="8">
+                                    <el-card class="box-card">
+                                        <div slot="header" class="clearfix">
+                                            <span>供应商文件接收</span>
+
+                                            <el-button class="card-button" type="text" v-on:click="onUpdateSetting(setting.receive,'receive')">保存</el-button>
+                                        </div>
+                                        <div class="text item">
+                                            <el-form label-position="left" label-width="150px" :model="setting.receive">
+                                                <el-form-item label="文件密码">
+                                                    <el-input v-model="setting.receive.fileKeys"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="以程序为根目录">
+                                                    <el-checkbox v-model="setting.receive.onAppRootPath" disabled></el-checkbox>
+                                                </el-form-item>
+                                                <el-form-item label="保存发票图件目录">
+                                                    <el-input v-model="setting.receive.invoiceFilePath"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="接收文件时临时目录">
+                                                    <el-input v-model="setting.receive.receiveTempPath"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="支持旧版本客户端">
+                                                    <el-checkbox v-model="setting.receive.allowAccess"></el-checkbox>
+                                                </el-form-item>
+                                                <el-form-item label="必须预比对通过">
+                                                    <el-checkbox v-model="setting.receive.needForesee" disabled></el-checkbox>
+                                                </el-form-item>
+                                            </el-form>
+                                        </div>
+                                    </el-card>
+
+                                </el-col>
+                                <el-col :span="8">
+                                    <el-card class="box-card">
+                                        <div slot="header" class="clearfix">
+                                            <span>批次操作</span>
+                                            <el-button style="float: right; padding: 3px 0" type="text" v-on:click="onUpdateSetting(setting.approval,'approval')">保存</el-button>
+                                        </div>
+                                        <div class="text item">
+                                            <el-form label-position="left" label-width="100px" :model="setting.approval">
+                                                <el-form-item label="管理层操作">
+                                                    <el-tooltip class="item" effect="dark">
+                                                        <div slot="content">是否允许管理层操作批次。<br />开启后管理层可代结算员进行操作</div>
+                                                        <el-checkbox v-model="setting.approval.allowAdministrator"></el-checkbox>
+                                                    </el-tooltip>
+                                                </el-form-item>
+                                                <el-form-item label="强制审批">
+                                                    <el-tooltip class="item" effect="dark">
+                                                        <div slot="content">是否允许强制审批。<br />开启后有物料不通过可以进入比对结果页面进行物料审批。<br />所有物料通过后才能审批当前月份的发票记录</div>
+                                                        <el-checkbox v-model="setting.approval.allowForceApprove"></el-checkbox>
+                                                    </el-tooltip>
+                                                </el-form-item>
+                                            </el-form>
+                                        </div>
+                                    </el-card>
+                                    <el-card class="box-card">
+                                        <div slot="header" class="clearfix">
+                                            <span>发票提示</span>
+                                            <el-button class="card-button" type="text"  v-on:click="onUpdateSetting(setting.invoiceToolTip,'invoiceToolTip')">保存</el-button>
+                                        </div>
+                                        <div class="text item">
+                                            <el-form label-position="left" label-width="100px" :model="setting.invoiceToolTip">
+
+                                                <el-form-item label="发票到期">
+                                                    <el-tooltip class="item" content="发票到期天(单位：天)">
+                                                        <el-input-number v-model="setting.invoiceToolTip.hintDaysExpired" controls-position="right" :min="90" :max="180"></el-input-number>
+                                                    </el-tooltip>
+                                                </el-form-item>
+
+                                                <el-form-item label="发票离过期">
+                                                    <el-tooltip class="item" content="发票离过期天(单位：天)">
+                                                        <el-input-number v-model="setting.invoiceToolTip.hintDaysWarn" controls-position="right" :min="10" :max="30"></el-input-number>
+                                                    </el-tooltip>
+                                                </el-form-item>
+                                                <el-form-item label="新批次时间">
+                                                    <el-input-number v-model="setting.invoiceToolTip.newBatchDayRange" controls-position="right" :min="1" :max="5"></el-input-number>
+                                                </el-form-item>
+                                                <el-form-item label="邮件通知">
+                                                    <el-tooltip class="item" content="审批拒绝后，发送邮件通知供应商">
+                                                        <el-checkbox v-model="setting.invoiceToolTip.allowMailAlter" disabled></el-checkbox>
+                                                    </el-tooltip>
+                                                </el-form-item>
+
+                                            </el-form>
+                                        </div>
+                                    </el-card>
+                                </el-col>
+                            </el-row>
+                            <el-row :gutter="12">
+                                <el-col :span="12">
+                                    <el-card class="box-card">
+                                        <div slot="header" class="clearfix">
+                                            <span>比对</span>
+
+                                            <el-button class="card-button" type="text" v-on:click="onUpdateSetting(setting.comparison,'comparison')">保存</el-button>
+                                        </div>
+                                        <div class="text item">
+                                            <el-form label-position="left" label-width="100px" :model="setting.comparison">
+                                                <el-form-item label="生产环境">
+                                                    <el-input v-model="setting.comparison.serviceUrl"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="测试环境">
+                                                    <el-input v-model="setting.comparison.uatServiceUrl"></el-input>
+                                                </el-form-item>
+                                                <el-form-item label="自动审核">
+
+                                                    <el-select v-model="setting.comparison.audiOption"  multiple  placeholder="自动审核">
+                                                        <el-option label="金额相差" value="Difference"></el-option>
+                                                        <el-option label="缺少物料" value="MissWareSubjec"></el-option>
+
+                                                    </el-select>
+                                                </el-form-item>
+                                                <el-form-item label="金额相差">
+                                                    <el-tooltip class="item" content="金额相差多少可以自动通过">
+                                                        <el-input-number v-model="setting.comparison.difference" :precision="2" controls-position="right" :min="0.2" :max="1"></el-input-number>
+                                                    </el-tooltip>
+                                                </el-form-item>
+                                                <el-form-item label="最大数量">
+                                                    <el-tooltip class="item" content="调用接口时一次提交物料最大数量">
+                                                        <el-input-number v-model="setting.comparison.compareSize" controls-position="right" :step="100" :min="100" :max="1000"></el-input-number>
+                                                    </el-tooltip>
+                                                </el-form-item>
+                                            </el-form>
+                                        </div>
+                                    </el-card>
+                                </el-col>
+                            </el-row>
+                        </div>
+
+
+                    </div>
+
+
+
+
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+</div>
+<script type="text/javascript">
+
+
+
+    Vue.use(DYVue);
+    new Vue({
+
+        el: '#appSetting',
+        data: function () {
+            return {
+              setting:@Html.RawEntity(Model)
+
+            }
+        },
+        methods: {
+
+            onUpdateSetting: function (obj,path) {
+                this.$http.put("/api/Setting/" + path, obj).then((response) => {
+            
+                    Vue.prototype.$notify({ title: "保存成功" });
+                });
+            },
+            onTestSetting: function (obj) {
+                this.$http.post("/api/Setting/test", obj).then((response) => {
+                    Vue.prototype.$notify({ title: "测试成功"  });
+
+                });
+            },
+
+
+        },
+        updated: function(){
+
+        },
+        watch: {
+
+
+        }
+
+    });
+
+
+</script>
+
+

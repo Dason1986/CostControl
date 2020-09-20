@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
-using CostControlWebApplication.Models;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using BingoX.ComponentModel.Data;
 using CostControlWebApplication.Services;
@@ -14,7 +7,7 @@ using CostControlWebApplication.Application.Services.Dtos;
 namespace CostControlWebApplication.Controllers
 {
     [Authorize]
-    public class ProjectController : Controller
+    public class ProjectIncomeController : Controller
     {
 
 

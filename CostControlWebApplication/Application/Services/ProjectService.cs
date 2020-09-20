@@ -1,20 +1,27 @@
 ﻿using BingoX.AspNetCore;
 using BingoX.ComponentModel.Data;
+using BingoX.DataAccessor;
 using CostControlWebApplication.Application.Services.Dtos;
 using CostControlWebApplication.Domain;
 using System;
 
 namespace CostControlWebApplication.Services
 {
-    public interface IProjectService : IService
+  
+    public class ProjectService : BaseService
     {
-        IPagingList<VIProjectInfo> GetProjects(ProjectQueryRequest queryRequest);
-    }
-    public class ProjectService : IProjectService
-    {
+        public ProjectService(IBoundedContext bounded, ICurrentUser user) : base(bounded, user)
+        {
+             
+           
+        }
+        
         public IPagingList<VIProjectInfo> GetProjects(ProjectQueryRequest queryRequest)
         {
-
+           
+                Specification<VIProjectInfo> specification = new Specification<VIProjectInfo>();
+                specification.SetPage(queryRequest);
+         
             return new PagingList<VIProjectInfo>(new VIProjectInfo[] {
                 new VIProjectInfo {
                 Code= "MII-2020001",

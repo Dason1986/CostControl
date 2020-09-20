@@ -406,13 +406,7 @@
                         </div>
                     </div>
                 </el-tab-pane>
-                <el-tab-pane label="目標成本" name="second" :disabled="isDisabled">
-                    <el-row>
-                        <el-button icon="el-icon-search" circle></el-button>
-                        <el-button type="primary" icon="el-icon-edit" circle></el-button>
-
-                    </el-row>
-                </el-tab-pane>
+                
                 <el-tab-pane label="成本支出" name="second2" :disabled="isDisabled">
                     <el-costout :projectid="project.id"></el-costout>
                 </el-tab-pane>
@@ -421,13 +415,7 @@
                     <el-costin :projectid="project.id"></el-costin>
                 </el-tab-pane>
 
-                <el-tab-pane label="項目臺帳" name="second4" :disabled="isDisabled">
-                    <el-row>
-                        <el-button icon="el-icon-search" circle></el-button>
-                        <el-button type="primary" icon="el-icon-edit" circle></el-button>
-
-                    </el-row>
-                </el-tab-pane>
+               
                 <el-tab-pane label="相關文件" name="second5" :disabled="isDisabled">
                     <el-aboutfiles :projectid="project.id"></el-aboutfiles>
                   

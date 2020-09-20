@@ -3,52 +3,9 @@ using System;
 
 namespace CostControlWebApplication.Domain
 {
-    public class VIProjectInfo : ProjectInfo, BingoX.Domain.ISnowflakeEntity<VIProjectInfo>
+    public class ProjectInfo : Entity, ISnowflakeEntity<ProjectInfo> 
     {
-
-
-
-        public string SupremeManagerName { get; set; }
-
-        public string ManagerName { get; set; }
-        public string SetterName { get; set; }
-        public string ProjectMain { get; set; }
-
-
-        public string ContractorsName { get; set; }
-        public string ContractType { get; set; }
-        public string SettlementMethod { get; set; }
-        /// <summary>
-        /// 大判/分判  承接类型 
-        /// </summary>
-        public string Undertaking { get; set; }
-        /// <summary>
-        /// 商業/政府/住宅 项目类型
-        /// </summary>
-        public string ProjectType { get; set; }
-
-        /// <summary>
-        /// 現金流入S
-        /// </summary>
-        public decimal CashInAmount { get; set; }
-        /// <summary>
-        /// 現金流出T
-        /// </summary>
-        public decimal CashOutAmount { get; set; }
-        /// <summary>
-        /// 應收賬款X
-        /// </summary>
-        public decimal ReceivableAmount { get; set; }
-        /// <summary>
-        /// 應付賬款Y
-        /// </summary>
-        public decimal PayableAmount { get; set; }
-        public string FirstName { get; set; }
-        public string SecondName { get; set; }
-    }
-    public class ProjectInfo : ISnowflakeEntity<ProjectInfo>, IAuditCreated, IAuditModified
-    {
-        public long ID { get; set; }
+      
 
         /// <summary>
         /// 項目編號A
@@ -186,31 +143,8 @@ namespace CostControlWebApplication.Domain
         /// 估算的開工時間
         /// </summary>
         public DateTime? EstimatedEndDate { get; set; }
-        public DateTime CreatedDate { get; set; }
-
-        public string Created { get; set; }
-        public DateTime ModifiedDate { get; set; }
-        public string Modified { get; set; }
+  
 
         public ProjectState State { get; set; }
-    }
-    public enum ProjectState
-    {
-        Abnormal = -1,
-        None = 0,
-        Progress = 1,
-        Complete = 10,
-    }
-    public enum CommonState
-    {
-        /// <summary>
-        /// 未启用
-        /// </summary>
-        Disabled = 0,
-        /// <summary>
-        /// 启用
-        /// </summary>
-        Enabled = 1,
-        Deleted = -1
     }
 }

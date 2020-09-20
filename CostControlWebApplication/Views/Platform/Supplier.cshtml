@@ -1,0 +1,203 @@
+﻿@model IPagingList
+@{
+    Layout = "_ManagmentLayout";
+
+}
+<div id="appEmployee">
+
+    @*<my-role v-bind:data="title"></my-role>*@
+    <section class="content-header">
+        <h1>
+            用户管理
+            <small>查询</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li>系统管理</li>
+            <li class="active">用户管理</li>
+        </ol>
+    </section>
+    <!-- 主內容 -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">查询</h3>
+
+                    </div>
+
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+                                    <label>供应商名称</label>
+                                    <input type="text" class="form-control" placeholder="供应商名称" v-model="filterColumns.name">
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+                                    <label>供应商代码</label>
+                                    <input type="text" class="form-control" placeholder="供应商代码" v-model="filterColumns.code">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+                                    <label>基地</label>
+                                    <el-select v-model="filterColumns.greeCode" multiple collapse-tags placeholder="基地">
+                                        <el-option-group v-for="group in greeCodes"
+                                                         :key="group.label"
+                                                         :label="group.label">
+                                            <el-option v-for="item in group.entries"
+                                                       :key="item.value"
+                                                       :label="item.label"
+                                                       :value="item.value">
+                                            </el-option>
+                                        </el-option-group>
+                                    </el-select>
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                        <div class="row " style="margin-top:5px">
+
+
+
+                            <div class="col-md-4  form-inline">
+                                <div class="form-group" align="right">
+
+                                    <div class="input-group">
+
+
+                                        <button class="btn btn-info" type="submit" v-on:click="onsearch(true)">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                                        </button>
+
+                                        <button class="btn btn-default" v-on:click="onreset">
+                                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> 重置
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer" align="right">
+                        <div class="box box-success">
+                            <form class="form-horizontal">
+                                <div class="box-body">
+                                    <el-table v-bind:data="datasource" stripe class="table table-striped">
+
+
+                                        <el-table-column label="公司名稱" prop="companyName">
+                                        </el-table-column>
+                                        <el-table-column label="公司地址" prop="code">
+                                        </el-table-column>
+                                      
+                                        <el-table-column label="聯繫人" prop="man">
+                                        </el-table-column>
+                                        <el-table-column label="聯繫電話" prop="officeTel">
+                                        </el-table-column>
+                                        <el-table-column label="郵箱" prop="email">
+                                        </el-table-column>
+                                  
+
+
+
+                                        <el-table-column fixed="right" label="操作" width="250">
+                                            <template scope="scope">
+                                                @*<el-button  @@click="openUploadDetails(scope.row)" size="small">上传记录</el-button>*@
+                                                <el-button @@click="openBinding(scope.row)" size="small" type="danger">绑定结算员</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                    <el-pagination v-bind:total="total" layout="prev, pager, next , total" v-bind:current-page.sync="filterColumns.pageno" @@current-change="onChangePager"></el-pagination>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                   
+              
+                </div>
+
+            </div>
+        </div>
+
+    </section>
+</div>
+
+<script type="text/javascript">
+
+
+
+    Vue.use(DYVue);
+    new Vue({
+
+        el: '#appEmployee',
+        data: function () {
+            return {
+                total:@Model.Total ,
+                pagesize: @Model.PageSize,
+                datasource: @Html.RawEntity(Model.Items),
+             
+                filterColumns: {
+                    name: '',
+                    code: '',
+                    greeCode: '',
+                    pageno: 1
+                },
+             
+                filterUsers: [],
+                dialogVisible: false,
+                rec: {}
+            };
+        },
+        methods: {
+
+            onsearch: function (flag) {
+                if (flag) { this.filterColumns.pageno = 1; }
+                var filter = { ...this.filterColumns }
+             
+                this.$http.get("/api/Platform/Supplier", { params: filter}).then((response) => {
+                    this.total = response.data.total;
+                    this.datasource = response.data.items;
+
+                });
+            },
+            onreset: function () {
+                this.filterColumns = { name: '', code: '', state: '', pageno: 1 };
+            },
+               onChangePager: function (current) {
+                this.pageno = current;
+                this.onsearch(false);
+            },
+       
+           
+
+        },
+        updated: function(){
+
+        },
+        watch: {
+
+
+        }
+
+    });
+
+
+</script>
+
+

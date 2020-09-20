@@ -47,14 +47,14 @@ namespace GreeSaas.WebApplication.Controllers
         /// <param name="userLogin"></param>
         /// <returns></returns>
         [HttpPost]
-        public async Task<IActionResult> Login([FromServices] IResourceAccountService service, [FromServices] JwtSeetings jwtSeetings, [FromServices] IDateTimeService dateTimeService, [FromForm] LoginInputModel userLogin)
+        public async Task<IActionResult> Login([FromServices] AccountService service, [FromServices] JwtSeetings jwtSeetings, [FromServices] IDateTimeService dateTimeService, [FromForm] LoginInputModel userLogin)
         {
 
             if (string.IsNullOrEmpty(userLogin.Account)) throw new BingoX.LogicException();
             if (string.IsNullOrEmpty(userLogin.Password)) throw new BingoX.LogicException();
             var user = service.Login(userLogin.Account, userLogin.Password);
             if (user == null) throw new  UnauthorizedException("登录失败，帐号或密码错误");
-            if (user.State != 1) throw new UnauthorizedException("登录失败，帐号已经注销");
+            if (user.State !=   CostControlWebApplication.Domain.CommonState.Enabled) throw new UnauthorizedException("登录失败，帐号已经注销");
             var now = dateTimeService.GetNow();
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSeetings.Secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
@@ -63,7 +63,7 @@ namespace GreeSaas.WebApplication.Controllers
                       {
                             new Claim("Account",user.Account),
                             new Claim(ClaimTypes.Name,user.Name),
-                            new Claim(ClaimTypes.Role,user.RoleCode), 
+                            new Claim(ClaimTypes.Role,user.RoleType.ToString()), 
                             new Claim("UserID",user.ID.ToString()), 
 
                       };

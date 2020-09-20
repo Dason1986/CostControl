@@ -1,0 +1,275 @@
+﻿@model IPagingList
+@{
+    Layout = "_ManagmentLayout";
+
+}
+
+
+<style>
+    .box-card {
+        width: 100%;
+    }
+
+
+
+    .el-table .error-row {
+        background: #fdf7f7;
+    }
+
+    .el-table .success-row {
+        background: #f0f9eb;
+    }
+
+
+    .el-table .cell-lable {
+        min-width: 40px;
+        margin-left: 10px;
+    }
+
+    .el-table .cell-value {
+        margin-left: 10px;
+    }
+
+    .el-table .cell .row {
+        margin-left: 0px;
+    }
+
+    .el-table .cell .dtcell .right {
+        text-align: right;
+    }
+</style>
+<div id="appProject">
+
+
+    <section class="content-header">
+        <h1>
+            工程管理
+
+        </h1>
+        <ol class="breadcrumb">
+            <li>工程管理</li>
+
+
+        </ol>
+    </section>
+    <!-- 主內容 -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">查询</h3>
+
+                        <el-button type="primary" icon="el-icon-edit" size="mini" @@click="onAddTargetcost()"></el-button>
+                    </div>
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+                                    <label>項目編號</label>
+                                    <input type="text" class="form-control" placeholder="項目編號" v-model="filterColumns.projectCode">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+                                    <label>項目經理</label>
+                                    <input type="text" class="form-control" placeholder="項目名稱" v-model="filterColumns.projectManager">
+                                </div>
+
+                            </div>
+                       
+
+
+                        </div>
+                        <div class="row " style="margin-top:5px">
+
+
+
+                            <div class="col-md-4  form-inline">
+                                <div class="form-group" align="right">
+
+                                    <div class="input-group">
+
+
+                                        <button class="btn btn-info" type="submit" v-on:click="onSearchBatch(true)">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                                        </button>
+
+                                        <button class="btn btn-default" v-on:click="filterColumns = onreset()">
+                                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> 重置
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="box-footer" align="right">
+
+                        <el-table :data="datasource" border  style="width: 100%">
+
+                            <el-table-column label="編號/名稱" width="180">
+                                <template slot-scope="scope">
+                                    <div class="row">編號:<div class="cell-value"><el-button type="text" style="padding: 0px;" @@click="onOpenProject(scope.row)"> {{scope.row.code}} </el-button></div></div>
+                                    <div class="row">名稱:<div class="cell-value">{{scope.row.name}} </div></div>
+                                    <div class="row">預計開始時間: <div class="cell-value">{{scope.row.beginDate}} </div></div>
+                                    <div class="row">預計完工時間: <div class="cell-value">{{scope.row.endDate}} </div></div>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="金額" width="220">
+                                <template slot-scope="scope">
+                                    <div class="row"><div class="cell-lable">合約金額: </div><div class="cell-value"> {{scope.row.contractAmount}}</div></div>
+                                    <div class="row"><div class="cell-lable">合約內結算金額: </div><div class="cell-value"> {{scope.row.costAmount}}</div></div>
+                                    <div class="row"><div class="cell-lable">合約外後加減金額: </div><div class="cell-value"> {{scope.row.additionalAmount}}</div></div>
+
+                                </template>
+
+                            </el-table-column>
+                            <el-table-column label="專業分包費" width="480">
+                                
+                                    <template slot-scope="scope">
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <div class="row"><div class="cell-lable">準備工作: </div><div class="cell-value"> {{scope.row.contractAmount}}</div></div>
+                                                <div class="row"><div class="cell-lable">建築工程: </div><div class="cell-value"> {{scope.row.costAmount}}</div></div>
+                                                <div class="row"><div class="cell-lable">供排水工程: </div><div class="cell-value"> {{scope.row.additionalAmount}}</div></div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="row"><div class="cell-lable">強弱電工程: </div><div class="cell-value"> {{scope.row.contractAmount}}</div></div>
+                                                <div class="row"><div class="cell-lable">通風及空調工程: </div><div class="cell-value"> {{scope.row.costAmount}}</div></div>
+                                                <div class="row"><div class="cell-lable">消防工程: </div><div class="cell-value"> {{scope.row.additionalAmount}}</div></div>
+                                                <div class="row"><div class="cell-lable">後加/後減工程: </div><div class="cell-value"> {{scope.row.additionalAmount}}</div></div>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                        
+
+
+                            </el-table-column>
+                            <el-table-column label="材料費" width="220">
+                                <template slot-scope="scope">
+                                    <div class="row"><div class="cell-lable">主要飾面材料: </div><div class="cell-value"> {{scope.row.contractAmount}}</div></div>
+                                    <div class="row"><div class="cell-lable">輔助性使用材料: </div><div class="cell-value"> {{scope.row.costAmount}}</div></div>
+
+                                </template>
+
+                            </el-table-column>
+                            <el-table-column label="人工費" width="220">
+                                <template slot-scope="scope">
+                                    <div class="row"><div class="cell-lable">項目人力成本: </div><div class="cell-value"> {{scope.row.contractAmount}}</div></div>
+                                    <div class="row"><div class="cell-lable">項目工人工資: </div><div class="cell-value"> {{scope.row.costAmount}}</div></div>
+
+                                </template>
+
+                            </el-table-column>
+                            <el-table-column label="管理費" width="220">
+                                <template slot-scope="scope">
+                                    <div class="row"><div class="cell-lable">項目管理雜費: </div><div class="cell-value"> {{scope.row.contractAmount}}</div></div>
+                                    <div class="row"><div class="cell-lable">項目應酬費: </div><div class="cell-value"> {{scope.row.costAmount}}</div></div>
+
+                                </template>
+
+                            </el-table-column>
+
+
+                        </el-table>
+                    
+                        <el-add-targetcost :visible.sync="innerVisibleAddTargetCost" v-on:closed="onSearchBatch"></el-add-targetcost>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+
+
+    Vue.use(DYVue);
+</script>
+<partial name="~/Views/TargetCost/PartialAddTargetCost.cshtml" />
+
+
+<script type="text/javascript">
+
+
+
+        new Vue({
+            el: '#appProject',
+
+            data: function () {
+                return {
+
+                    total:@Model.Total ,
+                    pagesize: @Model.PageSize,
+
+                    datasource: @Html.RawEntity(Model.Items),
+                    innerVisibleAddTargetCost: false,
+                    innerVisibleEditTargetCost: false,
+                   
+                    filterColumns: this.onreset()
+                };
+            },
+            filters: {
+            },
+            methods: {
+
+                onSearchBatch: async function (flag) {
+                    if (flag) { this.filterColumns.pageno = 1; }
+                    var filter =  { ...this.filterColumns }
+
+                    var response = await this.$http.get("/api/BatchPackage/Batchs", { params: filter });
+                    this.total = response.data.total;
+                    this.datasource = response.data.items;
+
+
+                },
+                onreset: function () {
+                   return {
+                       projectCode: '',
+                       projectName: '',
+                       projectMain: '',
+                       projectManager: '',
+                       projectState: '',
+                       contractType: '',
+                     
+                        pageno: 1};
+                },
+                onChangePager: function (current) {
+
+                    this.pageno = current;
+                    this.onSearchBatch(false);
+                },
+                onAddTargetcost: function (){
+                    this.innerVisibleAddTargetCost = true;
+                },
+                onOpenProject: function () {
+                    this.innerVisibleEditTargetCost = true;
+                }
+
+
+
+
+
+            },
+            updated: function(){
+
+            },
+            watch: {
+
+
+            }
+
+        });
+
+
+</script>

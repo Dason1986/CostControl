@@ -1,43 +1,42 @@
-﻿ 
-Vue.mixin({
-    methods: {
-        isNull: function (value) {
-            if (value === null || value === undefined || value.length === 0) return true;
-
-            return false;
-        }
+﻿function enumFormatter() {
+    this.StatusCode = function (value) {
+        if (value === 1 || value === '1') return '有效';
+        if (value === 0 || value === '0') return '未启用';
+        if (value === -1 || value === '-1') return '刪除';
+        return value;
     },
-    filters: {
-      
-        filterStatusCode: function (value) {
-            if (value === 1 || value === '1') return '有效';
-            if (value === 0 || value === '0') return '未启用';
-            if (value === -1 || value === '-1') return '刪除';
-            return value;
-        },
-        filterBoolean: function (value) {
+        this.Boolean = function (value) {
             if (value instanceof Boolean) {
                 return value ? '是' : '否';
             }
             if (value === 1 || value === '1') return '是';
             if (value === 0 || value === '0') return '否';
             return value;
-        },
-        filterMatch: function (value) {
-            switch (value) {
+        };
+}
+var _enumFormatter = new enumFormatter();
 
-                case true: return '相符';
-                case false: return '不相符';
-                case 0: return '不相符';
-                case '0': return '不相符';
-                case 1: return '相符';
-                case '1': return '相符';
-                case 2: return '手工相符';
-                case '2': return '手工相符';
-                default:
-            } 
-            return '';
-        }
+Vue.mixin({
+    methods: {
+        isNull: function (value) {
+            if (value === null || value === undefined || value.length === 0) return true;
+
+            return false;
+        },
+        formatterStatusCode: function (row, column, cell) { return _enumFormatter.StatusCode(cell); },
+        formatterBoolean: function (row, column, cell) { return _enumFormatter.Boolean(cell); },
+        formatterNumber: function (row, column, cell) { if (cell === null || cell === undefined || cell === 0) return ''; return cell },
+    },
+    filters: {
+      
+        filterStatusCode: function (value) {
+            return _enumFormatter.StatusCode(value);
+           
+        },
+        filterBoolean: function (value) {
+            return _enumFormatter.Boolean(value);
+        },
+      
     }
 })
 const DYVue = {

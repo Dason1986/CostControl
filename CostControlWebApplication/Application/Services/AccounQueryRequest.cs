@@ -1,6 +1,6 @@
 ﻿namespace CostControlWebApplication.Services
 {
-    public class ProjectQueryRequest: QueryRequest
+    public class AccounQueryRequest : QueryRequest
     {
 
     }

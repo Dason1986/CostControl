@@ -1,0 +1,231 @@
+﻿@model IPagingList
+@{
+    Layout = "_ManagmentLayout";
+
+}
+<div id="appEmployee">
+
+    @*<my-role v-bind:data="title"></my-role>*@
+    <section class="content-header">
+        <h1>
+            用戶管理 
+            <small>查詢</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li>系統管理</li>
+            <li class="active">用戶管理</li>
+        </ol>
+    </section>
+    <!-- 主內容 -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">查詢</h3>
+                        <el-button class="btn btn-default" size="small" icon="el-icon-user-solid" v-on:click="onNew()">添加用戶</el-button>
+                    </div>
+
+                    <div class="box-body">
+                    
+                            <div class="row">
+                                <div class="col-md-4 form-inline">
+                                    <div class="form-group">
+                                        <label>用戶名稱</label>
+                                        <input type="text" class="form-control" placeholder="用戶名稱" v-model="filterColumns.name">
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4 form-inline">
+                                    <div class="form-group">
+                                        <label>用戶帳號</label>
+                                        <input type="text" class="form-control" placeholder="用戶帳號" v-model="filterColumns.account">
+                                    </div>
+
+                                </div>
+
+                                <div class="col-md-4 form-inline">
+                                    <div class="form-group">
+                                        <label>狀態</label>
+                                        <el-select v-model="filterColumns.state" placeholder="狀態">
+
+
+
+                                            <el-option value="" label="所有"></el-option>
+                                            <el-option value="0" label="未啟用"></el-option>
+                                            <el-option value="1" label="用效"></el-option>
+                                            <el-option value="-1" label="停用"></el-option>
+
+                                        </el-select>
+                                    </div>
+
+                                </div>
+
+
+                            </div>
+                            <div class="row " style="margin-top:5px">
+
+
+
+                                <div class="col-md-4  form-inline">
+                                    <div class="form-group" align="right">
+
+                                        <div class="input-group">
+
+
+                                            <button class="btn btn-info" type="submit" v-on:click="onsearch(true)">
+                                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查詢
+                                            </button>
+
+                                            <button class="btn btn-default" v-on:click="onreset">
+                                                <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> 重置
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                     
+
+
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer" align="right">
+                        <div class="box box-success">
+                            <form class="form-horizontal">
+                                <div class="box-body">
+                                    <el-table v-bind:data="datasource" stripe class="table table-striped">
+
+
+                                        <el-table-column label="用戶帳號" prop="account">
+                                        </el-table-column>
+                                        <el-table-column label="用戶名稱" prop="name">
+                                        </el-table-column>
+                                        <el-table-column label="角色" prop="roleType">
+                                        </el-table-column>
+
+                                     
+                                        <el-table-column label="郵箱" prop="email">
+                                        </el-table-column>
+                                        <el-table-column label="創建時間" prop="createDate">
+                                        </el-table-column>
+                                        <el-table-column label="狀態">
+                                            <template scope="scope">
+                                                <div>{{ scope.row.state|filterStatusCode}} </div>
+                                            </template>
+                                        </el-table-column>
+
+                                        <el-table-column fixed="right" label="操作" width="250">
+                                            <template scope="scope">
+                                         
+                                           
+                                    
+                                                    <el-button @@click="onStop(scope.row)" size="small" type="danger">停用</el-button>
+                                          
+                                                <el-button @@click="openDetails(scope.row)" size="small">明细</el-button>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                    <el-pagination v-bind:total="total" layout="prev, pager, next , total" v-bind:current-page.sync="filterColumns.pageno" @@current-change="onChangePager"></el-pagination>
+
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.box-footer -->
+
+                </div>
+
+            </div>
+        </div>
+
+        <el-employee-detail :employee="recEmployee" :is-edit="isEdit" :visible.sync="innerVisibleEmployee"></el-employee-detail>
+    </section>
+</div>
+<partial name="~/Views/Platform/PartialStaffer.cshtml" />
+<script type="text/javascript">
+
+
+
+    Vue.use(DYVue);
+    new Vue({
+
+        el: '#appEmployee',
+        data: function () {
+            return {
+                total:@Model.Total ,
+                pagesize: @Model.PageSize,
+                datasource: @Html.RawEntity(Model.Items),
+                filterColumns: {
+                    name: '',
+                    code: '',
+                    state: '',
+                    pageno: 1
+                },
+                innerVisibleEmployee:false,
+                recEmployee: {},
+                isEdit:false,
+            };
+        },
+        methods: {
+
+            onsearch: function (flag) {
+                if (flag) { this.filterColumns.pageno = 1;}
+                this.$http.get("/api/Platform/Staffer", { params: this.filterColumns}).then((response) => {
+                    this.total = response.data.total;
+                    this.datasource = response.data.items;
+
+                });
+            },
+            onreset: function () {
+                this.filterColumns = { name: '', code: '', state: '', pageno: 1 };
+            },
+               onChangePager: function (current) {
+                this.pageno = current;
+                this.onsearch(false);
+            },
+            onNew: function () {
+
+                this.isEdit = false;
+                this.recEmployee = {};
+                this.innerVisibleEmployee = true;
+               
+
+            },
+            openDetails: function (item) {
+
+                this.isEdit = true;
+                this.innerVisibleEmployee = true;
+                this.recEmployee = item;
+
+            },
+            onStop: async function (item) {
+                await this.$confirm('此操作将永久删除, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }) 
+                await this.$http.delete("/api/SysManage/Account/" + item.id);
+                    this.onsearch();
+                    
+               
+            }
+
+
+        },
+        updated: function(){
+
+        },
+        watch: {
+
+
+        }
+
+    });
+
+
+</script>
+
+

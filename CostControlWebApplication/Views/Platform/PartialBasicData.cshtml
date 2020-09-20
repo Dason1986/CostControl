@@ -1,0 +1,272 @@
+﻿
+<script type="text/x-template" id="basicdatadetail">
+
+    <el-dialog title="基礎資料" width="70%"
+               :visible.sync="eldialogvisible"
+               append-to-body>
+        <div class="box-body">
+            <div class="row">
+                <div class="col-lg-8">
+
+
+
+                    <el-table v-bind:data="datasourceBasicData" height="600" @@expand-change="expandChilds"  
+                              style="width: 100%">
+                        <el-table-column type="expand">
+                            <template scope="props">
+                                <el-button type="primary" size="small" @@click="onaddchild(props.row)">增加子级</el-button>
+                                <el-button type="primary" size="small" @@click="expandChilds(props.row,true)">刷新</el-button>
+                                <el-table v-loading.body="props.row.isEditing" v-bind:data.sync="props.row.childs" height="200"
+                                          style="width: 100%">
+                                    <el-table-column label="排序编号" prop="indexNo">        </el-table-column>
+                                    <el-table-column label="名称" prop="name">        </el-table-column>
+                                    <el-table-column label="数据值" prop="dataValue">        </el-table-column>
+                                    <el-table-column label="描述" prop="remark" v-bind:show-overflow-tooltip="true">        </el-table-column>
+                                    <el-table-column label="狀態" prop="statusCode" v-bind:formatter="formatterStatusCode"></el-table-column>
+                                    <el-table-column label="操作">
+                                        <template slot-scope="scope">
+                                            <el-button size="small" @@click="onedit(  scope.row)">编辑</el-button>
+                                        </template>
+                                    </el-table-column>
+                                </el-table>
+                            </template>
+
+                        </el-table-column>
+
+                        <el-table-column label="排序编号" prop="indexNo">        </el-table-column>
+                        <el-table-column label="名称" prop="name">        </el-table-column>
+                        <el-table-column label="数据值" prop="dataValue">        </el-table-column>
+                        <el-table-column label="描述" prop="remark" v-bind:show-overflow-tooltip="true">        </el-table-column>
+                        <el-table-column label="狀態" prop="statusCode" v-bind:formatter="formatterStatusCode"></el-table-column>
+                        <el-table-column label="操作">
+                            <template  scope="scope">
+                                <el-button size="small" @@click="onedit(  scope.row,elbasicdata)">编辑</el-button>
+
+                            </template>
+                        </el-table-column>
+
+                    </el-table>
+
+                    <el-button size="small" type="primary" @@click="onaddchild(elbasicdata)">新增</el-button>
+                </div>
+                <div class="col-lg-4" v-if="singleSelection">
+                    <div class="el-card">
+                        <div class="el-card__header">
+                            @*{{editrectype|filterOperation}}
+                                父级:{{editParent.Name}}*@
+                        </div>
+                        <div class="el-card__body">
+
+                            <el-form ref="singleSelection" v-bind:rules="basicdaterules" v-bind:model="singleSelection" label-width="80px">
+                                <el-form-item label="名称" prop="name">
+                                    <el-input v-model="singleSelection.name" placeholder="名称"></el-input>
+                                </el-form-item>
+                                <el-form-item label="数据值" prop="dataValue">
+
+                                    <el-input v-model="singleSelection.dataValue" placeholder="请輸入数据值" v-bind:disabled="isnew()">
+
+                                    </el-input>
+                                </el-form-item>
+                                
+                                <el-form-item label="排序编号">
+                                    <el-input-number v-bind:min="0" v-model="singleSelection.indexNo" placeholder="排序">
+
+                                    </el-input-number>
+                                </el-form-item>
+                                <el-form-item label="描述">
+                                    <el-input v-model="singleSelection.remark" placeholder="请輸入描述內容" type="textarea" v-bind:rows="3">
+
+                                    </el-input>
+                                </el-form-item>
+
+                               
+                                <el-form-item label="狀態">
+                                    <el-select v-model="singleSelection.state" type="textarea">
+                                        <el-option value="1" label="啟用" key="1"></el-option>
+                                        <el-option value="0" label="未啟用" key="0"></el-option>
+                                    </el-select>
+                                </el-form-item>
+                                <el-form-item>
+                                    <el-button type="primary" @@click="submitForm('singleSelection')">保存</el-button>
+                                    <el-button @@click="oncancel">取消</el-button>
+                                </el-form-item>
+                            </el-form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </el-dialog>
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('el-basicdata-detail',
+        {
+
+            template: '#basicdatadetail',
+            data: function () {
+                return {
+                    datasourceBasicData: [],
+                    eldialogvisible: this.visible,
+                    elbasicdata: {},
+                    singleSelection: null,
+                    editParent: null,
+                    editrectype:'',
+                    basicdaterules: {
+                        name: [
+                            { required: true, message: '请输入中文名称', trigger: 'blur' },
+
+                        ],
+                        dataValue: [
+                            { required: true, message: '请输入数据值', trigger: 'blur' },
+                            { min: 1, max: 50, message: '长度在 1 到 50 个字符', trigger: 'blur' }
+                        ],
+                    
+
+                    }
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+                oncancel: function () {
+                    this.singleSelection = null;
+                    this.editrec = null;},
+                isnew: function () {
+                    return this.singleSelection.id && this.singleSelection.id != '0'
+                },
+                isChild: function () {
+                    return this.elbasicdata.id == this.editParent.id;
+                },
+                getlistinfo:async function (parentid) {
+                    var data = await this.$http.get("/api/Platform/BasicData/" + parentid);
+               
+                    return data.body;
+                },
+                onedit: function (selectitem, parent) {
+
+
+                    if (this.singleSelection != null) {
+                        this.$notify({ title: '警告', message: '有处理在处理中，不能進行新的处理', type: "warning" });
+                        return;
+                    }
+                    if (parent === undefined) {
+                        var filteritems = this.datasourceBasicData.filter(function (xx) { return xx.id == selectitem.parentID });
+                        if (filteritems == null || filteritems.length == 0) {
+                            this.$notify({ title: '警告', message: '找不到上级', type: "warning" });
+                            return;
+                        }
+                        this.editParent = filteritems[0];
+                    }
+                    else {
+                        this.editParent = parent;
+                    }
+                    this.singleSelection = { ...selectitem };
+                    this.singleSelection.isEditing = true;
+                    this.editrectype = 'edit';
+                  
+                },
+                expandChilds: async function (row, expanded) {
+                    console.log('childs', row, expanded)
+                    if (expanded || row.childs === undefined || row.childs.length==0) {
+                        row.isEditing = false;
+                  
+                        row.childs = await this.getlistinfo(row.id);
+                      
+                        row.isEditing = true;
+
+                     
+
+
+                    }
+                },
+                onaddchild: function (selectitem) {
+                    if (this.singleSelection != null) {
+                        this.$notify({ title: '警告', message: '有记录在处理中，不能進行新的处理', type: "warning" });
+                        return;
+                    }
+                    this.editParent = selectitem;
+
+                    this.singleSelection = { parentId: selectitem.id, isEditing: true };
+
+                    this.editrectype = 'add';
+                  
+                },
+                openDetails:async function (item) {
+                    if (item) {
+                        this.singleSelection = null;
+                        this.datasourceBasicData =await this.getlistinfo(item.id);
+                    }
+                },
+                valter: function (valid, msg) {
+                    if (valid) {
+
+                        if (this.editrectype === "add") {
+                            this.$http.post("/api/Platform/BasicData", this.singleSelection).then( (response)=> {
+                                this.singleSelection = null;
+                                this.editParent = null;
+                                this.$notify({ title: '成功', message: '操作成功', type: "success" });
+
+                                this.openDetails(this.elbasicdata);
+                            });
+                        } else if (this.editrectype === "edit") {
+                            this.$http.put("/api/Platform/BasicData/" + this.singleSelection.id, this.singleSelection).then( (response)=> {
+                                this.singleSelection = null;
+                                this.editParent = null;
+                                this.$notify({ title: '成功', message: '操作成功', type: "success" });
+
+                                this.openDetails(this.elbasicdata);
+                            });
+                        }
+
+                    } else {
+                        // vm.$notify({ title: '提示', message: '填寫信息有誤！', type: "warning" });
+                        return false;
+                    }
+                },
+                submitForm: function () {
+                    var editform = this.$refs['singleSelection'];
+                   
+                    editform.validate(this.valter);
+                },
+            },
+            updated: function () {
+
+            },
+            watch: {
+                visible: function (val) {
+                    this.openDetails(this.basicdata);
+                 
+                    this.eldialogvisible = val;
+                },
+                basicdata: function (val) {
+                    if (val) {
+                        this.elbasicdata = { ...val };
+
+                    } else {
+                        this.elbasicdata = null;
+                    }
+
+                },
+                eldialogvisible: function (val) {
+
+                    this.$emit('update:visible', val)
+                }
+
+            },
+            props: {
+                basicdata: Object,
+                visible: Boolean,
+                isEdit: Boolean
+            }
+        });
+
+
+</script>

@@ -31,7 +31,15 @@ namespace CostControlWebApplication.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()
         {
-            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+            string message = string.Empty;
+            if (HttpContext.Items.ContainsKey("Exception"))
+            {
+                message = HttpContext.Items["Exception"].ToString();
+
+            }
+
+
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier, Message = message });
         }
     }
 }

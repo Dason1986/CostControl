@@ -48,8 +48,8 @@ namespace CostControlWebApplication
             CreateMap<string, int>().ConvertUsing(s => Convert.ToInt32(s));
             CreateMap<bool, int>().ConvertUsing(s => s ? 1 : 0);
             CreateMap<int, bool>().ConvertUsing(s => s > 0);
-            //  CreateMap<Enum, string>().ConvertUsing(s => Convert.ToInt32(s).ToString());
-            CreateMap<Enum, string>().ConvertUsing(s => s == null ? string.Empty : BingoX.Utility.EnumUtility.GetDescription(s));
+              CreateMap<Enum, string>().ConvertUsing(s => Convert.ToInt32(s).ToString());
+         //   CreateMap<Enum, string>().ConvertUsing(s => s == null ? string.Empty : BingoX.Utility.EnumUtility.GetDescription(s));
             CreateMap<VIProjectInfo, ProjectInfoDto>();
           CreateMap<VIProjectInfo, ProjectInfoListItmeDto>();
             InitDto();
@@ -60,30 +60,7 @@ namespace CostControlWebApplication
 
         }
 
-        public void Init(string[] prefixs, string[] suffixs)
-        {
-
-            var dtos = dtoAssembly.ExportedTypes.OfType<Type>().Where(o => o.IsClass && !o.IsAbstract).ToArray();
-            if (prefixs != null)
-            {
-                dtos = dtos.Where(o => prefixs.Any(x => o.Name.StartsWith(x))).ToArray();
-            }
-            if (suffixs != null)
-            {
-                dtos = dtos.Where(o => suffixs.Any(x => o.Name.EndsWith(x))).ToArray();
-            }
-            foreach (var item in dtos)
-            {
-                var name = item.Name;
-                prefixs.Foreach(n => { name = name.Replace(n, string.Empty); });
-                suffixs.Foreach(n => { name = name.Replace(n, string.Empty); });
-
-                var entities = entityAssembly.ExportedTypes.OfType<Type>().Where(o => name == (o.Name) && o.IsClass && !o.IsAbstract);
-                var mapping = entities.Select(n => Create(item, n)).ToArray();
-            }
-
-        }
-
+    
         private void InitDto()
         {
             var mappingResolvers = mapperAssembly.ExportedTypes.OfType<Type>().Where(o => typeof(IMappingResolver).IsAssignableFrom(o) && o.IsClass && !o.IsAbstract).ToArray();

@@ -1,0 +1,261 @@
+﻿@model IPagingList
+@{
+    Layout = "_ManagmentLayout";
+
+}
+
+
+<style>
+    .box-card {
+        width: 100%;
+    }
+
+
+
+    .el-table .error-row {
+        background: #fdf7f7;
+    }
+
+    .el-table .success-row {
+        background: #f0f9eb;
+    }
+
+
+    .el-table .cell-lable {
+        min-width: 40px;
+        margin-left: 10px;
+    }
+
+    .el-table .cell-value {
+        margin-left: 10px;
+    }
+
+    .el-table .cell .row {
+        margin-left: 0px;
+    }
+
+    .el-table .cell .dtcell .right {
+        text-align: right;
+    }
+</style>
+<div id="appProject">
+
+
+    <section class="content-header">
+        <h1>
+            工程管理
+
+        </h1>
+        <ol class="breadcrumb">
+            <li>工程管理</li>
+
+
+        </ol>
+    </section>
+    <!-- 主內容 -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">查询</h3>
+
+                        <el-button type="primary" icon="el-icon-edit" size="mini" @@click="onAddProject()"></el-button>
+                    </div>
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+                                    <label>項目編號</label>
+                                    <input type="text" class="form-control" placeholder="項目編號" v-model="filterColumns.projectCode">
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+                                    <label>項目經理</label>
+                                    <input type="text" class="form-control" placeholder="項目名稱" v-model="filterColumns.projectManager">
+                                </div>
+
+                            </div>
+
+
+
+                        </div>
+                        <div class="row " style="margin-top:5px">
+
+
+
+                            <div class="col-md-4  form-inline">
+                                <div class="form-group" align="right">
+
+                                    <div class="input-group">
+
+
+                                        <button class="btn btn-info" type="submit" v-on:click="onSearchBatch(true)">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                                        </button>
+
+                                        <button class="btn btn-default" v-on:click="filterColumns = onreset()">
+                                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> 重置
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+
+                    <div class="box-footer" align="right">
+
+                        <el-table :data="datasource">
+
+                            <el-table-column label="編號/名稱" width="180">
+                                <template slot-scope="scope">
+                                    <div class="row">編號:<div class="cell-value"><el-button type="text" style="padding: 0px;" @@click="onOpenProject(scope.row)"> {{scope.row.code}} </el-button></div></div>
+                                    <div class="row">名稱:<div class="cell-value">{{scope.row.name}} </div></div>
+                                </template>
+                            </el-table-column>
+
+
+
+                            <el-table-column prop="date" label="日期">
+                            </el-table-column>
+                            <el-table-column prop="name" label="單號">
+                            </el-table-column>
+                            <el-table-column prop="address" label="類別">
+                            </el-table-column>
+                            <el-table-column prop="address" label="承擔部門">
+                            </el-table-column>
+                            <el-table-column prop="address" label="收入支出單位">
+                            </el-table-column>
+                            <el-table-column prop="address" label="摘要">
+                            </el-table-column>
+                            <el-table-column prop="address" label="幣種">
+                            </el-table-column>
+                            <el-table-column prop="address" label="借方金額（收）">
+                            </el-table-column>
+                            <el-table-column prop="address" label="貸方金額（支）">
+                            </el-table-column>
+                            <el-table-column prop="address" label="發票號">
+                            </el-table-column>
+                            <el-table-column prop="address" label="結算方式">
+                            </el-table-column>
+                            <el-table-column prop="address" label="支票號">
+                            </el-table-column>
+                            <el-table-column prop="address" label="開票日期">
+                            </el-table-column>
+                            <el-table-column prop="address" label="轉數/入數日期">
+                            </el-table-column>
+                            <el-table-column prop="address" label="預計付款日期">
+                            </el-table-column>
+                            <el-table-column prop="address" label="收/付款跟進人">
+                            </el-table-column>
+                            <el-table-column prop="address" label="調撥單號">
+                            </el-table-column>
+                            <el-table-column prop="address" label="兌票日期">
+                            </el-table-column>
+                            <el-table-column prop="address" label="會計確認">
+                            </el-table-column>
+                            <el-table-column prop="address" label="單據是否交接">
+                            </el-table-column>
+                            <el-table-column prop="address" label="備註">
+                            </el-table-column>
+                        </el-table>
+
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<script>
+
+
+    Vue.use(DYVue);
+</script>
+
+
+
+<script type="text/javascript">
+
+
+
+        new Vue({
+            el: '#appProject',
+
+            data: function () {
+                return {
+
+                    total:@Model.Total ,
+                    pagesize: @Model.PageSize,
+
+                    datasource: @Html.RawEntity(Model.Items),
+
+
+                    filterColumns: this.onreset()
+                };
+            },
+            filters: {
+            },
+            methods: {
+
+                onSearchBatch: async function (flag) {
+                    if (flag) { this.filterColumns.pageno = 1; }
+                    var filter =  { ...this.filterColumns }
+
+                    var response = await this.$http.get("/api/BatchPackage/Batchs", { params: filter });
+                    this.total = response.data.total;
+                    this.datasource = response.data.items;
+
+
+                },
+                onreset: function () {
+                   return {
+                       projectCode: '',
+                       projectName: '',
+                       projectMain: '',
+                       projectManager: '',
+                       projectState: '',
+                       contractType: '',
+                        greeCode: [],
+                        pageno: 1};
+                },
+                onChangePager: function (current) {
+
+                    this.pageno = current;
+                    this.onSearchBatch(false);
+                },
+                onAddProject: function (){
+                    this.innerVisibleAddProject = true;
+                },
+                onOpenProject: function () {
+                    this.innerVisibleEditProject = true;
+                }
+
+
+
+
+
+            },
+            updated: function(){
+
+            },
+            watch: {
+
+
+            }
+
+        });
+
+
+</script>

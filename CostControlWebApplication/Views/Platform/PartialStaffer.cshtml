@@ -1,0 +1,118 @@
+﻿
+<script type="text/x-template" id="employeedetail">
+
+    <el-dialog title="员工资料"
+               :visible.sync="eldialogvisible"
+               append-to-body>
+        <div class="box-body">
+            <el-form ref="form" :model="elemployee" label-width="80px">
+                <el-form-item label="用户帐号">
+                    <el-input v-model="elemployee.account" :disabled="isEdit"></el-input>
+                </el-form-item>
+                <el-form-item label="用户名称">
+                    <el-input v-model="elemployee.name" :disabled="isEdit"></el-input>
+                </el-form-item>
+                <el-form-item label="电子邮箱">
+                    <el-input v-model="elemployee.email" :disabled="isEdit"></el-input>
+                </el-form-item>
+
+
+
+                <el-form-item label="密码" v-if="!isEdit">
+                    <el-input v-model="elemployee.passWord" type="password"></el-input>
+                </el-form-item>
+                <el-form-item label="确认密码" v-if="!isEdit">
+                    <el-input v-model="elemployee.comfirmPassword" type="password"></el-input>
+                </el-form-item>
+
+            </el-form>
+        </div>
+
+
+        <span slot="footer" class="dialog-footer">
+
+            <el-button type="primary" @@click="onSave()">确 定</el-button>
+        </span>
+    </el-dialog>
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('el-employee-detail',
+        {
+
+            template: '#employeedetail',
+            data: function () {
+                return {
+                    eldialogvisible: this.visible,
+                    elemployee: {},
+                
+            
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+                onSave: function () {
+                    var employee = { ...this.elemployee };
+                    employee.roleCode= 'Staffer';
+                   
+                    if (this.isEdit) {
+                        this.$http.put("/api/Platform/Staffer" + employee.id, employee).then((response) => {
+
+                            this.eldialogvisible = false;
+                        });
+
+                    } else {
+                        this.$http.post("/api/Platform/Staffer", employee).then((response) => {
+                            this.eldialogvisible = false;
+
+                        });
+                    }
+                }
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+                visible: function (val) {
+
+                    this.eldialogvisible = val;
+                },
+                employee: function (val) {
+                    if (val ) {
+                        this.elemployee = {
+                            id: val.id,
+                            account: val.account,
+                            email: val.email,
+                            name: val.name,
+                            roleType: val.roleType,
+
+                        
+                        };
+                      
+                    } else {
+                        this.elemployee = {};
+                    }
+
+                },
+                eldialogvisible: function (val) {
+
+                    this.$emit('update:visible', val)
+                }
+
+            },
+            props: {
+                employee: Object,
+                visible: Boolean,
+                isEdit: Boolean
+            }
+        });
+
+
+</script>

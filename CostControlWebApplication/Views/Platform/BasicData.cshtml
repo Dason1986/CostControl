@@ -1,0 +1,187 @@
+﻿@model IList<BasicDataDto>
+@{
+    Layout = "_ManagmentLayout";
+
+}
+<div id="appEmployee">
+
+    @*<my-role v-bind:data="title"></my-role>*@
+    <section class="content-header">
+        <h1>
+            基礎資料
+            <small>查詢</small>
+        </h1>
+        <ol class="breadcrumb">
+            <li>系統管理</li>
+            <li class="active">基礎資料</li>
+        </ol>
+    </section>
+    <!-- 主內容 -->
+    <section class="content">
+
+        <div class="row">
+            <div class="col-md-12">
+
+                <div class="box box-info">
+                    <div class="box-header with-border">
+                        <h3 class="box-title">查詢</h3>
+                        <el-button class="btn btn-default" size="small" icon="el-icon-user-solid" v-on:click="onNew()">添加用戶</el-button>
+                    </div>
+
+                    <div class="box-body">
+
+                        <div class="row">
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+                                    <label>級別</label>
+                                    <input type="text" class="form-control" placeholder="級別" v-model="filterColumns.groupCode">
+                                </div>
+
+                            </div>
+                            <div class="col-md-4 form-inline">
+                                <div class="form-group">
+                                    <label>名稱</label>
+                                    <input type="text" class="form-control" placeholder="名稱" v-model="filterColumns.name">
+                                </div>
+
+                            </div>
+
+
+
+
+                        </div>
+                        <div class="row " style="margin-top:5px">
+
+
+
+                            <div class="col-md-4  form-inline">
+                                <div class="form-group" align="right">
+
+                                    <div class="input-group">
+
+
+                                        <button class="btn btn-info" type="submit" v-on:click="onsearch(true)">
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查詢
+                                        </button>
+
+                                        <button class="btn btn-default" v-on:click="onreset">
+                                            <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span> 重置
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <!-- /.box-body -->
+
+                    <div class="box-footer" align="right">
+                        <div class="box box-success">
+                            <form class="form-horizontal">
+                                <div class="box-body">
+                                    <el-table v-bind:data="datasource" stripe class="table table-striped">
+
+
+
+                                        <el-table-column label="組別" prop="groupCode">
+                                        </el-table-column>
+                                        <el-table-column label="名稱" prop="name">
+                                        </el-table-column>
+
+
+                                        <el-table-column label="狀態">
+                                            <template scope="scope">
+                                                <div>{{ scope.row.state|filterStatusCode}} </div>
+                                            </template>
+                                        </el-table-column>
+
+                                        <el-table-column fixed="right" label="操作" width="120">
+                                            <template scope="scope">
+                                                <el-button @@click="openDetails(scope.row)" size="small">查看子级</el-button>
+
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                               
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <!-- /.box-footer -->
+
+                </div>
+
+            </div>
+        </div>
+
+        <el-basicdata-detail :basicdata="rec"  :visible.sync="innerVisible"></el-basicdata-detail>
+    </section>
+</div>
+<partial name="~/Views/Platform/PartialBasicData.cshtml" />
+<script type="text/javascript">
+
+
+
+    Vue.use(DYVue);
+    new Vue({
+
+        el: '#appEmployee',
+        data: function () {
+            return {
+               
+                datasource: @Html.RawEntity(Model),
+                filterColumns: {
+                    name: '',
+                    code: '',
+                    state: '',
+                    pageno: 1
+                },
+                innerVisible :false,
+                rec: {}
+            };
+        },
+        methods: {
+
+            onsearch: function (flag) {
+                
+                this.$http.get("/api/Platform/BasicData", { params: this.filterColumns}).then((response) => {
+                  
+                    this.datasource = response.data;
+
+                });
+            },
+            onreset: function () {
+                this.filterColumns = { name: '', groupCode: ''  };
+            },
+            onChangePager: function (current) {
+                this.pageno = current;
+                this.onsearch(false);
+            },
+       
+            openDetails: function (item) {
+
+                this.isEdit = true;
+                this.innerVisible  = true;
+                this.rec = item;
+
+            },
+            
+
+
+        },
+        updated: function(){
+
+        },
+        watch: {
+
+
+        }
+
+    });
+
+
+</script>
+
+
