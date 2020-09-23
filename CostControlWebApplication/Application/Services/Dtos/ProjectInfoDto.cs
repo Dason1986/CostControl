@@ -2,6 +2,7 @@
 
 namespace CostControlWebApplication.Application.Services.Dtos
 {
+
     public class ProjectInfoListItmeDto : IDto
     {
         public long ID { get; set; }
@@ -97,7 +98,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
     }
     public class ProjectInfoDto : ProjectInfoListItmeDto
     {
-     
+
         /// <summary>
         /// 最終責任人D1
         /// </summary>
@@ -145,7 +146,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// 核算毛利率N（%）
         /// </summary>
         public decimal AccountingGrossProfitRate { get; set; }
-        
+
 
         /// <summary>
         /// 保固應收Z
@@ -180,6 +181,6 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// </summary>
         public string Remark { get; set; }
 
-       
+
     }
 }

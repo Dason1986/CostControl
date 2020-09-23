@@ -11,25 +11,41 @@ namespace CostControlWebApplication.Controllers
     [Authorize]
     public class PlatformController : Controller
     {
+        #region Staffer
 
         public IActionResult Staffer([FromServices] AccountService service, [FromQuery] AccounQueryRequest filterRequest)
         {
             IPagingList list = service.GetPagingList(filterRequest);
             return View(list);
         }
+        [HttpGet("~/api/Platform/Staffer")]
+        public IPagingList APIStaffer([FromServices] AccountService service, [FromQuery] AccounQueryRequest filterRequest)
+        {
+            IPagingList list = service.GetPagingList(filterRequest);
+            return list;
+        }
+        [HttpPost("~/api/Platform/Staffer")]
+        public void AddUser([FromServices] AccountService service, [FromBody] AccountUserDto dto)
+        {
+            service.AddUser(dto);
+        }
+
+        [HttpPut("~/api/Platform/Staffer/{id}")]
+        public void EditUser([FromServices] AccountService service, [FromBody] AccountUserDto dto)
+        {
+            service.EditUser(dto);
+        }
+        #endregion
         public IActionResult Setting([FromServices] SettingService service)
         {
             SettingDto setting = service.GetSetting();
             return View(setting);
         }
-        public IActionResult Supplier([FromServices] SupplierService service, [FromQuery] SupplierQueryRequest filterRequest)
+        #region BasicData
+
+        public IActionResult BasicData([FromServices] BasicDataService service, [FromQuery] string name, [FromQuery] string groupCode)
         {
-            IPagingList list = service.GetPagingList(filterRequest);
-            return View(list);
-        }
-        public IActionResult BasicData([FromServices] BasicDataService service)
-        {
-            var list = service.QueryRoot();
+            var list = service.QueryRoot(name, groupCode);
             return View(list);
         }
         [HttpGet]
@@ -58,27 +74,47 @@ namespace CostControlWebApplication.Controllers
             service.AddBasicData(dto);
         }
         [HttpGet("~/api/Platform/BasicData")]
-        public IList<BasicDataDto> APIStaffer([FromServices] BasicDataService service, [FromQuery] string name, [FromQuery] string groupCode)
+        public IList<BasicDataDto> GetBasicData([FromServices] BasicDataService service, [FromQuery] string name, [FromQuery] string groupCode)
         {
             var list = service.QueryRoot(name, groupCode);
             return list;
         }
-        [HttpGet("~/api/Platform/Staffer")]
-        public IPagingList APIStaffer([FromServices] AccountService service, [FromQuery] AccounQueryRequest filterRequest)
+        #endregion
+        #region SupplierService
+
+        public IActionResult Supplier([FromServices] SupplierService service, [FromQuery] SupplierQueryRequest filterRequest)
         {
             IPagingList list = service.GetPagingList(filterRequest);
-            return list;
+            return View(list);
         }
-        [HttpPost("~/api/Platform/Staffer")]
-        public void AddUser([FromServices] AccountService service, [FromBody] AccountUserDto dto)
+        [HttpGet]
+        [Route("~/api/Platform/Supplier/{id}")]
+        public SupplierDto GetSupplier([FromServices] SupplierService service, [FromRoute] long id)
         {
-            service.AddUser(dto);
+            return service.Get(id);
         }
 
-        [HttpPut("~/api/Platform/Staffer/{id}")]
-        public void EditUser([FromServices] AccountService service, [FromBody] AccountUserDto dto)
+        [HttpPut]
+        [Route("~/api/Platform/Supplier/{id}")]
+        public void UpdateSupplier([FromServices] SupplierService service, [FromBody] SupplierDto dto)
         {
-            service.EditUser(dto);
+            service.UpdateSuppiler(dto);
         }
+
+        [HttpPost]
+        [Route("~/api/Platform/Supplier")]
+        public void AddSupplier([FromServices] SupplierService service, [FromBody] SupplierDto dto)
+        {
+            service.AddSuppiler(dto);
+        }
+        [HttpGet("~/api/Platform/Supplier")]
+        public IPagingList<SupplierDto> GetSupplier([FromServices] SupplierService service, [FromQuery] SupplierQueryRequest filterRequest)
+        {
+            var list = service.GetPagingList(filterRequest);
+            return list;
+        }
+        #endregion
+
+
     }
 }

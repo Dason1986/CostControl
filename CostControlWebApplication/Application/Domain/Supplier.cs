@@ -4,22 +4,21 @@ namespace CostControlWebApplication.Domain
 {
     public class Supplier : Entity, ISnowflakeEntity<Supplier>
     {
-        /// <summary>
-        /// 項目編號A
-        /// </summary>
-        public string Code { get; set; }
+     
 
         /// <summary>
-        /// 項目名稱B
+        /// 
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        /// 項目地址
+        /// 
         /// </summary>
         public string Address { get; set; }
-
-        public string Tel { get; set; }
-
+        public string OfficeTel { get; set; }
+        public string Fax { get; set; }
+        public string ManName { get; set; }
+        public string ManTel { get; set; }
+        public CommonState State { get; set; }
     }
 }

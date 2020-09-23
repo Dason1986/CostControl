@@ -50,20 +50,40 @@
                         <div class="col-md-3 form-inline">
                             <div class="form-group">
 
-                                <label>上家</label>
-                                <input type="text" class="form-control" v-model="rec.name" placeholder="上家">
+                                <label>项目类型</label>
 
+                                <el-select v-model="rec.projectTypeId" filterable placeholder="项目类型">
+                                    <el-option v-for="item in projectTypeOptions"
+                                               :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled"
+                                               >
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>上家</label>
+
+                                <el-select v-model="rec.lastHome" filterable placeholder="上家">
+                                    <el-option v-for="item in lastHomeOptions"
+                                                 :key="item.value" :label="item.label" :value="item.value">
+                                    </el-option>
+                                </el-select>
                             </div>
 
                         </div>
                         <div class="col-md-3 form-inline">
                             <div class="form-group">
 
-                                <label>上传成本文件</label> 
+                                <label>上传成本文件</label>
                                 <el-upload class="upload-demo"
-                                                                 action="/api/file/temp"
-                                                                 :show-file-list="false"
-                                                                 :on-success="handleUploadExceed">
+                                           action="/api/file/temp"
+                                           :show-file-list="false"
+                                           :on-success="handleUploadExceed">
                                     <el-button size="small" icon="el-icon-upload">点击上传</el-button>
 
                                 </el-upload>
@@ -92,7 +112,7 @@
                             <div class="form-group">
 
                                 <label>建築總面積</label>
-                                <input type="text" class="form-control" v-model="rec.buildsize" placeholder="項目名稱">
+                                <input type="text" class="form-control" v-model="rec.buildSize" placeholder="建築總面積">
 
                             </div>
 
@@ -101,7 +121,7 @@
                             <div class="form-group">
 
                                 <label>建築面積單方成本造價</label>
-                                <input type="text" class="form-control" v-model="rec.buildCost" placeholder="項目名稱">
+                                <input type="text" class="form-control" v-model="rec.buildUnitCost" placeholder="建築面積單方成本造價">
 
                             </div>
 
@@ -112,7 +132,7 @@
                             <div class="form-group">
 
                                 <label>合約金額</label>
-                                <input type="text" class="form-control" v-model="rec.name" placeholder="合約金額">
+                                <input type="text" class="form-control" v-model="rec.ContractAmount" placeholder="合約金額">
 
                             </div>
 
@@ -121,7 +141,7 @@
                             <div class="form-group">
 
                                 <label>合約內結算金額</label>
-                                <input type="text" class="form-control" v-model="rec.name" placeholder="合約內結算金額">
+                                <input type="text" class="form-control" v-model="rec.ContractInAmount" placeholder="合約內結算金額">
 
                             </div>
 
@@ -130,7 +150,7 @@
                             <div class="form-group">
 
                                 <label>合約外後加減金額</label>
-                                <input type="text" class="form-control" v-model="rec.name" placeholder="合約外後加減金額">
+                                <input type="text" class="form-control" v-model="rec.ContractOutAmount" placeholder="合約外後加減金額">
 
                             </div>
 
@@ -180,7 +200,8 @@
             data: function () {
                 return {
                     eldialogvisible: this.visible,
-
+                    lastHomeOptions:@Html.GetLastHome(),
+                    projectTypeOptions:@Html.GetBasics(BasicsCode.TrageCastProjectType),
                     rec: { fileName:''}
                 };
             },
@@ -225,7 +246,7 @@
             },
             props: {
 
-              
+
                 visible: Boolean
             }
         });

@@ -11,17 +11,15 @@ using System.Collections.Generic;
 
 namespace CostControlWebApplication.Services
 {
-    public class BasicDataService : IBaseService
+    public class BasicDataService : BaseService
     {
-        private readonly BasicDataRepository repository;
-        public IBoundedContext Bounded { get; private set; }
-        public ICurrentUser User { get; private set; }
+        private readonly IRepository<BasicData> repository;
+      
 
-        public BasicDataService(BasicDataRepository repository, IBoundedContext bounded, ICurrentUser user)
+        public BasicDataService(IRepository<BasicData> repository, IBoundedContext bounded, ICurrentUser user): base(bounded, user)
         {
             this.repository = repository;
-            this.Bounded = bounded;
-            this.User = user;
+          
         }
         public IList<BasicDataDto> Query(long parentId)
         {
@@ -37,7 +35,8 @@ namespace CostControlWebApplication.Services
             specification.Orderby(n => n.IndexNo);
             specification.Orderby(n => n.DataValue);
             specification.PageSize = 100;
-            var list = repository.PageList(specification).Items.ProjectedAsCollection<BasicDataDto>();
+            int total = 0;
+            var list = repository.PageList(specification,ref total).ProjectedAsCollection<BasicDataDto>();
             return list;
         }
         public IList<BasicDataDto> QueryRoot(string name = null, string groupCode = null)
@@ -50,7 +49,8 @@ namespace CostControlWebApplication.Services
             if (!string.IsNullOrEmpty(groupCode)) specification.And(n => n.GroupCode.Contains(groupCode));
             specification.Orderby(n => n.ID);
             specification.PageSize = 100;
-            var list = repository.PageList(specification).Items.ProjectedAsCollection<BasicDataDto>();
+            int total = 0;
+            var list = repository.PageList(specification, ref total).ProjectedAsCollection<BasicDataDto>();
             return list;
         }
 
@@ -75,7 +75,7 @@ namespace CostControlWebApplication.Services
                 Remark = dto.Remark
             };
             entity.Created(this);
-            repository.AddBasicData(entity);
+            repository.Add(entity);
             repository.UnitOfWork.Commit();
         }
 
@@ -93,7 +93,7 @@ namespace CostControlWebApplication.Services
             entity.Remark = dto.Remark;
             entity.State = dto.State == "1" ? CommonState.Enabled : CommonState.Disabled;
             entity.Modified(this);
-            repository.UpdateBasicData(entity);
+            repository.Update(entity);
             repository.UnitOfWork.Commit();
         }
     }

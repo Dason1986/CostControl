@@ -3,7 +3,7 @@
     Layout = "_ManagmentLayout";
 
 }
-<div id="appEmployee">
+<div id="appSupplier">
 
     @*<my-role v-bind:data="title"></my-role>*@
     <section class="content-header">
@@ -25,7 +25,7 @@
                 <div class="box box-info">
                     <div class="box-header with-border">
                         <h3 class="box-title">查询</h3>
-
+                        <el-button class="btn btn-default" size="small" icon="fa fa-truck" v-on:click="onNew()">添加供應商</el-button>
                     </div>
 
                     <div class="box-body">
@@ -33,36 +33,20 @@
                         <div class="row">
                             <div class="col-md-4 form-inline">
                                 <div class="form-group">
-                                    <label>供应商名称</label>
-                                    <input type="text" class="form-control" placeholder="供应商名称" v-model="filterColumns.name">
+                                    <label>供應商名稱</label>
+                                    <input type="text" class="form-control" placeholder="供應商名稱" v-model="filterColumns.name">
                                 </div>
 
                             </div>
                             <div class="col-md-4 form-inline">
                                 <div class="form-group">
-                                    <label>供应商代码</label>
-                                    <input type="text" class="form-control" placeholder="供应商代码" v-model="filterColumns.code">
+                                    <label>聯繫人員名稱</label>
+                                    <input type="text" class="form-control" placeholder="聯繫人員名稱" v-model="filterColumns.manName">
                                 </div>
 
                             </div>
 
-                            <div class="col-md-4 form-inline">
-                                <div class="form-group">
-                                    <label>基地</label>
-                                    <el-select v-model="filterColumns.greeCode" multiple collapse-tags placeholder="基地">
-                                        <el-option-group v-for="group in greeCodes"
-                                                         :key="group.label"
-                                                         :label="group.label">
-                                            <el-option v-for="item in group.entries"
-                                                       :key="item.value"
-                                                       :label="item.label"
-                                                       :value="item.value">
-                                            </el-option>
-                                        </el-option-group>
-                                    </el-select>
-                                </div>
 
-                            </div>
 
 
                         </div>
@@ -100,25 +84,27 @@
                                     <el-table v-bind:data="datasource" stripe class="table table-striped">
 
 
-                                        <el-table-column label="公司名稱" prop="companyName">
+                                        <el-table-column label="供應商名稱" prop="name">
                                         </el-table-column>
-                                        <el-table-column label="公司地址" prop="code">
+                                        <el-table-column label="地址" prop="address">
                                         </el-table-column>
-                                      
-                                        <el-table-column label="聯繫人" prop="man">
+                                        <el-table-column label="電話" prop="officeTel">
                                         </el-table-column>
-                                        <el-table-column label="聯繫電話" prop="officeTel">
+                                        <el-table-column label="傳真" prop="fax">
                                         </el-table-column>
-                                        <el-table-column label="郵箱" prop="email">
+
+                                        <el-table-column label="聯繫人" prop="manName">
                                         </el-table-column>
-                                  
+                                        <el-table-column label="聯繫人電話" prop="manTel">
+                                        </el-table-column>
+
 
 
 
                                         <el-table-column fixed="right" label="操作" width="250">
                                             <template scope="scope">
                                                 @*<el-button  @@click="openUploadDetails(scope.row)" size="small">上传记录</el-button>*@
-                                                <el-button @@click="openBinding(scope.row)" size="small" type="danger">绑定结算员</el-button>
+                                                <el-button @@click="openBinding(scope.row)" size="small" type="danger">修改</el-button>
                                             </template>
                                         </el-table-column>
                                     </el-table>
@@ -128,8 +114,8 @@
                             </form>
                         </div>
                     </div>
-                   
-              
+
+                    <el-supplier-detail :supplier="rec" :is-edit="isEdit" :visible.sync="innerVisible"></el-supplier-detail>
                 </div>
 
             </div>
@@ -137,7 +123,7 @@
 
     </section>
 </div>
-
+<partial name="~/Views/Platform/PartialSupplier.cshtml" />
 <script type="text/javascript">
 
 
@@ -145,23 +131,22 @@
     Vue.use(DYVue);
     new Vue({
 
-        el: '#appEmployee',
+        el: '#appSupplier',
         data: function () {
             return {
                 total:@Model.Total ,
                 pagesize: @Model.PageSize,
                 datasource: @Html.RawEntity(Model.Items),
-             
+
                 filterColumns: {
                     name: '',
-                    code: '',
-                    greeCode: '',
+                    manName: '',
                     pageno: 1
                 },
-             
-                filterUsers: [],
-                dialogVisible: false,
-                rec: {}
+
+                isEdit: false,
+                innerVisible: false,
+                rec: null
             };
         },
         methods: {
@@ -169,7 +154,7 @@
             onsearch: function (flag) {
                 if (flag) { this.filterColumns.pageno = 1; }
                 var filter = { ...this.filterColumns }
-             
+
                 this.$http.get("/api/Platform/Supplier", { params: filter}).then((response) => {
                     this.total = response.data.total;
                     this.datasource = response.data.items;
@@ -179,12 +164,23 @@
             onreset: function () {
                 this.filterColumns = { name: '', code: '', state: '', pageno: 1 };
             },
-               onChangePager: function (current) {
+            onChangePager: function (current) {
                 this.pageno = current;
                 this.onsearch(false);
             },
-       
+            openBinding: function (row) {
+                this.rec = row;
+                this.isEdit = true;
+                this.innerVisible = true;
            
+            },
+
+            onNew: function () {
+                this.isEdit = false;
+             
+                this.rec = {id:0};
+                this.innerVisible = true;
+            }
 
         },
         updated: function(){

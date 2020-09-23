@@ -79,7 +79,29 @@ namespace CostControlWebApplication.Application.MappingResolvers
                 destination.ReceivableAmount = string.Empty;
             }
         }
+        public static TargetCostListItmeDto Date(TargetCost source, TargetCostListItmeDto destination)
+        {
 
+            if (source.EstimatedBeginDate.HasValue)
+            {
+                destination.EstimatedBeginDate = string.Format("{0:yyyy-MM-dd}", source.EstimatedBeginDate);
+            }
+            else
+            {
+                destination.EstimatedBeginDate = "暫無";
+            }
+
+
+            if (source.EstimatedEndDate.HasValue)
+            {
+                destination.EstimatedEndDate = string.Format("{0:yyyy-MM-dd}", source.EstimatedEndDate);
+            }
+            else
+            {
+                destination.EstimatedEndDate = "暫無";
+            }
+            return destination;
+        }
         public static void Date(VIProjectInfo source, ProjectInfoListItmeDto destination)
         {
             if (source.BeginDate.HasValue)

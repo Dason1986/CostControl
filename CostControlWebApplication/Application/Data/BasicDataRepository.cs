@@ -18,7 +18,7 @@ namespace CostControlWebApplication.Application.Data
         public IPagingList<BasicData> PageList(Specification<BasicData> specification)
         {
             int total = 0;
-            return dataAccessorBasicData.PageList(specification, ref total).ProjectedAsPagingList<BasicData>(total, specification.PageIndex, specification.PageSize);
+            return dataAccessorBasicData.PageList(specification, ref total).ProjectedAsPagingList(total, specification);
         }
         public bool ExistChildren(long id)
         {

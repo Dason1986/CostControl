@@ -73,6 +73,9 @@
                                 <div class="form-group">
                                     <label>項目經理</label>
                                     <el-select placeholder="項目經理" v-model="project.managerId" filterable>
+                                        <el-option v-for="item in userOptions"
+                                                   :key="item.value" :label="item.label" :value="item.value"  >
+                                        </el-option>
                                     </el-select>
 
                                 </div>
@@ -85,6 +88,9 @@
 
                                 <label>最終責任人</label>
                                 <el-select placeholder="最終責任人" v-model="project.supremeManagerId" filterable>
+                                    <el-option v-for="item in userOptions"
+                                               :key="item.value" :label="item.label" :value="item.value"  >
+                                    </el-option>
                                 </el-select>
                             </div>
 
@@ -153,6 +159,9 @@
                                 <div class="form-group">
                                     <label>項目主體</label>
                                     <el-select placeholder="項目主體" v-model="project.projectMainId">
+                                        <el-option v-for="item in projectMainOptions"
+                                                   :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                                        </el-option>
                                     </el-select>
                                 </div>
 
@@ -164,6 +173,9 @@
 
                                 <label>項目类型</label>
                                 <el-select placeholder="項目类型" v-model="project.projectTypeId" filterable>
+                                    <el-option v-for="item in projectTypeOptions"
+                                               :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                                    </el-option>
                                 </el-select>
 
                             </div>
@@ -174,6 +186,9 @@
 
                                 <label>項目合約</label>
                                 <el-select placeholder="項目合約" v-model="project.contractTypeId" filterable>
+                                    <el-option v-for="item in contractTypeOptions"
+                                               :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                                    </el-option>
                                 </el-select>
 
                             </div>
@@ -184,6 +199,9 @@
 
                                 <label>承接类型</label>
                                 <el-select placeholder="承接类型" v-model="project.undertakingId" filterable>
+                                    <el-option v-for="item in undertakingOptions"
+                                               :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                                    </el-option>
                                 </el-select>
 
                             </div>
@@ -194,6 +212,9 @@
 
                                 <label>合約結算方式</label>
                                 <el-select placeholder="合約結算方式" v-model="project.settlementMethodId" filterable>
+                                    <el-option v-for="item in settlementMethodOptions"
+                                               :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                                    </el-option>
                                 </el-select>
 
                             </div>
@@ -208,6 +229,9 @@
 
                                 <label>定作人</label>
                                 <el-select placeholder="定作人" v-model="project.setterId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                                    </el-option>
                                 </el-select>
                             </div>
 
@@ -217,6 +241,9 @@
 
                                 <label>承建商</label>
                                 <el-select placeholder="承建商" v-model="project.contractorsId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                                    </el-option>
                                 </el-select>
                             </div>
 
@@ -226,6 +253,9 @@
 
                                 <label>第一分判</label>
                                 <el-select placeholder="第一分判" v-model="project.firstId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                                    </el-option>
                                 </el-select>
                             </div>
 
@@ -235,6 +265,9 @@
 
                                 <label>第二分判</label>
                                 <el-select placeholder="第二分判" v-model="project.secondId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                                    </el-option>
                                 </el-select>
                             </div>
 
@@ -319,6 +352,13 @@
                 return {
                     eldialogvisible: this.visible,
                     innerDrawer: false,
+                    userOptions:@Html.GetUserOptions(),
+                    supplierOptions:@Html.GetLastHome(),
+                    projectMainOptions:@Html.GetBasics(BasicsCode.ProjectMain),
+                    settlementMethodOptions:@Html.GetBasics(BasicsCode.SettlementMethod),
+                    contractTypeOptions:@Html.GetBasics(BasicsCode.ContractType),
+                    undertakingOptions:@Html.GetBasics(BasicsCode.Undertaking),
+                    projectTypeOptions:@Html.GetBasics(BasicsCode.ProjectType),
                     project: {}
                 };
             },
@@ -328,7 +368,7 @@
             methods: {
 
 
-             
+
                 onSumbit: async function () {
 
                     await this.$http.post("/api/BatchPackage/CompareResult/Approve/" + compareResult.id);
@@ -346,7 +386,7 @@
             watch: {
                 visible: function (val) {
 
-                 
+
                     this.eldialogvisible = val;
                 },
                 eldialogvisible: function (val) {
@@ -358,7 +398,7 @@
 
             },
             props: {
-            
+
                 projectid: String,
                 visible: Boolean
             }

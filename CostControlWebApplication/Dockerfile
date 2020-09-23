@@ -10,6 +10,7 @@ COPY publish /app
 
 #设置环境变量，修改.netCore 默认的80端口
 ENV ASPNETCORE_URLS http://+:80
+#ENV ConnectionStrings:DefaultConnection Server=localhost;User Id=root;Password=sasa;Database=CostControl
 
 # 设置导出端口
 

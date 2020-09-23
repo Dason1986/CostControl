@@ -17,7 +17,6 @@ namespace CostControlWebApplication.Controllers
             return View(list);
 
         }
-
-
+       
     }
 }

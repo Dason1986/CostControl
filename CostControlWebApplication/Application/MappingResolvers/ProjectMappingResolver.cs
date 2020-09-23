@@ -16,5 +16,23 @@ namespace CostControlWebApplication.Application.MappingResolvers
         }
 
 
-    }    
+    }
+    public class TargetCostMappingResolver : IMappingResolver<TargetCost, TargetCostDto>
+    {
+        public void Map(IMappingExpression<TargetCost, TargetCostDto> mapping)
+        {
+            mapping.ForMember(n => n.State, opt => opt.MapFrom(ProjectResolver.Date));
+        }
+
+
+    }
+    public class TargetCostListItmeMappingResolver : IMappingResolver<TargetCost, TargetCostListItmeDto>
+    {
+        public void Map(IMappingExpression<TargetCost, TargetCostListItmeDto> mapping)
+        {
+            mapping.ForMember(n => n.State, opt => opt.MapFrom(ProjectResolver.Date));
+        }
+
+
+    }
 }

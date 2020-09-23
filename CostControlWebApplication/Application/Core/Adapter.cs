@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BingoX.ComponentModel.Data;
+using BingoX.DataAccessor;
 using CostControlWebApplication.Application.Services.Dtos;
+using CostControlWebApplication.Services;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +16,18 @@ namespace CostControlWebApplication
         {
             var totalPages = (int)System.Math.Ceiling((double)total / pageSize);
             return new QueryPagerResponse<TDes>(ProjectedAsCollection<TDes>(pagingList), pageIndex, 10, total) { TotalPages = totalPages };//(ProjectedAsCollection<TDes>(pagingList), total);
+
+        }
+        public static IPagingList<TDes> ProjectedAsPagingList<TDes>(this IEnumerable pagingList, int total, QueryRequest queryRequest)
+        {
+
+            return ProjectedAsPagingList<TDes>(pagingList, total, queryRequest.PageIndex, queryRequest.PageSize);
+
+        }
+        public static IPagingList<TDes> ProjectedAsPagingList<TDes>(this IEnumerable<TDes> pagingList, int total, ISpecification<TDes> specification)
+        {
+            var totalPages = (int)System.Math.Ceiling((double)total / specification.PageSize);
+            return new QueryPagerResponse<TDes>(new List<TDes>(pagingList), total, specification.PageIndex, specification.PageSize) { TotalPages = totalPages };
 
         }
         public static IPagingList<TDes> ProjectedAsPagingList<TDes>(this IPagingList pagingList )

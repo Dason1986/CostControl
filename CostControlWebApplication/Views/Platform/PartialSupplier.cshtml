@@ -1,0 +1,121 @@
+﻿
+<script type="text/x-template" id="supplierdetail">
+
+    <el-dialog title="供應商資料"
+               :visible.sync="eldialogvisible"
+               append-to-body>
+        <div class="box-body">
+            <el-form ref="form" :model="elsupplier" label-width="140px">
+                <el-form-item label="供應商名稱">
+                    <el-input v-model="elsupplier.name" :disabled="isEdit"></el-input>
+                </el-form-item>
+                <el-form-item label="地址">
+                    <el-input v-model="elsupplier.address"></el-input>
+                </el-form-item>
+                <el-form-item label="公司電話">
+                    <el-input v-model="elsupplier.officeTel"></el-input>
+                </el-form-item>
+
+
+
+                <el-form-item label="傳真">
+                    <el-input v-model="elsupplier.fax"></el-input>
+                </el-form-item>
+                <el-form-item label="聯繫人">
+                    <el-input v-model="elsupplier.manName"></el-input>
+                </el-form-item>
+                <el-form-item label="聯繫人電話">
+                    <el-input v-model="elsupplier.manTel"></el-input>
+                </el-form-item>
+          
+                <el-form-item label="狀態">
+                    <el-select v-model="elsupplier.state" type="textarea">
+                        <el-option value="1" label="啟用" key="1"></el-option>
+                        <el-option value="0" label="未啟用" key="0"></el-option>
+                    </el-select>
+                </el-form-item>
+
+            </el-form>
+        </div>
+
+
+        <span slot="footer" class="dialog-footer">
+
+            <el-button type="primary" @@click="onSave()">确 定</el-button>
+        </span>
+    </el-dialog>
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('el-supplier-detail',
+        {
+
+            template: '#supplierdetail',
+            data: function () {
+                return {
+                    eldialogvisible: this.visible,
+                    elsupplier: {},
+                
+            
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+                onSave: function () {
+                    var supplier = { ...this.elsupplier };
+                 
+                   
+                    if (this.isEdit) {
+                        this.$http.put("/api/Platform/Supplier/" + supplier.id, supplier).then((response) => {
+
+                            this.eldialogvisible = false;
+                        });
+
+                    } else {
+                        this.$http.post("/api/Platform/Supplier", supplier).then((response) => {
+                            this.eldialogvisible = false;
+
+                        });
+                    }
+                }
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+                visible: function (val) {
+
+                    this.eldialogvisible = val;
+                },
+                supplier: function (val) {
+                   
+                    if (val ) {
+                        this.elsupplier = {...val};
+                      
+                    } else {
+                        this.elsupplier = {};
+                    }
+
+                },
+                eldialogvisible: function (val) {
+
+                    this.$emit('update:visible', val)
+                }
+
+            },
+            props: {
+                supplier: Object,
+                visible: Boolean,
+                isEdit: Boolean
+            }
+        });
+
+
+</script>

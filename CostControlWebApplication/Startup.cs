@@ -23,7 +23,7 @@ namespace CostControlWebApplication
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
+     
             var assembly = this.GetType().Assembly; ;
 
             services.AddStandard(assembly)
@@ -39,6 +39,7 @@ namespace CostControlWebApplication
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            System.Console.WriteLine("version:{0}", Configuration.GetValue<string>("ConnectionStrings:DefaultConnection"));
             //if (env.IsDevelopment())
             //{
             //    app.UseDeveloperExceptionPage();

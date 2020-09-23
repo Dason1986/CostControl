@@ -1,12 +1,12 @@
-﻿using BingoX.Domain;
-using System;
+﻿using System;
 
-namespace CostControlWebApplication.Domain
+namespace CostControlWebApplication.Application.Services.Dtos
 {
-    public class TargetCost : Entity, ISnowflakeEntity<TargetCost>
+    public class TargetCostListItmeDto : IDto
     {
+        public long ID { get; set; }
         public string Code { get; set; }
-
+        public string State { get; set; }
         public string Name { get; set; }
         /// <summary>
         /// 地址 
@@ -16,6 +16,10 @@ namespace CostControlWebApplication.Domain
         /// 项目类型
         /// </summary>
         public long ProjectTypeId { get; set; }
+        /// <summary>
+        /// 项目类型
+        /// </summary>
+        public string ProjectType { get; set; }
 
         /// <summary>
         /// 審批文件
@@ -26,14 +30,18 @@ namespace CostControlWebApplication.Domain
         /// </summary>
         public long LastHomeId { get; set; }
         /// <summary>
-        /// 估算的開工時間
+        /// 上家
         /// </summary>
-        public DateTime? EstimatedBeginDate { get; set; }
-      
+        public string LastHome { get; set; }
         /// <summary>
         /// 估算的開工時間
         /// </summary>
-        public DateTime? EstimatedEndDate { get; set; }
+        public string EstimatedBeginDate { get; set; }
+
+        /// <summary>
+        /// 估算的開工時間
+        /// </summary>
+        public string EstimatedEndDate { get; set; }
         /// <summary>
         /// 建築總面積
         /// </summary>
@@ -54,5 +62,9 @@ namespace CostControlWebApplication.Domain
         /// 合約外後加減金額
         /// </summary>
         public decimal ContractOutAmount { get; set; }
+    }
+    public class TargetCostDto : TargetCostListItmeDto
+    {
+         
     }
 }

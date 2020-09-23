@@ -11,16 +11,19 @@ namespace CostControlWebApplication.Controllers
     {
 
 
-        public IActionResult Index([FromServices] ProjectService service, [FromQuery] ProjectQueryRequest queryRequest)
+        public IActionResult Index([FromServices] TargetCostService service, [FromQuery] ProjectQueryRequest queryRequest)
         {
-            IPagingList list = service.GetProjects(queryRequest).ProjectedAsPagingList<ProjectInfoListItmeDto>();
+            IPagingList list = service.GetProjects(queryRequest).ProjectedAsPagingList<TargetCostListItmeDto>();
             return View(list);
 
         }
 
+     
         [HttpPost("~/api/TargetCost")]
-        public void Add([FromServices] TargetCostService service)
+        public void AddTargetCost([FromServices] TargetCostService service, [FromBody] TargetCostDto dto)
         {
+            service.Add(dto) ;
+
 
         }
     }

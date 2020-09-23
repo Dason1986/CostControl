@@ -1,27 +1,27 @@
 ﻿
 <script type="text/x-template" id="employeedetail">
 
-    <el-dialog title="员工资料"
+    <el-dialog title="員工資料"
                :visible.sync="eldialogvisible"
                append-to-body>
         <div class="box-body">
             <el-form ref="form" :model="elemployee" label-width="80px">
-                <el-form-item label="用户帐号">
+                <el-form-item label="用戶帳號">
                     <el-input v-model="elemployee.account" :disabled="isEdit"></el-input>
                 </el-form-item>
-                <el-form-item label="用户名称">
-                    <el-input v-model="elemployee.name" :disabled="isEdit"></el-input>
+                <el-form-item label="用戶名稱">
+                    <el-input v-model="elemployee.name"  ></el-input>
                 </el-form-item>
-                <el-form-item label="电子邮箱">
-                    <el-input v-model="elemployee.email" :disabled="isEdit"></el-input>
+                <el-form-item label="電子郵箱">
+                    <el-input v-model="elemployee.email"  ></el-input>
                 </el-form-item>
 
 
 
-                <el-form-item label="密码" v-if="!isEdit">
+                <el-form-item label="密碼" v-if="!isEdit">
                     <el-input v-model="elemployee.passWord" type="password"></el-input>
                 </el-form-item>
-                <el-form-item label="确认密码" v-if="!isEdit">
+                <el-form-item label="確認密碼" v-if="!isEdit">
                     <el-input v-model="elemployee.comfirmPassword" type="password"></el-input>
                 </el-form-item>
 
@@ -31,7 +31,7 @@
 
         <span slot="footer" class="dialog-footer">
 
-            <el-button type="primary" @@click="onSave()">确 定</el-button>
+            <el-button type="primary" @@click="onSave()">確  定</el-button>
         </span>
     </el-dialog>
 
@@ -62,7 +62,7 @@
                     employee.roleCode= 'Staffer';
                    
                     if (this.isEdit) {
-                        this.$http.put("/api/Platform/Staffer" + employee.id, employee).then((response) => {
+                        this.$http.put("/api/Platform/Staffer/" + employee.id, employee).then((response) => {
 
                             this.eldialogvisible = false;
                         });

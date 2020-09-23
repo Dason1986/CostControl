@@ -48,10 +48,12 @@ namespace CostControlWebApplication
             CreateMap<string, int>().ConvertUsing(s => Convert.ToInt32(s));
             CreateMap<bool, int>().ConvertUsing(s => s ? 1 : 0);
             CreateMap<int, bool>().ConvertUsing(s => s > 0);
-              CreateMap<Enum, string>().ConvertUsing(s => Convert.ToInt32(s).ToString());
-         //   CreateMap<Enum, string>().ConvertUsing(s => s == null ? string.Empty : BingoX.Utility.EnumUtility.GetDescription(s));
-            CreateMap<VIProjectInfo, ProjectInfoDto>();
-          CreateMap<VIProjectInfo, ProjectInfoListItmeDto>();
+            CreateMap<Enum, string>().ConvertUsing(s => Convert.ToInt32(s).ToString());
+            //   CreateMap<Enum, string>().ConvertUsing(s => s == null ? string.Empty : BingoX.Utility.EnumUtility.GetDescription(s));
+            Create<VIProjectInfo, ProjectInfoDto>();
+            Create<VIProjectInfo, ProjectInfoListItmeDto>();
+            Create<TargetCost, TargetCostListItmeDto>();
+            Create<TargetCost, TargetCostDto>();
             InitDto();
 
             //CreateEntityToDto(mappingResolvers, valueModelentities, valueModeldtos);
@@ -60,7 +62,7 @@ namespace CostControlWebApplication
 
         }
 
-    
+
         private void InitDto()
         {
             var mappingResolvers = mapperAssembly.ExportedTypes.OfType<Type>().Where(o => typeof(IMappingResolver).IsAssignableFrom(o) && o.IsClass && !o.IsAbstract).ToArray();
@@ -76,7 +78,12 @@ namespace CostControlWebApplication
 
             CreateEntityToDto(mappingResolvers, entities, dtos);
         }
+        void Create<T1, T2>()
+        {
 
+            Create(typeof(T1), typeof(T2));
+            Create(typeof(T2), typeof(T1));
+        }
         object Create(Type type1, Type type2)
         {
             var key = $"{type1.FullName} => {type2.FullName}";
@@ -108,6 +115,7 @@ namespace CostControlWebApplication
 
 
                 Create(entity, dtoitem);
+                Create( dtoitem, entity);
 
 
             }

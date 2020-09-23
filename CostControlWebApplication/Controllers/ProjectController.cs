@@ -24,7 +24,13 @@ namespace CostControlWebApplication.Controllers
             return View(list);
 
         }
+        [HttpPost("~/api/Project")]
+        public void AddProjecy([FromServices] ProjectService service, [FromBody] ProjectInfoDto dto)
+        {
+            service.Add(dto);
 
+
+        }
 
     }
 }

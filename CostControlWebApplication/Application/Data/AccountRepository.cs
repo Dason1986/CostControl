@@ -23,7 +23,7 @@ namespace CostControlWebApplication.Application.Data
         public IPagingList<AccountUser> GetPagingList(ISpecification<AccountUser> specification)
         {
             int total = 0;
-            return dataAccessorAccountUser.PageList(specification, ref total).ProjectedAsPagingList<AccountUser>(total, specification.PageIndex, specification.PageSize);
+            return dataAccessorAccountUser. PageList(specification, ref total).ProjectedAsPagingList(total, specification);
         }
 
         public void AddUser(AccountUser user)

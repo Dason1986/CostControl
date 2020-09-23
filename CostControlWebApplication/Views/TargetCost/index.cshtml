@@ -120,8 +120,8 @@
                                 <template slot-scope="scope">
                                     <div class="row">編號:<div class="cell-value"><el-button type="text" style="padding: 0px;" @@click="onOpenProject(scope.row)"> {{scope.row.code}} </el-button></div></div>
                                     <div class="row">名稱:<div class="cell-value">{{scope.row.name}} </div></div>
-                                    <div class="row">預計開始時間: <div class="cell-value">{{scope.row.beginDate}} </div></div>
-                                    <div class="row">預計完工時間: <div class="cell-value">{{scope.row.endDate}} </div></div>
+                                    <div class="row">預計開始時間: <div class="cell-value">{{scope.row.estimatedBeginDate}} </div></div>
+                                    <div class="row">預計完工時間: <div class="cell-value">{{scope.row.estimatedEndDate}} </div></div>
                                 </template>
                             </el-table-column>
                             <el-table-column label="金額" width="220">
