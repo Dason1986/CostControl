@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace CostControlWebApplication.Application.Data
 {
-    public class SupplierRepository : Repository<Supplier>
+    public class SupplierRepository : Repository 
     {
         public SupplierRepository(RepositoryContextOptions options) : base(options)
         {

@@ -143,15 +143,8 @@
                                     <div class="row">
                                         <div class="cell-lable">主體: </div>
                                         <div class="cell-value">
-                                            <span v-if="scope.row.projectMain.length < 8">
-                                                {{scope.row.projectMain}}
-                                            </span>
-                                            <el-popover placement="top-start"
-                                                        v-if="scope.row.projectMain.length >= 8"
-                                                        :content="scope.row.projectMain"
-                                                        trigger="hover">
-                                                <span slot="reference">   {{scope.row.projectMain.substring(0,6)}}.....</span>
-                                            </el-popover>
+                                            <bg-omit :value="scope.row.projectMain"></bg-omit>
+
                                         </div>
                                     </div>
                                     <div class="row"><div class="cell-lable">承接: </div><div class="cell-value">{{scope.row.undertaking}} </div></div>
@@ -196,8 +189,8 @@
                             <el-table-column label="完工百分比" prop="stateDisplay"></el-table-column>
 
                         </el-table>
-                        <el-add-project :visible.sync="innerVisibleAddProject" v-on:closed="onSearchBatch"></el-add-project>
-                        <el-edit-project :visible.sync="innerVisibleEditProject" v-on:closed="onSearchBatch"></el-edit-project>
+                        <bg-add-project :visible.sync="innerVisibleAddProject" v-on:closed="onSearchBatch"></bg-add-project>
+                        <bg-edit-project :visible.sync="innerVisibleEditProject" v-on:closed="onSearchBatch" :projectid="rec.id"></bg-edit-project>
                     </div>
                 </div>
             </div>
@@ -210,6 +203,7 @@
 
     Vue.use(DYVue);
 </script>
+<partial name="~/Views/Shared/bg/PartialOmit.cshtml" />
 <partial name="~/Views/Project/PartialAddProject.cshtml" />
 <partial name="~/Views/Project/PartialEditProject.cshtml" />
 <partial name="~/Views/Project/PartialCostIn.cshtml" />
@@ -233,7 +227,7 @@
                     pagesize: @Model.PageSize,
 
                     datasource: @Html.RawEntity(Model.Items),
-
+                    rec: {id:''},
                     innerVisibleAddProject: false,
                     innerVisibleEditProject:false,
                     filterColumns: this.onreset()
@@ -247,7 +241,7 @@
                     if (flag) { this.filterColumns.pageno = 1; }
                     var filter =  { ...this.filterColumns }
 
-                    var response = await this.$http.get("/api/BatchPackage/Batchs", { params: filter });
+                    var response = await this.$http.get("/api/Project", { params: filter });
                     this.total = response.data.total;
                     this.datasource = response.data.items;
 
@@ -272,7 +266,8 @@
                 onAddProject: function (){
                     this.innerVisibleAddProject = true;
                 },
-                onOpenProject: function () {
+                onOpenProject: function (entity) {
+                    this.rec = entity;
                     this.innerVisibleEditProject = true;
                 }
 

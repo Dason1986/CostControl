@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using CostControlWebApplication.Domain;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace CostControlWebApplication.Application.Services.Dtos
@@ -6,7 +7,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
     public class AccountUserDto : Dto
     {
        
-        public int State { get; set; }
+        public CommonState State { get; set; }
         public string Account { get; set; }
         public string Name { get; set; }
         public string RoleType { get; set; }

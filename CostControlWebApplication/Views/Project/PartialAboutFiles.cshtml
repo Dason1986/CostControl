@@ -25,7 +25,9 @@
                         <div class="form-group">
                             <label>文件類型</label>
                             <el-select v-model="fileData.fileType" placeholder="文件類型">
-                                <el-option  label="item.label" value="item.value"> </el-option>
+                                <el-option v-for="item in fileTypeOptions"
+                                           :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                </el-option>
                             </el-select>
                         </div>
 
@@ -34,7 +36,7 @@
                 </div>
                 <div class="row">
                     <el-upload class="upload-demo"
-                               ref="upload" action="/api/file/posts" :data="fileData"  
+                               ref="upload" action="/api/project/file" :data="fileData"  
                                :multiple="false" :show-file-list="false"
                                :on-success="handleUploadExceed"  :before-upload="checkupload"  
                                :auto-upload="false">
@@ -54,17 +56,17 @@
             <el-button size="small" icon="el-icon-upload" @@click="innerVisiblecostout=true">点击上传</el-button>
 
         </el-row>
-        <el-table style="width: 100%">
-            <el-table-column prop="date" label="上傳日期">
+        <el-table style="width: 100%" :data="datasource">
+            <el-table-column prop="createdDate" label="上傳日期">
             </el-table-column>
-            <el-table-column prop="name" label="文件名稱">
+            <el-table-column prop="fileName" label="文件名稱">
             </el-table-column>
-            <el-table-column prop="name" label="上傳人員">
+            <el-table-column prop="created" label="上傳人員">
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
                     <button> 下載</button>
-                    <button> 刪除</button>
+                 
                 </template>
             </el-table-column>
         </el-table>
@@ -76,16 +78,17 @@
 <script type="text/javascript">
 
 
-    Vue.component('el-aboutfiles',
+    Vue.component('bg-aboutfiles',
         {
 
             template: '#aboutfiles',
             data: function () {
                 return {
                     eldialogvisible: this.visible,
+                    fileTypeOptions:@Html.GetBasics(BasicsCode.FileType),
                     fileData: { fileType: '', projectid: this.projectid },
                     innerVisiblecostout: false,
-                    
+
                     rec: {}
                 };
             },
@@ -104,27 +107,31 @@
                     }
 
                     return true;
-                }, 
+                },
                 submitUpload: function () {
-                   
-                   
+
+
 
                     this.$refs.upload.submit();
                 },
                 handleUploadExceed: function (response, file, fileList) {
                     this.innerVisiblecostout = false;
                     this.onSearchCost();
-                } 
+                }
             },
             updated: function () {
 
             },
             watch: {
 
+                projectid: function (val) {
 
+                    this.fileData.projectid = val;
+                    
+                },
             },
             props: {
-
+                datasource: Array,
                 projectid: String,
 
             }

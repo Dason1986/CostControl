@@ -12,20 +12,23 @@ namespace CostControlWebApplication.Services
 {
     public class AccountService : IService
     {
-        public AccountService(AccountRepository repository, IBoundedContext bounded)
+        public AccountService(AccountRepository repository,ResourceService resourceService, IBoundedContext bounded)
         {
             this.repository = repository;
+            this.resourceService = resourceService;
             Bounded = bounded;
         }
         private readonly AccountRepository repository;
+        private readonly ResourceService resourceService;
+
         public IBoundedContext Bounded { get; private set; }
 
 
-        public IPagingList<AccountUserDto> GetPagingList(AccounQueryRequest filterRequest)
+        public IPagingList<AccountUser> GetPagingList(AccounQueryRequest filterRequest)
         {
             Specification<AccountUser> specification = new Specification<AccountUser>();
             specification.SetPage(filterRequest);
-            return repository.GetPagingList(specification).ProjectedAsPagingList<AccountUserDto>();
+            return repository.GetPagingList(specification);
         }
         public void DeleteUser(long userid)
         {
@@ -37,14 +40,11 @@ namespace CostControlWebApplication.Services
 
             repository.DeleteUser(user);
             repository.UnitOfWork.Commit();
+            resourceService.ChangedUser();
         }
-        public void AddUser(AccountUserDto dto)
+        public void AddUser(AccountUser  dto)
         {
-            if (string.IsNullOrWhiteSpace(dto.Account)) throw new LogicException("帐号为空");
-            if (string.IsNullOrWhiteSpace(dto.Name)) throw new LogicException("名称为空");
-            if (string.IsNullOrWhiteSpace(dto.PassWord)) throw new LogicException("密码为空");
-            if (string.IsNullOrWhiteSpace(dto.ComfirmPassword)) throw new LogicException("确认密码为空");
-            if (dto.PassWord != dto.ComfirmPassword) throw new LogicException("两次密码不一致");
+          
             AccountUser user = repository.GetUser(dto.Account);
             if (user != null) throw new LogicException("帐号已经存在，不能添加");
             user = new AccountUser()
@@ -53,13 +53,14 @@ namespace CostControlWebApplication.Services
                 Account = dto.Account,
                 Name = dto.Name,
 
-                Pwd = BingoX.Security.SecurityExtension.MD5.Encrypt(dto.PassWord),
+                Pwd = BingoX.Security.SecurityExtension.MD5.Encrypt(dto.Pwd),
 
                 State = CommonState.Enabled,
                 CreateDate = Bounded.DateTimeService.GetNow(),
             };
             repository.AddUser(user);
             repository.Commit();
+            resourceService.ChangedUser();
         }
         public void UpdatePassWord(UpdatePasswordRequest updatePasswordRequest)
         {
@@ -73,7 +74,7 @@ namespace CostControlWebApplication.Services
             repository.UpdateUser(user);
             repository.UnitOfWork.Commit();
         }
-        public void EditUser(AccountUserDto dto)
+        public void EditUser(AccountUser dto)
         {
             AccountUser user = repository.GetUserById(dto.ID);
             user.Name = dto.Name;
@@ -81,6 +82,7 @@ namespace CostControlWebApplication.Services
 
             repository.UpdateUser(user);
             repository.UnitOfWork.Commit();
+            resourceService.ChangedUser();
         }
 
         public AccountUser Login(string account, string password)

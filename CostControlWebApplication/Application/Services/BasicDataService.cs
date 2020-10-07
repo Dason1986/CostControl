@@ -13,14 +13,14 @@ namespace CostControlWebApplication.Services
 {
     public class BasicDataService : BaseService
     {
-        private readonly IRepository<BasicData> repository;
-      
 
-        public BasicDataService(IRepository<BasicData> repository, IBoundedContext bounded, ICurrentUser user): base(bounded, user)
+        public BasicDataService(IRepository<BasicData> repository, ResourceService resourceService, IBoundedContext bounded, ICurrentUser user): base(bounded, user)
         {
             this.repository = repository;
-          
+            this.resourceService = resourceService;
         }
+        private readonly IRepository<BasicData> repository;
+        private readonly ResourceService resourceService;
         public IList<BasicDataDto> Query(long parentId)
         {
 
@@ -77,6 +77,7 @@ namespace CostControlWebApplication.Services
             entity.Created(this);
             repository.Add(entity);
             repository.UnitOfWork.Commit();
+            resourceService.ChangedBasics();
         }
 
         public void UpdateBasicData(BasicDataDto dto)
@@ -91,10 +92,11 @@ namespace CostControlWebApplication.Services
             entity.IndexNo = dto.IndexNo;
             entity.Name = dto.Name;
             entity.Remark = dto.Remark;
-            entity.State = dto.State == "1" ? CommonState.Enabled : CommonState.Disabled;
+            entity.State = dto.State ;
             entity.Modified(this);
             repository.Update(entity);
             repository.UnitOfWork.Commit();
+            resourceService.ChangedBasics();
         }
     }
 }

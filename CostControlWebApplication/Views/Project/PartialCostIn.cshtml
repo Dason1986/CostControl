@@ -10,61 +10,62 @@
 </style>
 <script type="text/x-template" id="costin">
 
- 
-      
-        <div>
-            <el-add-costin :visible.sync="innerVisiblecostin" v-on:closed="onSearchCost"></el-add-costin>
-            <el-row>
-                <el-button icon="el-icon-search" circle></el-button>
-                <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostin=true"></el-button>
 
-            </el-row>
-            <el-table style="width: 100%">
-                <el-table-column prop="date" label="日期">
-                </el-table-column>
-                <el-table-column prop="name" label="單號">
-                </el-table-column>
-                <el-table-column prop="address" label="類別">
-                </el-table-column>
-                <el-table-column prop="address" label="承擔部門">
-                </el-table-column>
-                <el-table-column prop="address" label="收入支出單位">
-                </el-table-column>
-                <el-table-column prop="address" label="摘要">
-                </el-table-column>
-                <el-table-column prop="address" label="幣種">
-                </el-table-column>
-                <el-table-column prop="address" label="借方金額（收）">
-                </el-table-column>
-                <el-table-column prop="address" label="貸方金額（支）">
-                </el-table-column>
-                <el-table-column prop="address" label="發票號">
-                </el-table-column>
-                <el-table-column prop="address" label="結算方式">
-                </el-table-column>
-                <el-table-column prop="address" label="支票號">
-                </el-table-column>
-                <el-table-column prop="address" label="開票日期">
-                </el-table-column>
-                <el-table-column prop="address" label="轉數/入數日期">
-                </el-table-column>
-                <el-table-column prop="address" label="預計付款日期">
-                </el-table-column>
-                <el-table-column prop="address" label="收/付款跟進人">
-                </el-table-column>
-                <el-table-column prop="address" label="調撥單號">
-                </el-table-column>
-                <el-table-column prop="address" label="兌票日期">
-                </el-table-column>
-                <el-table-column prop="address" label="會計確認">
-                </el-table-column>
-                <el-table-column prop="address" label="單據是否交接">
-                </el-table-column>
-                <el-table-column prop="address" label="備註">
-                </el-table-column>
-            </el-table>
-        </div>
- 
+
+    <div>
+        <bg-add-costin :visible.sync="innerVisiblecostin" v-on:closed="onSearchCost" :projectid="projectid"></bg-add-costin>
+        <el-row>
+            <el-button icon="el-icon-search" circle></el-button>
+            <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostin=true" ></el-button>
+
+        </el-row>
+        <el-table style="width: 100%" :data="datasource">
+            <el-table-column prop="invoiceDate" label="開票日期">
+            </el-table-column>
+            <el-table-column prop="lastHomeId" label="上家" :formatter="formatterLastHome">
+            </el-table-column>
+            <el-table-column prop="title" label="摘要">
+            </el-table-column>
+            <el-table-column prop="invoiceNo" label="發票編號">
+            </el-table-column>
+            <el-table-column prop="contractAmount" label="合約金額">
+            </el-table-column>
+            <el-table-column prop="settlementAmount" label="結算金額">
+            </el-table-column>
+            <el-table-column prop="originalContractAmount" label="原合約申請金額">
+            </el-table-column>
+            <el-table-column prop="additionalAmount" label="後加申請金額">
+            </el-table-column>
+            <el-table-column prop="invoiceAmount" label="發票申請金額">
+            </el-table-column>
+            <el-table-column prop="securingAmountRate" label="保固金比例">
+            </el-table-column>
+            <el-table-column prop="subtractSecuringAmount" label="扣減保固金">
+            </el-table-column>
+            <el-table-column prop="subtractPrepaidAmount" label="扣減預付款">
+            </el-table-column>
+            <el-table-column prop="subtractOtherAmount" label="扣除其他款項">
+            </el-table-column>
+            <el-table-column prop="receivableInvoiceAmount" label="應收發票金額">
+            </el-table-column>
+            <el-table-column prop="receivedProjectAmount" label="已收工程款金額">
+            </el-table-column>
+            <el-table-column prop="receivedProjectDate" label="收款日期（工程款）">
+            </el-table-column>
+            <el-table-column prop="receivedSecuringAmount" label="已收保固金金額">
+            </el-table-column>
+            <el-table-column prop="receivedSecuringAmountDate" label="收款日期（保固金）">
+            </el-table-column>
+            <el-table-column prop="surplusProjectAmount" label="餘額（工程款）">
+            </el-table-column>
+            <el-table-column prop="surplusSecuringAmount" label="餘額（保固金）">
+            </el-table-column>
+            <el-table-column prop="remark" label="備註">
+            </el-table-column>
+        </el-table>
+
+    </div>
+
 
 
 </script>
@@ -72,7 +73,7 @@
 <script type="text/javascript">
 
 
-    Vue.component('el-costin',
+    Vue.component('bg-costin',
         {
 
             template: '#costin',
@@ -89,11 +90,20 @@
             methods: {
 
 
+                formatterLastHome: function (row, column, cellValue, index) {
+
+                    var projectTypes =@Html.GetLastHome( );
+                    var itemfilter = projectTypes.filter(x => x.id == cellValue);
+
+                    if (itemfilter && itemfilter.length>0) return itemfilter[0].label;
+                    return cellValue;
+
+                },
                 onSearchCost: function () {
 
                 }
-             
-               
+
+
 
 
             },
@@ -101,13 +111,13 @@
 
             },
             watch: {
-              
+
 
             },
             props: {
-
+                datasource: Array,
                 projectid: String,
-              
+
             }
         });
 

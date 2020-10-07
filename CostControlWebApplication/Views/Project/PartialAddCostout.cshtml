@@ -43,7 +43,10 @@
                             
                                 <div class="form-group">
                                     <label>類別</label>
-                                    <el-select placeholder="類別" v-model="rec.type" filterable>
+                                    <el-select placeholder="類別" v-model="rec.costTypeId" filterable>
+                                        <el-option v-for="item in costTypeOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
                                     </el-select>
                                 </div>
 
@@ -54,7 +57,7 @@
                           
                                 <div class="form-group">
                                     <label>日期</label>
-                                    <el-date-picker type="date" v-model="rec.createDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="日期">
+                                    <el-date-picker type="date" v-model="rec.costoutDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="日期">
                                     </el-date-picker>
                                 </div>
 
@@ -65,23 +68,43 @@
                     <div class="row">
 
                         <div class="col-md-3 form-inline">
-                          
-                                <div class="form-group">
-                                    <label>收入支出單位</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="收入支出單位"></el-input>
-                                </div>
 
-                         
+                            <div class="form-group">
+                                <label>承擔部門</label>
+                                <el-select placeholder="承擔部門" v-model="rec.departmentId" filterable>
+                                    <el-option v-for="item in departmentOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+
+                            </div>
+
+
+
+                        </div>     
+                        <div class="col-md-3 form-inline">
+
+                            <div class="form-group">
+                                <label>收入支出單位</label>
+                                <el-select placeholder="收入支出單位" v-model="rec.partyId" filterable>
+                                    <el-option v-for="item in partyOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+
+                            </div>
+
+
 
                         </div>
                         <div class="col-md-3 form-inline">
-                          
-                                <div class="form-group">
-                                    <label>摘要</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="摘要"></el-input>
-                                </div>
 
-                          
+                            <div class="form-group">
+                                <label>摘要</label>
+                                <el-input type="text" v-model="rec.title" placeholder="摘要"></el-input>
+                            </div>
+
+
 
                         </div>
                     </div>
@@ -89,10 +112,15 @@
 
                         <div class="col-md-3 form-inline">
                           
-                                <div class="form-group">
-                                    <label>幣種</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="幣種"></el-input>
-                                </div>
+                            <div class="form-group">
+                                <label>幣種</label>
+                                <el-select placeholder="幣種" v-model="rec.currencyId" filterable>
+                                    <el-option v-for="item in currencyOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+                               
+                            </div>
  
 
                         </div>
@@ -100,7 +128,7 @@
                         
                                 <div class="form-group">
                                     <label>借方金額（收）</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="借方金額（收）"></el-input>
+                                    <el-input type="text"v-model="rec.receiveAmount" placeholder="借方金額（收）"></el-input>
                                 </div>
                              
 
@@ -109,7 +137,7 @@
                           
                                 <div class="form-group">
                                     <label>貸方金額（支）</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="貸方金額（支）"></el-input>
+                                    <el-input type="text"v-model="rec.expendAmount" placeholder="貸方金額（支）"></el-input>
                                 </div>
                              
 
@@ -121,17 +149,22 @@
                            
                                 <div class="form-group">
                                     <label>發票號</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="發票號"></el-input>
+                                    <el-input type="text"v-model="rec.invoiceNo" placeholder="發票號"></el-input>
                                 </div>
                              
 
                         </div>
                         <div class="col-md-3 form-inline">
                            
-                                <div class="form-group">
-                                    <label>結算方式</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="結算方式"></el-input>
-                                </div>
+                            <div class="form-group">
+                                <label>結算方式</label> 
+                                <el-select placeholder="結算方式" v-model="rec.settlementMethodId" filterable>
+                                    <el-option v-for="item in settlementMethodOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+                              
+                            </div>
                              
 
                         </div>
@@ -139,7 +172,7 @@
                            
                                 <div class="form-group">
                                     <label>支票號</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="支票號"></el-input>
+                                    <el-input type="text"v-model="rec.checkNumber" placeholder="支票號"></el-input>
                                 </div>
                              
 
@@ -149,28 +182,35 @@
 
                         <div class="col-md-3 form-inline">
                            
-                                <div class="form-group">
-                                    <label>開票日期</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="開票日期"></el-input>
-                                </div>
+                            <div class="form-group">
+                                <label>開票日期</label>
+                            
+                                <el-date-picker type="date" v-model="rec.invoiceDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="開票日期">
+                                </el-date-picker>
+                            </div>
                              
 
                         </div>
                         <div class="col-md-3 form-inline">
                            
-                                <div class="form-group">
-                                    <label>轉數/入數</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="轉數/入數"></el-input>
-                                </div>
+                            <div class="form-group">
+                                <label>轉數/入數日期</label>
+                                <el-date-picker type="date" v-model="rec.transferDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="轉數/入數日期">
+                                </el-date-picker>
+                              
+                            </div>
                              
 
                         </div>
                         <div class="col-md-3 form-inline">
                            
-                                <div class="form-group">
-                                    <label>預計付款日期</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="預計付款日期"></el-input>
-                                </div>
+                            <div class="form-group">
+                                <label>預計付款日期</label>
+
+                                <el-date-picker type="date" v-model="rec.expectedPaymentDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="預計付款日期">
+                                </el-date-picker>
+                               
+                            </div>
                              
 
                         </div>
@@ -178,7 +218,7 @@
                            
                                 <div class="form-group">
                                     <label>收/付款跟進人</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="收/付款跟進人"></el-input>
+                                    <el-input type="text"v-model="rec.followUser" placeholder="收/付款跟進人"></el-input>
                                 </div>
                              
 
@@ -190,17 +230,19 @@
                         
                                 <div class="form-group">
                                     <label>調撥單號</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="調撥單號"></el-input>
+                                    <el-input type="text"v-model="rec.dispatcher" placeholder="調撥單號"></el-input>
                                 </div>
                              
 
                         </div>
                         <div class="col-md-3 form-inline">
                            
-                                <div class="form-group">
-                                    <label>兌票日期</label>
-                                    <el-input type="text"v-model="rec.orderNo" placeholder="兌票日期"></el-input>
-                                </div>
+                            <div class="form-group">
+                                <label>兌票日期</label>
+                                <el-date-picker type="date" v-model="rec.exchangeDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="兌票日期">
+                                </el-date-picker>
+                              
+                            </div>
  
 
                         </div>
@@ -208,7 +250,7 @@
                           
                                 <div class="form-group">
                                     <label>會計確認</label>
-                                    <el-switch type="text"v-model="rec.orderNo" placeholder="會計確認"></el-switch>
+                                    <el-switch type="text"v-model="rec.confirmation" placeholder="會計確認"></el-switch>
                                 </div>
                              
 
@@ -217,7 +259,7 @@
                            
                                 <div class="form-group">
                                     <label>單據是否交接</label>
-                                    <el-switch type="text"v-model="rec.orderNo" placeholder="單據是否交接"></el-switch>
+                                    <el-switch type="text"v-model="rec.handover" placeholder="單據是否交接"></el-switch>
                                 </div>
                              
 
@@ -253,14 +295,18 @@
 <script type="text/javascript">
 
 
-    Vue.component('el-add-costout',
+    Vue.component('bg-add-costout',
         {
 
             template: '#addcostout',
             data: function () {
                 return {
                     eldialogvisible: this.visible,
-
+                    costTypeOptions:@Html.GetBasics(BasicsCode.ContractType),
+                    departmentOptions:@Html.GetBasics(BasicsCode.Department),
+                    currencyOptions:@Html.GetBasics(BasicsCode.Currency),
+                    settlementMethodOptions:@Html.GetBasics(BasicsCode.SettlementMethod),
+                    partyOptions:@Html.GetLastHome(),
                     rec: {}
                 };
             },
@@ -272,8 +318,8 @@
 
 
                 onSumbit: async function () {
-
-                    await this.$http.post("/api/BatchPackage/CompareResult/Approve/" + compareResult.id);
+                    console.log('projectid', this.rec.projectid)
+                    await this.$http.post("/api/Project/costout" ,this.rec);
                     this.eldialogvisible = false;
                     this.$emit('closed', true);
 
@@ -288,7 +334,7 @@
             watch: {
                 visible: function (val) {
 
-
+                    if (val) this.rec.projectid = this.projectid;
                     this.eldialogvisible = val;
                 },
                 eldialogvisible: function (val) {
@@ -296,7 +342,12 @@
                     if (val) return;
 
                     this.$emit('update:visible', val)
-                }
+                },
+                projectid: function (val) {
+
+                    this.rec.projectid = val;
+
+                },
 
             },
             props: {

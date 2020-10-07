@@ -22,7 +22,14 @@ namespace CostControlWebApplication.Controllers
         {
             return Redirect("/account/login");
         }
+        public IActionResult Option()
+        {
+            return View();
+        }
+        public void TestOption()
+        {
 
+        }
         public IActionResult Privacy()
         {
             return View();

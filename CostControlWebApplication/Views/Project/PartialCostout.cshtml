@@ -11,55 +11,55 @@
 <script type="text/x-template" id="costout">
 
     <div>
-        <el-add-costout :visible.sync="innerVisiblecostout" v-on:closed="onSearchCost"></el-add-costout>
+        <bg-add-costout :visible.sync="innerVisiblecostout" v-on:closed="onSearchCost"  :projectid="projectid"></bg-add-costout>
         <el-row>
             <el-button icon="el-icon-search" circle></el-button>
             <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostout=true"></el-button>
 
         </el-row>
 
-        <el-table style="width: 100%">
-            <el-table-column prop="date" label="日期">
+        <el-table style="width: 100%" :data="datasource">
+            <el-table-column prop="costoutDate" label="日期">
             </el-table-column>
-            <el-table-column prop="name" label="上家">
+            <el-table-column prop="orderNo" label="單號">
             </el-table-column>
-            <el-table-column prop="address" label="摘要">
+            <el-table-column prop="costTypeId" label="類別" :formatter="formatterContractType">
             </el-table-column>
-            <el-table-column prop="date" label="發票編號">
+            <el-table-column prop="departmentId" label="承擔部門" :formatter="formatterDepartment">
             </el-table-column>
-            <el-table-column prop="name" label="合約金額">
+            <el-table-column prop="partyId" label="收入支出單位" :formatter="formatterparty">
             </el-table-column>
-            <el-table-column prop="address" label="結算金額">
+            <el-table-column prop="title" label="摘要">
             </el-table-column>
-            <el-table-column prop="date" label="原合約申請金額">
+            <el-table-column prop="currencyId" label="幣種" :formatter="formatterCurrency">
             </el-table-column>
-            <el-table-column prop="name" label="後加申請金額">
+            <el-table-column prop="receiveAmount" label="借方金額（收）">
             </el-table-column>
-            <el-table-column prop="address" label="發票申請金額">
+            <el-table-column prop="expendAmount" label="貸方金額（支）">
             </el-table-column>
-            <el-table-column prop="date" label="保固金比例">
+            <el-table-column prop="invoiceNo" label="發票號">
             </el-table-column>
-            <el-table-column prop="date" label="扣減保固金">
+            <el-table-column prop="settlementMethodId" label="結算方式" :formatter="formatterSettlementMethod">
             </el-table-column>
-            <el-table-column prop="name" label="扣減預付款">
+            <el-table-column prop="checkNumber" label="支票號">
             </el-table-column>
-            <el-table-column prop="address" label="扣除其他款項">
+            <el-table-column prop="invoiceDate" label="開票日期">
             </el-table-column>
-            <el-table-column prop="date" label="應收發票金額">
+            <el-table-column prop="transferDate" label="轉數/入數日期">
             </el-table-column>
-            <el-table-column prop="date" label="已收工程款金額">
+            <el-table-column prop="expectedPaymentDate" label="預計付款日期">
             </el-table-column>
-            <el-table-column prop="name" label="收款日期（工程款）">
+            <el-table-column prop="followUser" label="收/付款跟進人">
             </el-table-column>
-            <el-table-column prop="address" label="已收保固金金額">
+            <el-table-column prop="dispatcher" label="調撥單號">
             </el-table-column>
-            <el-table-column prop="date" label="收款日期（保固金）">
+            <el-table-column prop="exchangeDate" label="兌票日期">
             </el-table-column>
-            <el-table-column prop="date" label="餘額（工程款）">
+            <el-table-column prop="confirmation" label="會計確認" >
             </el-table-column>
-            <el-table-column prop="date" label="餘額（保固金）">
+            <el-table-column prop="handover" label="單據是否交接" :formatter="formatterBoolean">
             </el-table-column>
-            <el-table-column prop="date" label="備註">
+            <el-table-column prop="remark" label="備註">
             </el-table-column>
         </el-table>
 
@@ -70,13 +70,13 @@
 <script type="text/javascript">
 
 
-    Vue.component('el-costout',
+    Vue.component('bg-costout',
         {
 
             template: '#costout',
             data: function () {
                 return {
-                    eldialogvisible: this.visible,
+                   
 
                     innerVisiblecostout: false,
                     rec: {}
@@ -87,10 +87,49 @@
             },
             methods: {
 
+                addcostout: function () {
+                    this.innerVisiblecostout = true;
+                    console.log('addcostout', this.innerVisiblecostout);
+                },
                 onSearchCost: function () {
 
-                }
+                },
+                formatterContractType: function (row, column, cellValue, index) {
 
+                    var array =@Html.GetBasics(BasicsCode.ContractType);
+
+                    return this.formatterOf(array , cellValue);
+
+                },
+                formatterDepartment: function (row, column, cellValue, index) {
+
+                    var array =@Html.GetBasics(BasicsCode.Department);
+
+                    return this.formatterOf(array, cellValue);
+
+                },
+
+                formatterCurrency: function (row, column, cellValue, index) {
+
+                    var array =@Html.GetBasics(BasicsCode.Currency);
+
+                    return this.formatterOf(array, cellValue);
+
+                },
+                formatterSettlementMethod: function (row, column, cellValue, index) {
+
+                    var array =@Html.GetBasics(BasicsCode.SettlementMethod);
+
+                    return this.formatterOf(array, cellValue);
+
+                },
+                formatterparty: function (row, column, cellValue, index) {
+
+                    var array =@Html.GetLastHome();
+
+                    return this.formatterOf(array, cellValue);
+
+                },
 
 
 
@@ -104,6 +143,7 @@
             },
             props: {
 
+                datasource: Array,
                 projectid: String,
 
             }

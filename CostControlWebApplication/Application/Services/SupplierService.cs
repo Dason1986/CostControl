@@ -11,12 +11,14 @@ namespace CostControlWebApplication.Services
 {
     public class SupplierService : BaseService
     {
-        private readonly IRepository<Supplier> repository;
 
-        public SupplierService(IRepository<Supplier> repository, IBoundedContext bounded, ICurrentUser user) : base(bounded, user)
+        public SupplierService(IRepository<Supplier> repository, ResourceService resourceService, IBoundedContext bounded, ICurrentUser user) : base(bounded, user)
         {
             this.repository = repository;
+            this.resourceService = resourceService;
         }
+        private readonly IRepository<Supplier> repository;
+        private readonly ResourceService resourceService;
 
         public void AddSuppiler(SupplierDto dto)
         {
@@ -27,9 +29,10 @@ namespace CostControlWebApplication.Services
             entity.ManTel = dto.ManTel;
             entity.OfficeTel = dto.OfficeTel;
             entity.Address = dto.Address;
-            entity.State = dto.State == "1" ? CommonState.Enabled : CommonState.Disabled;
+            entity.State = dto.State== "1"? CommonState.Enabled: CommonState.Disabled  ;
             repository.Add(entity);
             repository.UnitOfWork.Commit();
+            resourceService.ChangedSupplier();
         }
         public void UpdateSuppiler(SupplierDto dto)
         {
@@ -42,6 +45,7 @@ namespace CostControlWebApplication.Services
             entity.State = dto.State == "1" ? CommonState.Enabled : CommonState.Disabled;
             repository.Update(entity);
             repository.UnitOfWork.Commit();
+            resourceService.ChangedSupplier();
         }
         public SupplierDto Get(long id)
         {

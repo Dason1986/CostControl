@@ -8,7 +8,7 @@ using System;
 
 namespace CostControlWebApplication.Services
 {
-  
+
     public class ProjectService : BaseService
     {
         private readonly ProjectRepository repository;
@@ -27,79 +27,69 @@ namespace CostControlWebApplication.Services
         }
         public IPagingList<VIProjectInfo> GetProjects(ProjectQueryRequest queryRequest)
         {
-           
-                Specification<VIProjectInfo> specification = new Specification<VIProjectInfo>();
-                specification.SetPage(queryRequest);
+
+            Specification<VIProjectInfo> specification = new Specification<VIProjectInfo>();
+            specification.SetPage(queryRequest);
             return repository.PagingList(specification);
-            //return new PagingList<VIProjectInfo>(new VIProjectInfo[] {
-            //    new VIProjectInfo {
-            //    Code= "MII-2020001",
-            //    Name= "項目名稱B" ,
-            //    ManagerName="張三",
-            //    SupremeManagerName="李四",
-            //    ContractType="政府",
-            //    Undertaking="分判",
-            //    ProjectType="政府",
-            //    Address="黑沙XXXXX路XX號",
-            //    ProjectMain="裝修工程",
-            //    SetterName="王五",
-            //    ContractorsName="XXX承建商",
-            //    FirstName="分判J",
-            //    SecondName="分判K",
-            //    ContractAmount=23000000m,
-            //    CashInAmount=1233351.75m,
-            //    CashOutAmount=154635.18m,
-            //    PayableAmount=10468130.93m,
-            //    ReceivableAmount=6083352.90m,
-            //    CostAmount=20000000m,
-            //    BeginDate=new DateTime(2019,1,2),
-            //    EndDate=new DateTime(2020,7,2),
-            //    TargetGrossProfitRate=6.17m,
-            //    AccountingGrossProfitRate=6.17m,
-            //    CompletionRatio=10m,
-            //    State= ProjectState.Progress,
-            //} ,
-            //      new VIProjectInfo {
-            //    Code= "MII-2020002",
-            //    Name= "項目名稱C" ,
-            //    ManagerName="張三",
-            //    SupremeManagerName="李四",
-            //    ContractType="私人",
-            //    Undertaking="分判",
-            //    ProjectType="住宅",
-            //    Address="黑沙XXXXX路XX號",
-            //    ProjectMain="建築設計（含機電+結構+消防+供排水）",
-            //    SetterName="王五",
-            //    ContractorsName="XXX承建商",
-            //    FirstName="分判J",
-            //    SecondName="分判K",
-            //    TargetGrossProfitRate=6.17m,
-            //    AccountingGrossProfitRate=6.17m,
-            //    CompletionRatio=10m,
-            //    State= ProjectState.Progress,
-            //},  new VIProjectInfo {
-            //    Code= "MII-2020003",
-            //    Name= "項目名稱D" ,
-            //    ManagerName="張三",
-            //    SupremeManagerName="李四",
-            //    ContractType="政府",
-            //    Undertaking="大判",
-            //    ProjectType="商業",
-            //    Address="黑沙XXXXX路XX號",
-            //    ProjectMain="維修及保養項目",
-            //    SetterName="王五",
-            //    ContractorsName="XXX承建商",
-            //    FirstName="分判J",
-            //    SecondName="分判K",
-            //    TargetGrossProfitRate=6.17m,
-            //    AccountingGrossProfitRate=6.17m,
-            //    CompletionRatio=10m,
-            //    State= ProjectState.None,
-            //}
 
+        }
 
+        public void AddCostout(ProjectCostOutDto dto)
+        {
+            if (dto.ProjectId == 0) throw new BingoX.LogicException("項目 爲空");
+            if (string.IsNullOrEmpty(dto.Title)) throw new BingoX.LogicException("摘要 爲空");
+            if (string.IsNullOrEmpty(dto.CostoutDate)) throw new BingoX.LogicException("日期 爲空");
+            var project = repository.GetProject(dto.ProjectId);
+            if (project == null) throw new BingoX.LogicException("項目 不存在");
+            decimal projectExpendAmount = repository.GetProjectExpendAmount(dto.ProjectId);
+            if (projectExpendAmount < dto.ExpendAmount) throw new BingoX.LogicException("貸方金額 不能超出成本金額");
+            ProjectCostOut entity = dto.ProjectedAs<ProjectCostOut>();
 
-            //}, 0, 10, 11);
+            entity.Created(this);
+            repository.AddCostout(entity);
+            repository.UnitOfWork.Commit();
+        }
+
+        public string GetProjectCode(long projectId)
+        {
+            var entity = repository.GetProject(projectId);
+            return entity?.Code;
+        }
+
+        public void AddAboutFile(long projectId,long filetype, FileEntry filedto)
+        {
+            ProjectAboutFile entity = filedto.ProjectedAs<ProjectAboutFile>();
+            entity.ProjectId = projectId;
+            entity.FileTypeId = filetype;
+            entity.Created(this);
+            repository.AddAboutFile(entity);
+            repository.UnitOfWork.Commit();
+        }
+
+        public ProjectInfoDto GetProject(long id)
+        {
+            var entity = repository.GetProject(id);
+            var dto = entity.ProjectedAs<ProjectInfoDto>();
+            if (dto == null) return dto;
+            dto.CostOut = repository.ProjectCostOutList(id).ProjectedAsCollection<ProjectCostOutDto>();
+            dto.CostIn = repository.ProjectCostInList(id).ProjectedAsCollection<ProjectCostInDto>();
+            dto.AboutFiles = repository.AboutFilesList(id).ProjectedAsCollection<ProjectAboutFileDto>();
+
+            return dto;
+        }
+
+        public void AddCostin(ProjectCostInDto dto)
+        {
+            if (string.IsNullOrEmpty(dto.Title)) throw new BingoX.LogicException("摘要 爲空");
+            if (dto.ProjectId == 0) throw new BingoX.LogicException("項目 爲空");
+
+            var project = repository.GetProject(dto.ProjectId);
+            if (project == null) throw new BingoX.LogicException("項目 不存在");
+            ProjectCostIn entity = dto.ProjectedAs<ProjectCostIn>();
+
+            entity.Created(this);
+            repository.AddCostin(entity);
+            repository.UnitOfWork.Commit();
         }
     }
 

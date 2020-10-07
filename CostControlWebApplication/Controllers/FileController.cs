@@ -11,15 +11,7 @@ namespace CostControlWebApplication.Controllers
     public class FileController : Controller
     {
 
-        [Route("/api/file/project")]
-        [HttpPost]
-        public FileEntryDto UploadFile([FromServices] FileStorageServie storageServie, [FromForm] Microsoft.AspNetCore.Http.IFormCollection form, [FromForm] string filetype, [FromForm] string projectId)
-        {
-            if (form.Files.Count == 0) throw new LogicException("");
-            var file = form.Files.First();
-
-            return storageServie.AddProjectFile(file.FileName, file.OpenReadStream(), filetype, projectId).ProjectedAs<FileEntryDto>();
-        }
+    
         [Route("/api/file/temp")]
         [HttpPost]
         public FileEntryDto TempUploadFile([FromServices] FileStorageServie storageServie, [FromForm] Microsoft.AspNetCore.Http.IFormCollection form)

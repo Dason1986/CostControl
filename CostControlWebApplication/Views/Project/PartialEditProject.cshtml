@@ -90,7 +90,7 @@
 
                             <div class="form-group">
                                 <label>現金流入</label>
-
+                                {{project.cashInAmount}}
 
                             </div>
 
@@ -102,7 +102,7 @@
 
                             <div class="form-group">
                                 <label>現金流出</label>
-
+                                {{project.cashOutAmount}}
 
                             </div>
 
@@ -113,7 +113,7 @@
 
                             <div class="form-group">
                                 <label>應收賬款</label>
-
+                                {{project.receivableAmount}}
 
                             </div>
 
@@ -125,7 +125,7 @@
 
                             <div class="form-group">
                                 <label>應付賬款</label>
-
+                                {{project.payableAmount}}
 
                             </div>
 
@@ -139,7 +139,8 @@
 
                             <div class="form-group">
                                 <label>工程进度</label>
-                                30%
+
+                                {{project.stateDisplay}}
 
                             </div>
 
@@ -167,32 +168,7 @@
 
                     </div>
                 </div>
-                <div class="row">
-
-                    <div class="col-md-3 form-inline">
-                        <div class="form-group">
-
-                            <div class="form-group">
-                                <label>审批文件</label>
-
-                                <el-upload class="upload-demo"
-                                           action="/api/file/posts"
-                                           :show-file-list="false"
-                                           :data="fileData"  
-                                           :on-success="handleUploadExceed">
-                                    <el-button size="small" icon="el-icon-upload" v-if="isDisabled">点击上传</el-button>
-
-                                </el-upload>
-                                <el-button type="text" style="padding: 0px;">
-                                    {{fileName}}
-                                </el-button>
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
+      
 
             </div>
 
@@ -262,6 +238,9 @@
                                     <div class="form-group">
                                         <label>項目主體</label>
                                         <el-select placeholder="項目主體" v-model="project.projectMainId">
+                                            <el-option v-for="item in projectMainOptions"
+                                                       :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                            </el-option>
                                         </el-select>
                                     </div>
 
@@ -273,8 +252,10 @@
 
                                     <label>項目类型</label>
                                     <el-select placeholder="項目类型" v-model="project.projectTypeId" filterable>
+                                        <el-option v-for="item in projectTypeOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
                                     </el-select>
-
                                 </div>
 
                             </div>
@@ -283,8 +264,10 @@
 
                                     <label>項目合約</label>
                                     <el-select placeholder="項目合約" v-model="project.contractTypeId" filterable>
+                                        <el-option v-for="item in contractTypeOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
                                     </el-select>
-
                                 </div>
 
                             </div>
@@ -293,6 +276,9 @@
 
                                     <label>承接类型</label>
                                     <el-select placeholder="承接类型" v-model="project.undertakingId" filterable>
+                                        <el-option v-for="item in undertakingOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
                                     </el-select>
 
                                 </div>
@@ -303,6 +289,9 @@
 
                                     <label>合約結算方式</label>
                                     <el-select placeholder="合約結算方式" v-model="project.settlementMethodId" filterable>
+                                        <el-option v-for="item in settlementMethodOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
                                     </el-select>
 
                                 </div>
@@ -317,6 +306,9 @@
 
                                     <label>定作人</label>
                                     <el-select placeholder="定作人" v-model="project.setterId" filterable>
+                                        <el-option v-for="item in supplierOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
                                     </el-select>
                                 </div>
 
@@ -326,6 +318,9 @@
 
                                     <label>承建商</label>
                                     <el-select placeholder="承建商" v-model="project.contractorsId" filterable>
+                                        <el-option v-for="item in supplierOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
                                     </el-select>
                                 </div>
 
@@ -335,6 +330,9 @@
 
                                     <label>第一分判</label>
                                     <el-select placeholder="第一分判" v-model="project.firstId" filterable>
+                                        <el-option v-for="item in supplierOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
                                     </el-select>
                                 </div>
 
@@ -344,6 +342,9 @@
 
                                     <label>第二分判</label>
                                     <el-select placeholder="第二分判" v-model="project.secondId" filterable>
+                                        <el-option v-for="item in supplierOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
                                     </el-select>
                                 </div>
 
@@ -408,16 +409,16 @@
                 </el-tab-pane>
                 
                 <el-tab-pane label="成本支出" name="second2" :disabled="isDisabled">
-                    <el-costout :projectid="project.id"></el-costout>
+                    <bg-costout :projectid="project.id" :datasource="project.costOut"></bg-costout>
                 </el-tab-pane>
                 <el-tab-pane label="成本收入" name="second3" :disabled="isDisabled">
 
-                    <el-costin :projectid="project.id"></el-costin>
+                    <bg-costin :projectid="project.id" :datasource="project.costIn"></bg-costin>
                 </el-tab-pane>
 
                
                 <el-tab-pane label="相關文件" name="second5" :disabled="isDisabled">
-                    <el-aboutfiles :projectid="project.id"></el-aboutfiles>
+                    <bg-aboutfiles :projectid="project.id" :datasource="project.aboutFiles"></bg-aboutfiles>
                   
                 </el-tab-pane>
             </el-tabs>
@@ -432,7 +433,7 @@
 <script type="text/javascript">
 
 
-    Vue.component('el-edit-project',
+    Vue.component('bg-edit-project',
         {
 
             template: '#editproject',
@@ -440,12 +441,19 @@
                 return {
                     eldialogvisible: this.visible,
                     innerDrawer: false,
-                    fileName: "",
+
                     activeName: "first",
-                    isDisabled: true,
+                    isDisabled: false,
                     form: {},
+                    userOptions:@Html.GetUserOptions(),
+                    supplierOptions:@Html.GetLastHome(),
+                    projectMainOptions:@Html.GetBasics(BasicsCode.ProjectMain),
+                    settlementMethodOptions:@Html.GetBasics(BasicsCode.SettlementMethod),
+                    contractTypeOptions:@Html.GetBasics(BasicsCode.ContractType),
+                    undertakingOptions:@Html.GetBasics(BasicsCode.Undertaking),
+                    projectTypeOptions:@Html.GetBasics(BasicsCode.ProjectType),
                     project: { id: '11', name: '項目1', code: 'Mi-gghfsd009', address: '黑沙XXX路', managerName: '林', supremeManagerName: '子' },
-                    fileData: { fileType: '審批文件', projectid: '1' },
+                   
                 };
             },
             filters: {
@@ -453,9 +461,11 @@
             },
             methods: {
 
-                getProjectInfo: async function () {
-                    this.project = await this.$http.post("/api/Project/" + this.projectid);
-                    this.fileData.projectid = this.id;
+                getProjectInfo:   function () {
+                    this.$http.get("/api/Project/" + this.projectid).then(req => {
+                        this.project = req.data;
+                
+                    });
                 },
 
                 onSumbit: async function () {

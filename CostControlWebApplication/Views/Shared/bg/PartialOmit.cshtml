@@ -1,0 +1,76 @@
+﻿
+@{
+
+
+}
+<style>
+    .box-card {
+        width: 100%;
+    }
+</style>
+<script type="text/x-template" id="omit">
+
+
+
+    <div>
+        <span v-if="isFull()">
+            {{displayString()}}
+        </span>
+        <el-popover placement="top-start"
+                    v-if="!isFull()"
+                    :content="value"
+                    trigger="hover">
+            <span slot="reference">   {{displayString()}}</span>
+        </el-popover>
+    </div>
+
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('bg-omit',
+        {
+
+            template: '#omit',
+            data: function () {
+                return {
+
+
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+
+                isFull: function () {
+                    return this.value && this.value.length < 8;
+                },
+                displayString: function () {
+                    if (this.isFull()) return this.value;
+                    return this.value && this.value.substring(0, 6) + '...';
+                }
+
+
+
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+
+
+            },
+            props: {
+
+                value: String,
+
+            }
+        });
+
+
+</script>

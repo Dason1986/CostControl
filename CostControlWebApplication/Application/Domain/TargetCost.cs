@@ -1,9 +1,10 @@
 ﻿using BingoX.Domain;
+using CostControlWebApplication.Application;
 using System;
 
 namespace CostControlWebApplication.Domain
 {
-    public class TargetCost : Entity, ISnowflakeEntity<TargetCost>
+    public class TargetCost : Entity, ISnowflakeEntity<TargetCost>, IEstimatedDate
     {
         public string Code { get; set; }
 
@@ -29,7 +30,7 @@ namespace CostControlWebApplication.Domain
         /// 估算的開工時間
         /// </summary>
         public DateTime? EstimatedBeginDate { get; set; }
-      
+
         /// <summary>
         /// 估算的開工時間
         /// </summary>
@@ -54,5 +55,6 @@ namespace CostControlWebApplication.Domain
         /// 合約外後加減金額
         /// </summary>
         public decimal ContractOutAmount { get; set; }
+        public CommonState State { get; set; }
     }
 }

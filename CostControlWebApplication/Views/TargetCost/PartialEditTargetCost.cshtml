@@ -1,0 +1,412 @@
+﻿
+@{
+
+
+}
+<style>
+    .demo-drawer__content {
+        display: flex;
+        flex-direction: column;
+        height: 100%
+    }
+
+        .demo-drawer__content form {
+            flex: 1
+        }
+
+    .demo-drawer__footer {
+        display: flex
+    }
+
+        .demo-drawer__footer button {
+            flex: 1
+        }
+</style>
+<script type="text/x-template" id="edittargetcost">
+
+    <el-dialog width="90%"
+               title="目标成本明細"
+               :visible.sync="eldialogvisible"
+               append-to-body>
+
+
+
+        <el-card>
+
+
+            <div class="card-body">
+                <h5 class="card-title">{{item.name}}[{{item.code}}] </h5>
+                <p class="card-text">地址: {{item.address}}</p>
+
+                <div class="row">
+
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>上家</label>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>建築總面積</label>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>建築面積單方成本造價</label>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+                <div class="row">
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>合約金額</label>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>合約內結算金額</label>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <div class="form-group">
+                                <label>合約外後加減金額</label>
+
+
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+
+                <el-divider content-position="left">時間</el-divider>
+                <div class="row">
+
+
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <label>評估開始</label>
+                            <el-date-picker type="date" v-model="item.estimatedBeginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估開始時間">
+                            </el-date-picker>
+                        </div>
+
+                    </div>
+                    <div class="col-md-3 form-inline">
+                        <div class="form-group">
+
+                            <label>評估結束</label>
+                            <el-date-picker type="date" v-model="item.estimatedEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估結束時間">
+                            </el-date-picker>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row">
+
+                    <div class="col-md-12 form-inline">
+                        <div class="form-group">
+
+                            <label>備註</label>
+                            <el-input type="textarea"
+                                      :autosize="{ minRows: 3, maxRows: 7}" style="width: 700px;"
+                                      placeholder="備註"
+                                      v-model="item.remark">
+                            </el-input>
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="card-body">
+
+
+            </div>
+            <el-tabs v-model="activeName">
+                <el-tab-pane label="Summary" name="tab0">
+                    <el-table :data="itemSummary"
+                              style="width: 100%;margin-bottom: 20px;"
+                              row-key="id"
+                              border 
+                              default-expand-all
+                              :tree-props="{children: 'children', hasChildren: 'hasChildren'}">
+                        <el-table-column prop="no"
+                                         label="序號">
+                        </el-table-column>
+                        <el-table-column prop="title"
+                                         label="工程摘要"
+                                         width="180">
+                        </el-table-column>
+                        <el-table-column prop="price"
+                                         label="合約造價">
+                        </el-table-column>
+                        <el-table-column prop="cost"
+                                         label="項目成本">
+                        </el-table-column>
+                        <el-table-column prop="profits"
+                                         label="利潤">
+                        </el-table-column>
+                        <el-table-column prop="profitsrate"
+                                         label="利潤率">
+                        </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+                <el-tab-pane label="BQ匯總表" name="tab1">
+                    <el-table border>
+                        <el-table-column label="序號"> </el-table-column>
+                        <el-table-column label="工程摘要"> </el-table-column>
+                        <el-table-column label="合約造價"> </el-table-column>
+                        <el-table-column label="分判單位"> </el-table-column>
+                        <el-table-column label="分判內容"> </el-table-column>
+                        <el-table-column label="分判合約金額"> </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+                <el-tab-pane label="暫估費用明細表" name="tab2">
+                    <el-table border>
+                        <el-table-column label="BQ編號"> </el-table-column>
+                        <el-table-column label="項目特征"> </el-table-column>
+                        <el-table-column label="中標造價">
+                            <el-table-column label="單位"> </el-table-column>
+                            <el-table-column label="數量"> </el-table-column>
+                            <el-table-column label="單價"> </el-table-column>
+                            <el-table-column label="總價"> </el-table-column>
+                        </el-table-column>
+                        <el-table-column label="單價">
+                            <el-table-column label="材料單價"> </el-table-column>
+                            <el-table-column label="安裝單價"> </el-table-column>
+                            <el-table-column label="包工包料單價"> </el-table-column>
+                        </el-table-column>
+                        <el-table-column label="總額">
+                            <el-table-column label="材料金額"> </el-table-column>
+                            <el-table-column label="安裝金額"> </el-table-column>
+                            <el-table-column label="包工包料金額"> </el-table-column>
+                            <el-table-column label="合計金額"> </el-table-column>
+                        </el-table-column>
+                        <el-table-column label="備註"> </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+                <el-tab-pane label="BQ明細" name="tab3">
+                    <el-table border>
+                        <el-table-column label="項目"> </el-table-column>
+                        <el-table-column label="內容"> </el-table-column>
+                        <el-table-column label="單位"> </el-table-column>
+                        <el-table-column label="中標造價">
+                            <el-table-column label="合約數量"> </el-table-column>
+                            <el-table-column label="合約單價 "> </el-table-column>
+                            <el-table-column label="合約總額 "> </el-table-column>
+                        </el-table-column>
+                        <el-table-column label="結算造價">
+                            <el-table-column label="結數總量"> </el-table-column>
+                            <el-table-column label="合約單價"> </el-table-column>
+                            <el-table-column label="合約總額 "> </el-table-column>
+                        </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+                <el-tab-pane label="主要飾面材料費" name="tab4">
+                    <el-table :data="getdatasource(7201)" border>
+                        <el-table-column label="日期"> </el-table-column>
+                        <el-table-column label="項目類別"> </el-table-column>
+                        <el-table-column label="供應商名稱"> </el-table-column>
+                        <el-table-column label="摘要"> </el-table-column>
+                        <el-table-column label="備註"> </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+                <el-tab-pane label="輔助性使用材料" name="tab5">
+                    <el-table :data="getdatasource(7202)" border>
+                        <el-table-column label="日期"> </el-table-column>
+                        <el-table-column label="項目類別"> </el-table-column>
+                        <el-table-column label="供應商名稱"> </el-table-column>
+                        <el-table-column label="摘要"> </el-table-column>
+                        <el-table-column label="備註"> </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+
+
+                <el-tab-pane label="項目人力成本" name="tab6">
+
+                    <el-table :data="getdatasource(7301)" border>
+                        <el-table-column label="日期"> </el-table-column>
+                        <el-table-column label="項目類別"> </el-table-column>
+                        <el-table-column label="支出、收款單位"> </el-table-column>
+                        <el-table-column label="摘要"> </el-table-column>
+                        <el-table-column label="備註"> </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+                <el-tab-pane label="項目工人工資" name="tab7">
+
+                    <el-table :data="getdatasource(7302)" border>
+                        <el-table-column label="日期"> </el-table-column>
+                        <el-table-column label="項目類別"> </el-table-column>
+                        <el-table-column label="支出、收款單位"> </el-table-column>
+                        <el-table-column label="摘要"> </el-table-column>
+                        <el-table-column label="備註"> </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+                <el-tab-pane label="項目管理雜費" name="tab8">
+                    <el-table :data="getdatasource(7401)" border>
+                        <el-table-column label="日期"> </el-table-column>
+                        <el-table-column label="項目類別"> </el-table-column>
+                        <el-table-column label="支出、收款單位"> </el-table-column>
+                        <el-table-column label="摘要"> </el-table-column>
+                        <el-table-column label="備註"> </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+                <el-tab-pane label="項目應酬費" name="tab9">
+                    <el-table :data="getdatasource(7402)" border>
+                        <el-table-column label="日期"> </el-table-column>
+                        <el-table-column label="項目類別"> </el-table-column>
+                        <el-table-column label="支出、收款單位"> </el-table-column>
+                        <el-table-column label="摘要"> </el-table-column>
+                        <el-table-column label="備註"> </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+                <el-tab-pane label="相关文件" name="tab10">
+                    <el-table :data="item.attachmentFiles" border>
+                        <el-table-column label="名稱"> </el-table-column>
+                        <el-table-column label="類別"> </el-table-column>
+                        <el-table-column label="文件大小"> </el-table-column>
+                        <el-table-column label="上傳時間"> </el-table-column>
+                        <el-table-column label="下載"> </el-table-column>
+                    </el-table>
+                </el-tab-pane>
+            </el-tabs>
+
+            <el-cascader v-model="item.detailType"
+                         :options="trageCastDetailType"></el-cascader>
+
+            <el-select v-model="item.detailType" placeholder="请选择">
+                <el-option-group v-for="group in trageCastDetailType"
+                                 :key="group.label"
+                                 :label="group.label">
+                    <el-option v-for="item in group.children"
+                               :key="item.value"
+                               :label="item.label"
+                               :value="item.id">
+                    </el-option>
+                </el-option-group>
+            </el-select>
+        </el-card>
+    </el-dialog>
+
+
+</script>
+
+<script type="text/javascript">
+
+
+
+
+    Vue.component('bg-edit-targetcost',
+        {
+
+            template: '#edittargetcost',
+            data: function () {
+                return {
+                    eldialogvisible: this.visible,
+                    trageCastDetailType:@Html.GetBasics(BasicsCode.TrageCastDetailType),
+
+                    activeName: "tab0",
+                    isDisabled: true,
+                    itemSummary:[],
+                    item: {
+                        id: '11', name: '項目1', code: 'Mi-gghfsd009', address: '黑沙XXX路', managerName: '林', supremeManagerName: '子', detailType: [], attachmentFiles:[], summary: [], details: [] },
+
+
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+
+                getitemInfo: async function () {
+
+                    this.$http.get("/api/targetcost/" + this.targetcostid).then(result => {
+                        this.item = result.data;
+                        this.itemSummary = this.item.summary;
+                    });
+
+                 //   this.costdatasource = await this.$http.get("/api/targetcost/detail/" + this.targetcostid).body;
+                },
+
+                onSumbit: async function () {
+
+                    await this.$http.put("/api/targetcost/" + this.targetcostid, this.item);
+                    this.eldialogvisible = false;
+                    this.$emit('closed', true);
+
+                },
+                getdatasource: function (code) {
+                    return this.item.details.filter(x => x.parentCode === code);
+                },
+              
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+                visible: function (val) {
+                    if (val && this.targetcostid) {
+                        this.getitemInfo();
+                    }
+                    this.eldialogvisible = val;
+                },
+                eldialogvisible: function (val) {
+
+                    if (val) return;
+
+                    this.$emit('update:visible', val)
+                }
+
+            },
+            props: {
+                targetcostid: String,
+                visible: Boolean
+            }
+        });
+
+
+</script>

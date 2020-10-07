@@ -1,11 +1,12 @@
 ﻿using BingoX.Domain;
+using CostControlWebApplication.Application;
 using System;
 
 namespace CostControlWebApplication.Domain
 {
-    public class ProjectInfo : Entity, ISnowflakeEntity<ProjectInfo> 
+    public class ProjectInfo : Entity, ISnowflakeEntity<ProjectInfo>, IDate
     {
-      
+
 
         /// <summary>
         /// 項目編號A
@@ -143,7 +144,7 @@ namespace CostControlWebApplication.Domain
         /// 估算的開工時間
         /// </summary>
         public DateTime? EstimatedEndDate { get; set; }
-  
+
 
         public ProjectState State { get; set; }
     }

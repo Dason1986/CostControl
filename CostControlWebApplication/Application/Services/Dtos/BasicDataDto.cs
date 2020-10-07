@@ -1,4 +1,6 @@
-﻿namespace CostControlWebApplication.Application.Services.Dtos
+﻿using CostControlWebApplication.Domain;
+
+namespace CostControlWebApplication.Application.Services.Dtos
 {
     public class BasicDataDto : Dto
     {
@@ -8,7 +10,7 @@
         public string DataValue { get; set; }
         public string Remark { get; set; }
         public int IndexNo { get; set; }
-        public string State { get; set; }
+        public CommonState State { get; set; }
 
         public BasicDataDto[] Childs { get; set; }
 

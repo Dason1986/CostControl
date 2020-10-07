@@ -1,4 +1,6 @@
-﻿namespace CostControlWebApplication.Application.Services.Dtos
+﻿using CostControlWebApplication.Domain;
+
+namespace CostControlWebApplication.Application.Services.Dtos
 {
     public class SupplierDto : Dto
     {

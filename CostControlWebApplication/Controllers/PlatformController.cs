@@ -5,6 +5,8 @@ using BingoX.ComponentModel.Data;
 using CostControlWebApplication.Application.Services.Dtos;
 using System.Collections;
 using System.Collections.Generic;
+using CostControlWebApplication.Domain;
+using BingoX;
 
 namespace CostControlWebApplication.Controllers
 {
@@ -15,25 +17,32 @@ namespace CostControlWebApplication.Controllers
 
         public IActionResult Staffer([FromServices] AccountService service, [FromQuery] AccounQueryRequest filterRequest)
         {
-            IPagingList list = service.GetPagingList(filterRequest);
+            IPagingList list = service.GetPagingList(filterRequest).ProjectedAsPagingList<AccountUserDto>();
             return View(list);
         }
         [HttpGet("~/api/Platform/Staffer")]
         public IPagingList APIStaffer([FromServices] AccountService service, [FromQuery] AccounQueryRequest filterRequest)
         {
-            IPagingList list = service.GetPagingList(filterRequest);
+            IPagingList list = service.GetPagingList(filterRequest).ProjectedAsPagingList<AccountUserDto>();
             return list;
         }
         [HttpPost("~/api/Platform/Staffer")]
         public void AddUser([FromServices] AccountService service, [FromBody] AccountUserDto dto)
         {
-            service.AddUser(dto);
+            if (string.IsNullOrWhiteSpace(dto.Account)) throw new LogicException("帐号为空");
+            if (string.IsNullOrWhiteSpace(dto.Name)) throw new LogicException("名称为空");
+            if (string.IsNullOrWhiteSpace(dto.PassWord)) throw new LogicException("密码为空");
+            if (string.IsNullOrWhiteSpace(dto.ComfirmPassword)) throw new LogicException("确认密码为空");
+            if (dto.PassWord != dto.ComfirmPassword) throw new LogicException("两次密码不一致");
+            var entity=   dto.ProjectedAs<AccountUser>();
+            service.AddUser(entity);
         }
 
         [HttpPut("~/api/Platform/Staffer/{id}")]
         public void EditUser([FromServices] AccountService service, [FromBody] AccountUserDto dto)
         {
-            service.EditUser(dto);
+            var entity = dto.ProjectedAs<AccountUser>();
+            service.EditUser(entity);
         }
         #endregion
         public IActionResult Setting([FromServices] SettingService service)

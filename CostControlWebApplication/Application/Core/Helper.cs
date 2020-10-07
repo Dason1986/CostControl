@@ -15,13 +15,17 @@ namespace CostControlWebApplication
 {
     public class BasicsCode
     {
-        public const string TrageCastProjectType = "006"; 
+        public const string TrageCastProjectType = "006";
         public const string Currency = "003";
         public const string ProjectMain = "004";
         public const string SettlementMethod = "001";
         public const string ContractType = "002";
+        public const string CostType = "005";
         public const string ProjectType = "008";
         public const string Undertaking = "009";
+        public const string Department = "010";
+        public const string FileType = "011";
+        public const string TrageCastDetailType = "007";
     }
     public static class Helper
     {
@@ -39,22 +43,22 @@ namespace CostControlWebApplication
             if (specification.PageSize == 0) specification.PageSize = 10;
             if (queryRequest.PageNo > 0) specification.PageIndex = queryRequest.PageNo - 1; ;
         }
-       
+
         public static IHtmlContent GetBasics(this IHtmlHelper helper, string groupcode)
         {
             var service = helper.ViewContext.HttpContext.RequestServices.GetService<ResourceService>();
             return helper.RawEntity(service.GetBasics(groupcode));
         }
-        public static IHtmlContent GetLastHome(this IHtmlHelper helper )
+        public static IHtmlContent GetLastHome(this IHtmlHelper helper)
         {
             var service = helper.ViewContext.HttpContext.RequestServices.GetService<ResourceService>();
             return helper.RawEntity(service.GetLastHome());
         }
-        public static IHtmlContent GetUserOptions(this IHtmlHelper helper )
+        public static IHtmlContent GetUserOptions(this IHtmlHelper helper)
         {
             var service = helper.ViewContext.HttpContext.RequestServices.GetService<ResourceService>();
             return helper.RawEntity(service.GetUser());
-        } 
+        }
         public static SidebarMenu[] GetMenus(this IHtmlHelper helper)
         {
 

@@ -54,7 +54,7 @@
 
                                 <el-select v-model="rec.projectTypeId" filterable placeholder="项目类型">
                                     <el-option v-for="item in projectTypeOptions"
-                                               :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled"
+                                               :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled"
                                                >
                                     </el-option>
                                 </el-select>
@@ -70,7 +70,7 @@
 
                                 <el-select v-model="rec.lastHome" filterable placeholder="上家">
                                     <el-option v-for="item in lastHomeOptions"
-                                                 :key="item.value" :label="item.label" :value="item.value">
+                                                 :key="item.id" :label="item.label" :value="item.id">
                                     </el-option>
                                 </el-select>
                             </div>
@@ -193,7 +193,7 @@
 <script type="text/javascript">
 
 
-    Vue.component('el-add-targetcost',
+    Vue.component('bg-add-targetcost',
         {
 
             template: '#addcostin',
@@ -220,7 +220,7 @@
 
                 },
                 handleUploadExceed: function (response, file, fileList) {
-                    console.log('handleUploadExceed',response);
+          
                     this.rec.fileid = response.id;
                     this.rec.fileName = response.fileName;
                 },

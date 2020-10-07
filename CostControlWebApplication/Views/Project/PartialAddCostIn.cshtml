@@ -27,12 +27,21 @@
 
 
                     <div class="row">
+                        <div class="col-md-3 form-inline">
 
+                            <div class="form-group">
+                                <label>發票編號</label>
+                                <el-input type="text" v-model="rec.invoiceNo" placeholder="發票編號"></el-input>
+                            </div>
+
+
+
+                        </div>
                         <div class="col-md-3 form-inline">
 
                             <div class="form-group">
                                 <label>開票日期</label>
-                                <el-date-picker type="date" v-model="rec.createDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="開票日期">
+                                <el-date-picker type="date" v-model="rec.invoiceDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="開票日期">
                                 </el-date-picker>
                             </div>
 
@@ -44,7 +53,12 @@
 
                             <div class="form-group">
                                 <label>上家</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="上家"></el-input>
+                                <el-select placeholder="上家" v-model="rec.lastHomeId" filterable>
+                                    <el-option v-for="item in lastHomeOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+                             
                             </div>
 
 
@@ -54,7 +68,7 @@
 
                             <div class="form-group">
                                 <label>摘要</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="摘要"></el-input>
+                                <el-input type="text" v-model="rec.title" placeholder="摘要"></el-input>
                             </div>
 
 
@@ -67,7 +81,7 @@
 
                             <div class="form-group">
                                 <label>合約金額</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="合約金額"></el-input>
+                                <el-input type="text" v-model="rec.contractAmount" placeholder="合約金額"></el-input>
                             </div>
 
 
@@ -77,7 +91,7 @@
 
                             <div class="form-group">
                                 <label>結算金額</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="結算金額"></el-input>
+                                <el-input type="text" v-model="rec.settlementAmount" placeholder="結算金額"></el-input>
                             </div>
 
 
@@ -87,7 +101,7 @@
 
                             <div class="form-group">
                                 <label>原合約申請金額</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="原合約申請金額"></el-input>
+                                <el-input type="text" v-model="rec.originalContractAmount" placeholder="原合約申請金額"></el-input>
                             </div>
 
 
@@ -96,7 +110,7 @@
 
                             <div class="form-group">
                                 <label>後加申請金額</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="後加申請金額"></el-input>
+                                <el-input type="text" v-model="rec.additionalAmount" placeholder="後加申請金額"></el-input>
                             </div>
 
 
@@ -108,7 +122,7 @@
 
                             <div class="form-group">
                                 <label>發票申請金額</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="發票申請金額"></el-input>
+                                <el-input type="text" v-model="rec.invoiceAmount" placeholder="發票申請金額"></el-input>
                             </div>
 
 
@@ -117,7 +131,7 @@
 
                             <div class="form-group">
                                 <label>保固金比例</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="保固金比例"></el-input>
+                                <el-input type="text" v-model="rec.securingAmountRate" placeholder="保固金比例"></el-input>
                             </div>
 
 
@@ -126,7 +140,7 @@
 
                             <div class="form-group">
                                 <label>扣減保固金</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="扣減保固金"></el-input>
+                                <el-input type="text" v-model="rec.subtractSecuringAmount" placeholder="扣減保固金"></el-input>
                             </div>
 
 
@@ -138,7 +152,7 @@
 
                             <div class="form-group">
                                 <label>扣減預付款</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="扣減預付款"></el-input>
+                                <el-input type="text" v-model="rec.subtractPrepaidAmount" placeholder="扣減預付款"></el-input>
                             </div>
 
 
@@ -147,7 +161,7 @@
 
                             <div class="form-group">
                                 <label>扣除其他款項</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="扣除其他款項"></el-input>
+                                <el-input type="text" v-model="rec.subtractOtherAmount" placeholder="扣除其他款項"></el-input>
                             </div>
 
 
@@ -159,7 +173,7 @@
 
                             <div class="form-group">
                                 <label>應收發票金額</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="應收發票金額"></el-input>
+                                <el-input type="text" v-model="rec.receivableInvoiceAmount" placeholder="應收發票金額"></el-input>
                             </div>
 
 
@@ -168,7 +182,7 @@
 
                             <div class="form-group">
                                 <label>已收工程款金額</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="已收工程款金額"></el-input>
+                                <el-input type="text" v-model="rec.receivedProjectAmount" placeholder="已收工程款金額"></el-input>
                             </div>
 
 
@@ -177,7 +191,9 @@
 
                             <div class="form-group">
                                 <label>收款日期（工程款）</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="收款日期（工程款）"></el-input>
+                            
+                                <el-date-picker type="date" v-model="rec.receivedProjectDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="收款日期（工程款）">
+                                </el-date-picker>
                             </div>
 
 
@@ -189,7 +205,7 @@
 
                             <div class="form-group">
                                 <label>已收保固金金額</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="已收保固金金額"></el-input>
+                                <el-input type="text" v-model="rec.receivedSecuringAmount" placeholder="已收保固金金額"></el-input>
                             </div>
 
 
@@ -198,7 +214,8 @@
 
                             <div class="form-group">
                                 <label>收款日期（保固金）</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="收款日期（保固金）"></el-input>
+                                <el-date-picker type="date" v-model="rec.receivedSecuringAmountDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="收款日期（保固金）">
+                                </el-date-picker>
                             </div>
 
 
@@ -207,7 +224,7 @@
 
                             <div class="form-group">
                                 <label>餘額（工程款）</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="餘額（工程款）"></el-input>
+                                <el-input type="text" v-model="rec.surplusProjectAmount" placeholder="餘額（工程款）"></el-input>
                             </div>
 
 
@@ -216,7 +233,7 @@
 
                             <div class="form-group">
                                 <label>餘額（保固金）</label>
-                                <el-input type="text" v-model="rec.orderNo" placeholder="餘額（保固金）"></el-input>
+                                <el-input type="text" v-model="rec.surplusSecuringAmount" placeholder="餘額（保固金）"></el-input>
                             </div>
 
 
@@ -250,7 +267,7 @@
 <script type="text/javascript">
 
 
-    Vue.component('el-add-costin',
+    Vue.component('bg-add-costin',
         {
 
             template: '#addcostin',
@@ -258,6 +275,7 @@
                 return {
                     eldialogvisible: this.visible,
 
+                    lastHomeOptions:@Html.GetLastHome(),
                     rec: {}
                 };
             },
@@ -269,8 +287,8 @@
 
 
                 onSumbit: async function () {
-
-                    await this.$http.post("/api/BatchPackage/CompareResult/Approve/" + compareResult.id);
+                    console.log('projectid', this.rec.projectid)
+                    await this.$http.post("/api/Project/costin", this.rec);
                     this.eldialogvisible = false;
                     this.$emit('closed', true);
 
@@ -285,7 +303,7 @@
             watch: {
                 visible: function (val) {
 
-
+                    if (val) this.rec.projectid = this.projectid;
                     this.eldialogvisible = val;
                 },
                 eldialogvisible: function (val) {
@@ -293,7 +311,8 @@
                     if (val) return;
 
                     this.$emit('update:visible', val)
-                }
+                },
+              
 
             },
             props: {

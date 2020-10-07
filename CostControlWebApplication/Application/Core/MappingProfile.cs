@@ -48,12 +48,13 @@ namespace CostControlWebApplication
             CreateMap<string, int>().ConvertUsing(s => Convert.ToInt32(s));
             CreateMap<bool, int>().ConvertUsing(s => s ? 1 : 0);
             CreateMap<int, bool>().ConvertUsing(s => s > 0);
+            CreateMap<DateTime?, string>().ConvertUsing(s => string.Format("{0:yyyy-MM-dd}",s));
             CreateMap<Enum, string>().ConvertUsing(s => Convert.ToInt32(s).ToString());
             //   CreateMap<Enum, string>().ConvertUsing(s => s == null ? string.Empty : BingoX.Utility.EnumUtility.GetDescription(s));
-            Create<VIProjectInfo, ProjectInfoDto>();
-            Create<VIProjectInfo, ProjectInfoListItmeDto>();
+          
             Create<TargetCost, TargetCostListItmeDto>();
             Create<TargetCost, TargetCostDto>();
+            Create<FileEntry, ProjectAboutFile>();
             InitDto();
 
             //CreateEntityToDto(mappingResolvers, valueModelentities, valueModeldtos);

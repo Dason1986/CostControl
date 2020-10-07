@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.AspNetCore.Http;
+using System.Threading.Tasks;
 
 namespace CostControlWebApplication.Services
 {
@@ -16,44 +17,42 @@ namespace CostControlWebApplication.Services
         public ResourceService(System.IServiceProvider serviceProvider, IBoundedContext bounded)
         {
             this.serviceProvider = serviceProvider;
-            Init();
+            Init().GetAwaiter();
         }
         IList<BasicData> Basics;
         OptionEntry[] Supplier;
         OptionEntry[] User;
         IDictionary<string, OptionEntry[]> TreeBasics;
-        private void Init()
+        private async Task Init()
         {
-            ChangedBasics();
-            ChangedSupplier();
-            ChangedUser();
+            await ChangedBasics();
+            await ChangedSupplier();
+            await ChangedUser();
         }
-        public void ChangedUser()
+        public Task ChangedUser()
         {
-            try
+            var http = serviceProvider.GetService<IHttpContextAccessor>().HttpContext;
+            return Task.Run(() =>
             {
-                var http = serviceProvider.GetService<IHttpContextAccessor>().HttpContext;
+
                 var repository = http.RequestServices.GetService<ResourceRepository>();
                 User = repository.GetUser().Select(n =>
                 {
                     var entry = new OptionEntry { Label = n.Name, Value = n.ID.ToString(), Id = n.ID.ToString() };
-               
+
                     return entry;
                 }).ToArray();
+            });
 
-            }
-            catch (Exception ex)
-            {
 
-                throw ex;
-            }
+
 
         }
-        public void ChangedSupplier()
+        public Task ChangedSupplier()
         {
-            try
+            var http = serviceProvider.GetService<IHttpContextAccessor>().HttpContext;
+            return Task.Run(() =>
             {
-                var http = serviceProvider.GetService<IHttpContextAccessor>().HttpContext;
                 var repository = http.RequestServices.GetService<ResourceRepository>();
                 Supplier = repository.GetSupplier().Select(n =>
                     {
@@ -63,18 +62,14 @@ namespace CostControlWebApplication.Services
                     }).ToArray();
 
             }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+           );
 
         }
-        public void ChangedBasics()
+        public Task ChangedBasics()
         {
-            try
+            var http = serviceProvider.GetService<IHttpContextAccessor>().HttpContext;
+            return Task.Run(() =>
             {
-                var http = serviceProvider.GetService<IHttpContextAccessor>().HttpContext;
                 var repository = http.RequestServices.GetService<ResourceRepository>();
                 Basics = repository.GetBasicData();
                 TreeBasics = new Dictionary<string, OptionEntry[]>();
@@ -87,12 +82,8 @@ namespace CostControlWebApplication.Services
                         return entry;
                     }).ToArray());
                 }
-            }
-            catch (Exception ex)
-            {
+            });
 
-                throw ex;
-            }
 
         }
         OptionEntry Create(BasicData basicData)

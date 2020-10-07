@@ -27,7 +27,11 @@
         /// <summary>
         /// 現金流入S
         /// </summary>
-        public decimal CashInAmount { get; set; }
+        public decimal CashInProjectAmount { get; set; }
+        /// <summary>
+        /// 
+        /// </summary>
+        public decimal CashInSecuringAmount { get; set; }
         /// <summary>
         /// 現金流出T
         /// </summary>

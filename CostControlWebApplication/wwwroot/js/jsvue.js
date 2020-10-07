@@ -25,24 +25,39 @@ Vue.mixin({
         },
         formatterStatusCode: function (row, column, cell) { return _enumFormatter.StatusCode(cell); },
         formatterBoolean: function (row, column, cell) { return _enumFormatter.Boolean(cell); },
-        formatterNumber: function (row, column, cell) { if (cell === null || cell === undefined || cell === 0) return ''; return cell },
+        formatterOmit: function (row, column, cell) {
+            if (cell) {
+                if (cell.length > 10) {
+                    return cell.substring(0, 6) + '...';
+                } else {
+                    return cell;
+                }
+            }
+            return cell;
+        },
+        formatterOf: function (array, cellValue) {
+           
+            var itemfilter = array.filter(x => x.id == cellValue);
+
+            if (itemfilter && itemfilter.length > 0) return itemfilter[0].label;
+            return cellValue; },
     },
     filters: {
-      
+
         filterStatusCode: function (value) {
             return _enumFormatter.StatusCode(value);
-           
+
         },
         filterBoolean: function (value) {
             return _enumFormatter.Boolean(value);
         },
-      
+
     }
 })
 const DYVue = {
 
     install: function (Vue, options) {
-      
+
 
         Vue.http.options.credentials = true;
         Vue.http.interceptors.push(function (request, next) {
@@ -71,9 +86,9 @@ const DYVue = {
                             throw new Error(msg);
                         }
                         if (response.data.message) {
-                          
 
-                            Vue.prototype.$notify({   title: response.data.message, type: "error" });
+
+                            Vue.prototype.$notify({ title: response.data.message, type: "error" });
                             throw new Error(response.data.message);
                         } else {
                             Vue.prototype.$notify({ title: "提交信息有误", message: response.message, type: "error" });
@@ -83,8 +98,8 @@ const DYVue = {
 
                     }
                     if (response.status === 401) {
-                        Vue.prototype.$notify({ title: "未登陆",  type: "error" });
-                  //      window.open('/Account/Login', '_blank');
+                        Vue.prototype.$notify({ title: "未登陆", type: "error" });
+                        //      window.open('/Account/Login', '_blank');
                         window.location.href = '/Account/Login';
                         return;
 
@@ -99,7 +114,7 @@ const DYVue = {
                         throw new Error('找不到数据');
                     }
                     if (response.status === 405) {
-                        Vue.prototype.$notify({ title: "请求方法无效", message: response.data, type: "error" });                      
+                        Vue.prototype.$notify({ title: "请求方法无效", message: response.data, type: "error" });
                         throw new Error('请求方法无效');
                     }
                     if (response.status === 500) {
