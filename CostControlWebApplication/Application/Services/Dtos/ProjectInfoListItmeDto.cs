@@ -17,7 +17,7 @@
         /// </summary>
         public string Undertaking { get; set; }
         /// <summary>
-        /// 商業/政府/住宅 项目类型
+        /// 商業/政府/住宅 項目类型
         /// </summary>
         public string ProjectType { get; set; }
 

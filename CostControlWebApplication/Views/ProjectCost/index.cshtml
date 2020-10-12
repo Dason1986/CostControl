@@ -44,13 +44,13 @@
     <section class="content-header">
         <h1>
             工程管理
-
+            <small>項目成本</small>
         </h1>
         <ol class="breadcrumb">
             <li>工程管理</li>
-
-
+            <li class="active">項目成本</li>
         </ol>
+
     </section>
     <!-- 主內容 -->
     <section class="content">
@@ -60,9 +60,9 @@
 
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">查询</h3>
+                        <h3 class="box-title">查詢</h3>
 
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @@click="onAddProject()"></el-button>
+                        <el-button type="primary" icon="el-icon-edit" size="mini" @@click="onAdd()"></el-button>
                     </div>
                     <div class="box-body">
 
@@ -82,7 +82,7 @@
                                 </div>
 
                             </div>
-                       
+
 
 
                         </div>
@@ -97,7 +97,7 @@
 
 
                                         <button class="btn btn-info" type="submit" v-on:click="onSearchBatch(true)">
-                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查詢
                                         </button>
 
                                         <button class="btn btn-default" v-on:click="filterColumns = onreset()">
@@ -116,72 +116,92 @@
 
                         <el-table :data="datasource">
 
-                            <el-table-column label="編號/名稱" width="180">
+                            <el-table-column label="編號/名稱">
                                 <template slot-scope="scope">
                                     <div class="row">編號:<div class="cell-value"><el-button type="text" style="padding: 0px;" @@click="onOpenProject(scope.row)"> {{scope.row.code}} </el-button></div></div>
-                                    <div class="row">名稱:<div class="cell-value">{{scope.row.name}} </div></div>
+                                    <div class="row">名稱:<div class="cell-value">{{scope.row.name}}  </div></div>
 
                                 </template>
                             </el-table-column>
 
-                            <el-table-column prop="date" label="日期">
+
+                            <el-table-column prop="costoutDate" label="日期">
                             </el-table-column>
-                            <el-table-column prop="name" label="上家">
+                            <el-table-column prop="orderNo" label="單號">
                             </el-table-column>
-                            <el-table-column prop="address" label="摘要">
+                            <el-table-column prop="costType" label="類別">
                             </el-table-column>
-                            <el-table-column prop="date" label="發票編號">
+                            <el-table-column prop="department" label="承擔部門">
                             </el-table-column>
-                            <el-table-column prop="name" label="合約金額">
+                            <el-table-column prop="party" label="收入支出單位">
                             </el-table-column>
-                            <el-table-column prop="address" label="結算金額">
+                            <el-table-column prop="title" label="摘要">
                             </el-table-column>
-                            <el-table-column prop="date" label="原合約申請金額">
+                            <el-table-column prop="currency" label="幣種">
                             </el-table-column>
-                            <el-table-column prop="name" label="後加申請金額">
+                            <el-table-column prop="receiveAmount" label="借方金額（收）">
                             </el-table-column>
-                            <el-table-column prop="address" label="發票申請金額">
+                            <el-table-column prop="expendAmount" label="貸方金額（支）">
                             </el-table-column>
-                            <el-table-column prop="date" label="保固金比例">
+                            <el-table-column prop="invoiceNo" label="發票號">
                             </el-table-column>
-                            <el-table-column prop="date" label="扣減保固金">
+                            <el-table-column prop="settlementMethod" label="結算方式">
                             </el-table-column>
-                            <el-table-column prop="name" label="扣減預付款">
+                            <el-table-column prop="checkNumber" label="支票號">
                             </el-table-column>
-                            <el-table-column prop="address" label="扣除其他款項">
+                            <el-table-column prop="invoiceDate" label="開票日期">
                             </el-table-column>
-                            <el-table-column prop="date" label="應收發票金額">
+                            <el-table-column prop="transferDate" label="轉數/入數日期">
                             </el-table-column>
-                            <el-table-column prop="date" label="已收工程款金額">
+                            <el-table-column prop="expectedPaymentDate" label="預計付款日期">
                             </el-table-column>
-                            <el-table-column prop="name" label="收款日期（工程款）">
+                            <el-table-column prop="followUser" label="收/付款跟進人">
                             </el-table-column>
-                            <el-table-column prop="address" label="已收保固金金額">
+                            <el-table-column prop="dispatcher" label="調撥單號">
                             </el-table-column>
-                            <el-table-column prop="date" label="收款日期（保固金）">
-                            </el-table-column>
-                            <el-table-column prop="date" label="餘額（工程款）">
-                            </el-table-column>
-                            <el-table-column prop="date" label="餘額（保固金）">
-                            </el-table-column>
-                            <el-table-column prop="date" label="備註">
+                            <el-table-column prop="exchangeDate" label="兌票日期">
                             </el-table-column>
 
+                            <el-table-column prop="confirmation" label="會計確認" :formatter="formatterBoolean">
+                            </el-table-column>
+                            <el-table-column prop="handover" label="單據是否交接" :formatter="formatterBoolean">
+                            </el-table-column>
+                            <el-table-column prop="remark" label="備註" :show-overflow-tooltip="true">
+                            </el-table-column>
+                            <el-table-column label="操作">
+                                <template slot-scope="scope">
+                                    <el-button @@click="onEdit(scope.row)">修改</el-button>
+                                    <el-button>归档</el-button>
+
+                                </template>
+                            </el-table-column>
                         </el-table>
-                    
+
                     </div>
                 </div>
             </div>
         </div>
+        <bg-add-costout :visible.sync="innerVisiblecostout" :item="rec" v-on:closed="onSearchBatch" :projectid="getprojectId()">></bg-add-costout>
+        <bg-edit-project :visible.sync="innerVisibleEditProject" v-on:closed="onSearchBatch" :projectid="getprojectId()"></bg-edit-project>
     </section>
 </div>
+
+
+<partial name="~/Views/Shared/bg/PartialOmit.cshtml" />
+<partial name="~/Views/Project/PartialAddProject.cshtml" />
+<partial name="~/Views/Project/PartialEditProject.cshtml" />
+<partial name="~/Views/Project/PartialCostIn.cshtml" />
+<partial name="~/Views/Project/PartialCostout.cshtml" />
+<partial name="~/Views/Project/PartialAddCostIn.cshtml" />
+<partial name="~/Views/Project/PartialAddCostout.cshtml" />
+<partial name="~/Views/Project/PartialAboutFiles.cshtml" />
 
 <script>
 
 
     Vue.use(DYVue);
 </script>
- 
+
 
 
 <script type="text/javascript">
@@ -196,10 +216,11 @@
 
                     total:@Model.Total ,
                     pagesize: @Model.PageSize,
-
+                    innerVisiblecostout: false,
+                    innerVisibleEditProject: false,
                     datasource: @Html.RawEntity(Model.Items),
+                    rec: {},
 
-                   
                     filterColumns: this.onreset()
                 };
             },
@@ -211,7 +232,7 @@
                     if (flag) { this.filterColumns.pageno = 1; }
                     var filter =  { ...this.filterColumns }
 
-                    var response = await this.$http.get("/api/BatchPackage/Batchs", { params: filter });
+                    var response = await this.$http.get("/api/ProjectCost", { params: filter });
                     this.total = response.data.total;
                     this.datasource = response.data.items;
 
@@ -228,15 +249,25 @@
                         greeCode: [],
                         pageno: 1};
                 },
+                getprojectId: function () {
+                    if (this.rec) return this.rec.projectId;
+                    return undefined;
+                },
                 onChangePager: function (current) {
 
                     this.pageno = current;
                     this.onSearchBatch(false);
                 },
-                onAddProject: function (){
-                    this.innerVisibleAddProject = true;
+                onAdd: function () {
+                    this.rec =   undefined  ;
+                    this.innerVisiblecostout = true;
                 },
-                onOpenProject: function () {
+                onEdit: function (val) {
+                    this.rec = val;
+                    this.innerVisiblecostout = true;
+                },
+                onOpenProject: function (val) {
+                    this.rec = val;
                     this.innerVisibleEditProject = true;
                 }
 

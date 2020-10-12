@@ -23,7 +23,7 @@ namespace CostControlWebApplication.Domain
 
 
         /// <summary>
-        /// 名称
+        /// 名稱
         /// </summary>
 
         public string Name { get; set; }

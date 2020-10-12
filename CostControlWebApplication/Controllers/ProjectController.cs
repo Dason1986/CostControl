@@ -22,20 +22,25 @@ namespace CostControlWebApplication.Controllers
     {
 
 
-        public IActionResult Index([FromServices] ProjectService service, [FromQuery] ProjectQueryRequest queryRequest)
+        public IActionResult Index(  [FromServices] ProjectService service, [FromQuery] ProjectQueryRequest queryRequest)
         {
+          
             IPagingList list = service.GetProjects(queryRequest).ProjectedAsPagingList<ProjectInfoListItmeDto>();
             return View(list);
 
         }
-        [HttpGet("~/api/Project")]
+    }
+    [Authorize, ApiControllerAttribute, Route("~/api/Project")]
+    public class ProjectApiController : Controller
+    {
+        [HttpGet()]
         public IPagingList GetProjects([FromServices] ProjectService service, [FromQuery] ProjectQueryRequest queryRequest)
         {
             IPagingList list = service.GetProjects(queryRequest).ProjectedAsPagingList<ProjectInfoListItmeDto>();
 
             return list;
         }
-        [HttpGet("~/api/Project/{id}")]
+        [HttpGet("{id}")]
         public ProjectInfoDto GetProject([FromServices] ProjectService service, [FromRoute] long id)
         {
 
@@ -43,7 +48,15 @@ namespace CostControlWebApplication.Controllers
 
 
         }
-        [Route("/api/Project/file")]
+        [HttpGet("Search")]
+        public OptionEntry[] SearchProject([FromServices] ProjectService service, [FromQuery] string code)
+        {
+
+            return service.SearchProject(code);
+
+
+        }
+        [Route("file")]
         [HttpPost]
         public void UploadFile([FromServices] ProjectService projectService, [FromServices] FileStorageServie storageServie, [FromForm] Microsoft.AspNetCore.Http.IFormCollection form, [FromForm] long filetype, [FromForm] long projectId)
         {
@@ -55,7 +68,7 @@ namespace CostControlWebApplication.Controllers
             projectService.AddAboutFile(projectId,filetype,filedto);
               
         }
-        [HttpPost("~/api/Project")]
+        [HttpPost("Project")]
         public void AddProject([FromServices] ProjectService service, [FromBody] ProjectInfoDto dto)
         {
 
@@ -63,7 +76,7 @@ namespace CostControlWebApplication.Controllers
 
 
         }
-        [HttpPost("~/api/Project/costout")]
+        [HttpPost("costout")]
         public void AddCostout([FromServices] ProjectService service, [FromBody] ProjectCostOutDto dto)
         {
 
@@ -71,11 +84,27 @@ namespace CostControlWebApplication.Controllers
 
 
         }
-        [HttpPost("~/api/Project/costin")]
+        [HttpPut("costout/{id}")]
+        public void EditCostout([FromServices] ProjectService service, [FromBody] ProjectCostOutDto dto,[FromRoute] long id)
+        {
+
+            service.EditCostout(id,dto);
+
+
+        }
+        [HttpPost("costin")]
         public void AddCostin([FromServices] ProjectService service, [FromBody] ProjectCostInDto dto)
         {
 
             service.AddCostin(dto);
+
+
+        }
+        [HttpPut("costin/{id}")]
+        public void EditCostin([FromServices] ProjectService service, [FromBody] ProjectCostInDto dto, [FromRoute] long id)
+        {
+
+            service.EditCostin(id,dto);
 
 
         }

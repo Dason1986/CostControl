@@ -45,7 +45,7 @@ namespace CostControlWebApplication
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSeetings.Secret))
                 };
             });
-  
+            services.AddSingleton<ISerialNumberProvider, SerialNumberProvider>();
         }
     }
 }

@@ -39,7 +39,7 @@
 
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">查询</h3>
+                        <h3 class="box-title">查詢</h3>
                         <button class="btn btn-info" type="submit" v-on:click="onsearch(true)">
                             <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 刷新
                         </button>
@@ -72,13 +72,13 @@
                                                     <el-input-number v-model="setting.fileSynchronization.port" controls-position="right" :min="1" :max="99999"></el-input-number>
 
                                                 </el-form-item>
-                                                <el-form-item label="无密码">
+                                                <el-form-item label="无密碼">
                                                     <el-checkbox v-model="setting.fileSynchronization.isGuest"></el-checkbox>
                                                 </el-form-item>
                                                 <el-form-item label="帐号">
                                                     <el-input v-model="setting.fileSynchronization.uid" :disabled="setting.fileSynchronization.isGuest"></el-input>
                                                 </el-form-item>
-                                                <el-form-item label="密码">
+                                                <el-form-item label="密碼">
                                                     <el-input v-model="setting.fileSynchronization.pwd" :disabled="setting.fileSynchronization.isGuest"></el-input>
                                                 </el-form-item>
                                                 <el-form-item label="远端根目录">
@@ -100,7 +100,7 @@
                                         </div>
                                         <div class="text item">
                                             <el-form label-position="left" label-width="150px" :model="setting.receive">
-                                                <el-form-item label="文件密码">
+                                                <el-form-item label="文件密碼">
                                                     <el-input v-model="setting.receive.fileKeys"></el-input>
                                                 </el-form-item>
                                                 <el-form-item label="以程序为根目录">

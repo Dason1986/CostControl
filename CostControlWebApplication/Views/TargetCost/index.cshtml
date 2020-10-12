@@ -60,7 +60,7 @@
 
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">查询</h3>
+                        <h3 class="box-title">查詢</h3>
 
                         <el-button type="primary" icon="el-icon-edit" size="mini" @@click="onAddTargetcost()"></el-button>
                     </div>
@@ -97,7 +97,7 @@
 
 
                                         <button class="btn btn-info" type="submit" v-on:click="onSearchBatch(true)">
-                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查詢
                                         </button>
 
                                         <button class="btn btn-default" v-on:click="filterColumns = onreset()">
@@ -129,7 +129,7 @@
                                     <div class="row">預計完工: <div class="cell-value">{{scope.row.endDate}} </div></div>
                                 </template>
                             </el-table-column>
-                            <el-table-column label="项目类型" prop="projectTypeId" :formatter="formatterProjectType"> </el-table-column>
+                            <el-table-column label="項目类型" prop="projectTypeId" :formatter="formatterProjectType"> </el-table-column>
                             <el-table-column label="合約金額"> </el-table-column>
                             <el-table-column label="合約內結算金額"> </el-table-column>
                             <el-table-column label="合約外後加減金額"> </el-table-column>

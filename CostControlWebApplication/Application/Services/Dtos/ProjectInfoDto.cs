@@ -80,7 +80,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// </summary>
         public long UndertakingId { get; set; }
         /// <summary>
-        /// 商業/政府/住宅 项目类型
+        /// 商業/政府/住宅 項目类型
         /// </summary>
         public long ProjectTypeId { get; set; }
         /// <summary>

@@ -7,11 +7,11 @@
         /// </summary>
         public long UserId { get; set; }
         /// <summary>
-        /// 新密码
+        /// 新密碼
         /// </summary>
         public string Password { get; set; }
         /// <summary>
-        /// 确认密码
+        /// 确认密碼
         /// </summary>
         public string ComfirmPassword { get; set; }
     }

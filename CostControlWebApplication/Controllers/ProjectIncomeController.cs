@@ -13,11 +13,21 @@ namespace CostControlWebApplication.Controllers
 
         public IActionResult Index([FromServices] ProjectService service, [FromQuery] ProjectQueryRequest queryRequest)
         {
-            IPagingList list = service.GetProjects(queryRequest).ProjectedAsPagingList<ProjectInfoListItmeDto>();
+            IPagingList list = service.GetProjectCostin(queryRequest);
             return View(list);
 
         }
+    }
+    [Authorize, ApiControllerAttribute, Route("~/api/ProjectIncome")] 
+    public class ProjectIncomeApiController : Controller
+    {
+    [HttpGet()]
+        public IPagingList GetProjects([FromServices] ProjectService service, [FromQuery] ProjectQueryRequest queryRequest)
+        {
+            IPagingList list = service.GetProjectCostin(queryRequest);
 
+            return list;
+        }
 
     }
 }

@@ -38,7 +38,7 @@
 - Image
   - 修复当 preview-src-list 属性不包含 src 时图片预览大图展示为空的问题 (#18975) (#19130 by @luckyCao)
   - 修复第二次图片预览时快捷键失效问题 (#18983) (#19156 by @luckyCao)
-  - 修复 preview-src-list 为空时点击图片会给 body 添加 overflow: scroll 的问题 (#18967 by @inooNgt)
+  - 修复 preview-src-list 为空时點擊图片会给 body 添加 overflow: scroll 的问题 (#18967 by @inooNgt)
 - Transfer
   - 修复和 Form 组件一起使用时错误的行高问题 (#18917 by @Hanx)
 - InputNumber
@@ -156,7 +156,7 @@
   - 禁用状态下，关闭按钮不显示 (#16224 by @yyjjqq94)
 - Input
   - 修复韩语输入问题 (#15069 by @MoonHyuk)
-  - 触发清除按钮的点击事件 (#16576 by @a631807682)
+  - 触发清除按钮的點擊事件 (#16576 by @a631807682)
 - Select
   - 过滤时，不收起下拉框 (#17205 by @luckyCao)
 - Transfer
@@ -453,7 +453,7 @@
 - Switch
   - 修复事件重复触发问题 (#15178 by @FAKER-A)
 - Slider
-  - 修复点击时样式问题 (#15561 by @luckyCao)
+  - 修复點擊时样式问题 (#15561 by @luckyCao)
 - Radio
   - 修复 value 不更新的问题 (#14809 by @OverTree)
 - Form
@@ -504,7 +504,7 @@
 - Docs
   - 修复 link 的样式 (#15265 by @iamkun)
 - 其他
-  - migrating 配置兼容驼峰名称 (#15260 by @SimonaliaChen)
+  - migrating 配置兼容驼峰名稱 (#15260 by @SimonaliaChen)
 
 ### 2.8.0
 
@@ -665,7 +665,7 @@ Docs
 - Table
   - Table footer 与 body 的对齐一致 (#14730 by @ziyoung)
 - NavMenu
-  - 修复点击 el-submenu 多次触发 childMenu 问题 (#14443 by @PanJiaChen)
+  - 修复點擊 el-submenu 多次触发 childMenu 问题 (#14443 by @PanJiaChen)
 - Dropdown
   - 兼容 Vue 2.6 新 v-slot 语法 (#14832 by @ziyoung)
 - ColorPicker
@@ -677,7 +677,7 @@ Docs
 - Docs
   - 更新 Cascader 文档 (#14442 by @panhezeng)
 - Style
-  - 修复媒体查询 sm-only, md-only, lg-only 问题 (#14611 by @sinchang)
+  - 修复媒体查詢 sm-only, md-only, lg-only 问题 (#14611 by @sinchang)
 
 #### 优化
 
@@ -760,7 +760,7 @@ Docs
 - DropdownItem
   - `el-dropdown-item` 支持添加 icon (by @gabrielboliveira in #14088)
 - Input
-  - 添加 `show-password` 属性，支持配置显示密码按钮 (by @phshy0607 in #13966)
+  - 添加 `show-password` 属性，支持配置显示密碼按钮 (by @phshy0607 in #13966)
 - Select
   - 添加 slot `empty` (by @elfman in #13785)
 - Autocomplete
@@ -802,7 +802,7 @@ Docs
 - MessageBox
   - 修复 TS 定义 (by @NateScarlet in #14278)
 - ScrollBar
-  - 修复点击鼠标右键导致拖动的问题 (by @xifeiwu in #14196)
+  - 修复點擊鼠标右键导致拖动的问题 (by @xifeiwu in #14196)
 - Switch
   - 添加 `validate-event` 属性，设置改变 Switch 状态时是否触发表单的校验 (by @hetech in #14426)
 - Table
@@ -840,7 +840,7 @@ Docs
 
 #### 修复
 
-- 修复 UMD 包在服务器端运行出错的问题 (by @island205 in #14242)
+- 修复 UMD 包在伺服器端运行出错的问题 (by @island205 in #14242)
 - 修复 Tabbar 高亮时的样式 (by @iamkun in #14240)
 - 修复 Table 示例代码的错误 (by @xunmeng in #14253)
 
@@ -917,13 +917,13 @@ Docs
 - Radio
   - 改进显示样式 (by @ohhoney1)
 - Table
-  - 改进点击排序箭头时的行为 (by @ohhoney1 in #12890)
+  - 改进點擊排序箭头时的行为 (by @ohhoney1 in #12890)
   - 修正 IE10+ 中 “暂无数据” 提示的垂直布局 (by @imzjy in #13638)
   - 修正文档中 `index` 的类型说明 (by @ilovefafa in #13628)
   - 修正多级表头使用 `fixed` 属性时，表尾合计行的显示样式 (by @luckyCao in #13914)
 - Tabs
   - 修正自动滚动 (by @iamkun in #13696)
-  - 通过面板名称查找面板 (by @iamkun in #13705)
+  - 通过面板名稱查找面板 (by @iamkun in #13705)
   - 使用 `paneName` 计算面板样式 (by @iamkun in #13733)
 - Tree
   - 修正 `showCheckbox` 不能影响子节点的问题 (by @KidneyFlower)
@@ -952,14 +952,14 @@ Docs
 
 *2018-11-21*
 
-- 撤销 pr #13296，修复点击 Menu 外部导致 Submenu 收起的问题，#13478
-- 调整小屏幕（xs）媒体查询断点，#13468 （by @alekoshen712）
+- 撤销 pr #13296，修复點擊 Menu 外部导致 Submenu 收起的问题，#13478
+- 调整小屏幕（xs）媒体查詢断点，#13468 （by @alekoshen712）
 
 ### 2.4.10
 
 *2018-11-16*
 
-- 修复多次点击 Select 才显示下拉列表的问题，#13268
+- 修复多次點擊 Select 才显示下拉列表的问题，#13268
 - Form 禁用时不显示 Input 的 clear 图标，#13208
 - 调整 Select，Progress，Autocomplete，Tooltip，Collaspe，TimePicker 的样式，#13188 (by @porcelainHeart) #13210 #13266 #13257 #13290 #13347 (by @PanJiaChen)
 - Carousel 组件新增 `loop` 属性，#13217
@@ -971,7 +971,7 @@ Docs
 - 在拖拽时，ColorPicker 不再触发表单校验，#13299
 - InputNumber 新增 `select` 方法，#13286 (by @st-sloth)
 - Autocomplete 新增 `clear` 事件，#12171(by arthurdenner) #13326
-- 可以通过点击 Menu 外部来关闭 Menu，#13296
+- 可以通过點擊 Menu 外部来关闭 Menu，#13296
 - Form 的 `validateField` 方法可以接收参数，#13319
 - Cascader 新增 `visible-change` 事件，#13415
 - DatePicker 新增 range-separator slot， #13272 (by @milworm)
@@ -1040,10 +1040,10 @@ Docs
 - 修复 Table 的 filter 初始值为空数组时不显示筛选图标的问题，#12165
 - 修复 Menu 在更改 `collapse` 时不保存菜单激活状态的问题，#12178 (by @elfman)
 - 修复 Cascader 未转义特殊字符的问题，#12248
-- 修复禁用的 RadioButton 在点击时显示 box-shadow 的问题，#12262
+- 修复禁用的 RadioButton 在點擊时显示 box-shadow 的问题，#12262
 - 修复 Select 初始值为 `undefined` 时方向键失效的问题，#12322
 - 修复 Select 多选时输入的关键字消失的问题，#12304
-- 修复 Select 多选时查询函数没有去抖的问题，#12181
+- 修复 Select 多选时查詢函数没有去抖的问题，#12181
 - 修复 Dialog 在全屏显示时宽度不正确的问题，#12203
 - 修复 Main 在 IE 下的显示不正确的问题，#12237
 - 修复 Input 触发两次表单校验的问题，#12260
@@ -1094,13 +1094,13 @@ Docs
 *2018-06-26*
 
 - 修复 Table 的 `class-name` 和 `label-class-name` 属性不支持动态更新的问题，#11626
-- 修复 Table 在 `highlight-current-row` 为 `false` 时点击行也会触发高亮的问题，#11691 #11563
+- 修复 Table 在 `highlight-current-row` 为 `false` 时點擊行也会触发高亮的问题，#11691 #11563
 - 修复 ButtonGroup 中只有一个 `round` 或 `circle` 的 Button 时的样式错误，#11605
 - 修复在某些情况下 Pagination 的条目数选择器的样式错误，#11622
 - 修复 Menu 的 `collapse` 属性变化后无法使用 `open` 方法的问题，#11646
 - Tabs 的 `before-leave` 钩子添加了 `activeName` 和 `oldActiveName` 参数，#11713
 - 修复 Cascader 关闭后的聚焦问题，#11588
-- 修复 Cascader 在 `change-on-select` 状态下点击选项不关闭的问题，#11623
+- 修复 Cascader 在 `change-on-select` 状态下點擊选项不关闭的问题，#11623
 - 现在通过代码改变 Select 的值后会触发表单校验，与 Input 行为一致，#11672
 
 ### 2.4.1
@@ -1110,7 +1110,7 @@ Docs
 - 移除 Autocomplete 的重复类型声明，#11388
 - 修复嵌套在 Form 内的 Select 在 FireFox 浏览器中下拉箭头错位的问题，#11427
 - 修复 Select 的初始值为 `null` 时仍然显示清除图标的问题，#11460
-- 修复禁用的 Radio 在点击时显示 box-shadow 的问题，#11462
+- 修复禁用的 Radio 在點擊时显示 box-shadow 的问题，#11462
 - 新增 MessageBox 的 `iconClass` 属性，#11499
 - 新增 Tabs 的 `stretch` 属性，#11476
 - 修复 Tabs 开启 `lazy` 时渲染顺序异常的问题，#11461
@@ -1225,7 +1225,7 @@ Docs
 
 - 删除 SubMenu 在 TypeScript 类型声明中重复的 `showTimeout` 属性，#10566（by @kimond）
 - 现在 Transfer 数据项的渲染支持通过 scoped slot 自定义，#10577
-- 修复点击 Pagination 禁用的上一页、下一页按钮仍会触发 `current-change` 事件的问题，#10628
+- 修复點擊 Pagination 禁用的上一页、下一页按钮仍会触发 `current-change` 事件的问题，#10628
 - 修复未绑定值的 Textarea 在 SSR 中会显示 `undefined` 的问题，#10630
 - 修复 `type` 为 border-card 的 Tabs 中被禁用标签项的样式，#10640
 - 新增 `$index` 作为 Table 的 `formatter` 属性回调的第四个参数，#10645
@@ -1293,7 +1293,7 @@ Docs
 - DatePicker
   - 现在时间日期选择器下拉面板中的值能够正确地从 `format` 属性中获取对应格式了，#10174（by @remizovvv）
 - Upload
-  - 现在拖拽上传会拦截不在 `accept` 属性范围内的文件，#10278
+  - 现在拖拽上傳会拦截不在 `accept` 属性范围内的文件，#10278
 
 ### 2.2.2
 
@@ -1321,7 +1321,7 @@ Docs
 - 修复设置了 `height` 属性的 Table 在服务端渲染时无法加载的问题，#9876
 - 修复可展开的 Table 在展开某一行后高度未重新计算的问题，#9848
 - 修复在 DateTimePicker 中手动输入日期后不能正确触发 `change` 事件的问题，#9913
-- 修复鼠标右键点击 Select 的输入框会展开选项的问题，#9894（by @openks）
+- 修复鼠标右键點擊 Select 的输入框会展开选项的问题，#9894（by @openks）
 - 新增 Slider 的 `tooltip-class` 属性，#9957
 - 现在的 Select 在选中选项后仍然处于 focus 状态，#9857（by @Seebiscuit）
 - 新增 Transfer 的 `target-order` 属性，#9960
@@ -1345,7 +1345,7 @@ Docs
 
 #### 修复
 - Table
-  - 修复点击可展开行的展开图标会触发 `row-click` 事件的问题，#9654
+  - 修复點擊可展开行的展开图标会触发 `row-click` 事件的问题，#9654
   - 修复某些情况下通过拖动改变列宽后，布局没有同步更新的问题，#9668
   - 修复合计行与固定列并存时的样式问题，#9667
 - Container
@@ -1353,7 +1353,7 @@ Docs
 - Loading
   - 修复在 `mounted` 中修改 `v-loading` 的值为 true 时不能正确显示 Loading 的问题，#9722
 - Switch
-  - 修复点击时会触发两次原生 click 事件的问题，#9760
+  - 修复點擊时会触发两次原生 click 事件的问题，#9760
 
 ### 2.1.0 Charcoal
 
@@ -1394,7 +1394,7 @@ Docs
   - 修复某些情况下 Loading 不能被正确隐藏的问题，#9313
 - DatePicker
   - 修复 `focus` 方法在范围选择时无效的问题，#9437
-  - 修复当目前时刻处于不可选择的范围内时，点击面板上的「此刻」按钮仍能选中目前时刻的问题，#9470（by @wacky6）
+  - 修复当目前时刻处于不可选择的范围内时，點擊面板上的「此刻」按钮仍能选中目前时刻的问题，#9470（by @wacky6）
   - 修复当在月选择面板中选中天数较少的月份时，日期面板呈现下一个月的问题，#9577（by @wacky6）
 - Steps
   - 修复在 IE 11 中的样式问题，#9454
@@ -1417,7 +1417,7 @@ Docs
 - 修复 Select 的 `remove-tag` 事件参数与文档不符的问题，#9090
 - 新增 SubMenu 的 `show-timeout` 和 `hide-timeout` 属性，#8934（by @HugoLew）
 - 修复按需引入 Table 时 `show-overflow-tooltip` 的 Tooltip 样式丢失的问题，#9130
-- 修复 Table 在执行 `clearSort` 后点击对应列的排序图标无法正常排序的问题，#9100（by @zEmily）
+- 修复 Table 在执行 `clearSort` 后點擊对应列的排序图标无法正常排序的问题，#9100（by @zEmily）
 - 捷克语的 i18n 配置文件由 `cz` 重命名为 `cs-CZ`，#9164
 
 ### 2.0.10
@@ -1444,7 +1444,7 @@ Docs
 *2017-12-12*
 
 - 新增西班牙语文档
-- 修复 `show-timeout` 对点击触发的 Dropdown 无效的问题，#8734（by @presidenten）
+- 修复 `show-timeout` 对點擊触发的 Dropdown 无效的问题，#8734（by @presidenten）
 - 修复 Form 对于 `trigger` 为 blur 的校验规则触发时机有误的问题，#8776
 - 修复 DatePicker 在范围选择时 blur 事件触发时机有误的问题，#8784
 - TimePicker 的 `format` 新增对 AM/PM 的支持，#8620（by @firesh）
@@ -1508,7 +1508,7 @@ Docs
 - 新增 TableColumn 的 `sort-by` 属性，#7828（by @wangfengming）
 - 修复周模式下的 DatePicker 在选择某年第一周可能会显示为前一年第一周的问题，#7860（by @hh23485）
 - 修复垂直模式的 Steps 中图标宽度的样式错误，#7891
-- 增大了 Tree 中展开箭头的点击热区，#7891
+- 增大了 Tree 中展开箭头的點擊热区，#7891
 
 ### 2.0.1
 
@@ -1604,7 +1604,7 @@ Docs
 - Autocomplete
   - 新增 `debounce` 属性，#7413
 - Upload
-  - 新增 `limit` 和 `on-exceed` 属性，支持对上传文件的个数进行限制，#7405
+  - 新增 `limit` 和 `on-exceed` 属性，支持对上傳文件的个数进行限制，#7405
 - DateTimePicker
   - 新增 `time-arrow-control` 属性，用于开启时间选择器的 `arrow-control`，#7438
 - Layout
@@ -1675,7 +1675,7 @@ Docs
   - 移除 `theme` 属性。现在通过 `background-color`、`text-color` 和 `active-text-color` 属性进行颜色的自定义
 - Input
   - 移除 `icon` 属性。现在通过 `suffix-icon` 属性或者 `suffix` 具名 slot 来加入尾部图标
-  - 移除 `on-icon-click` 属性和 `click` 事件。现在如果需要为输入框中的图标添加点击事件，请以具名 slot 的方式添加图标
+  - 移除 `on-icon-click` 属性和 `click` 事件。现在如果需要为输入框中的图标添加點擊事件，请以具名 slot 的方式添加图标
   - `change` 事件现在仅在输入框失去焦点或用户按下回车时触发，与原生 input 元素一致。如果需要实时响应用户的输入，可以使用 `input` 事件
 - Autocomplete
   - 移除 `custom-item` 属性。现在通过 `scoped slot` 自定义输入建议列表项的内容

@@ -16,11 +16,11 @@ namespace CostControlWebApplication.Application.Services.Dtos
         public string CreateDate { get; set; }
 
         /// <summary>
-        /// 密码
+        /// 密碼
         /// </summary>
         public string PassWord { get; set; }
         /// <summary>
-        /// 确认密码
+        /// 确认密碼
         /// </summary>
         public string ComfirmPassword { get; set; }
     }

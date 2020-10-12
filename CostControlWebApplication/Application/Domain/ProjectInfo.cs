@@ -79,7 +79,7 @@ namespace CostControlWebApplication.Domain
         public decimal ContractAmount { get; set; }
 
         /// <summary>
-        /// 必需上传審批單
+        /// 必需上傳審批單
         /// </summary>
         public bool MustApprovelFile { get; set; }
         /// <summary>
@@ -120,7 +120,7 @@ namespace CostControlWebApplication.Domain
         /// </summary>
         public long UndertakingId { get; set; }
         /// <summary>
-        /// 商業/政府/住宅 项目类型
+        /// 商業/政府/住宅 項目类型
         /// </summary>
         public long ProjectTypeId { get; set; }
         /// <summary>

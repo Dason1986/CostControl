@@ -53,8 +53,8 @@ namespace GreeSaas.WebApplication.Controllers
             if (string.IsNullOrEmpty(userLogin.Account)) throw new BingoX.LogicException();
             if (string.IsNullOrEmpty(userLogin.Password)) throw new BingoX.LogicException();
             var user = service.Login(userLogin.Account, userLogin.Password);
-            if (user == null) throw new  UnauthorizedException("登录失败，帐号或密码错误");
-            if (user.State !=   CostControlWebApplication.Domain.CommonState.Enabled) throw new UnauthorizedException("登录失败，帐号已经注销");
+            if (user == null) throw new  UnauthorizedException("登錄失败，帐号或密碼错误");
+            if (user.State !=   CostControlWebApplication.Domain.CommonState.Enabled) throw new UnauthorizedException("登錄失败，帐号已经注销");
             var now = dateTimeService.GetNow();
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSeetings.Secret));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);

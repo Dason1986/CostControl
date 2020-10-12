@@ -1,4 +1,5 @@
-﻿using BingoX.AspNetCore;
+﻿using BingoX;
+using BingoX.AspNetCore;
 using BingoX.ComponentModel.Data;
 using BingoX.DataAccessor;
 using BingoX.Repository;
@@ -13,10 +14,12 @@ namespace CostControlWebApplication.Services
     public class TargetCostService : BaseService
     {
         private readonly TargetCostRepository repository;
+        private readonly ISerialNumberProvider serialNumberProvider;
 
-        public TargetCostService(TargetCostRepository repository, IBoundedContext bounded, ICurrentUser user) : base(bounded, user)
+        public TargetCostService(TargetCostRepository repository, ISerialNumberProvider serialNumberProvider, IBoundedContext bounded, ICurrentUser user) : base(bounded, user)
         {
             this.repository = repository;
+            this.serialNumberProvider = serialNumberProvider;
         }
 
 
@@ -64,15 +67,17 @@ namespace CostControlWebApplication.Services
 
         }
 
-        public void Add(TargetCost entity)
+        public void Add(TargetCostDto dto)
         {
-
+            TargetCost entity = dto.ProjectedAs<TargetCost>();
+            if (string.IsNullOrEmpty(entity.Code)) entity.Code = serialNumberProvider.Dequeue(SerialNumberCode.TargetCost);
+            else if (repository.ExistCode(entity.Code)) throw new LogicException("编号已经存在");
             entity.State = CommonState.Enabled;
             entity.Created(this);
             repository.Add(entity);
             repository.UnitOfWork.Commit();
         }
-        public void Add(TargetCostDetail dto)
+        public void Add(TargetCostDetailDto dto)
         {
             TargetCostDetail entity = dto.ProjectedAs<TargetCostDetail>();
 

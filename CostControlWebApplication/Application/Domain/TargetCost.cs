@@ -14,7 +14,7 @@ namespace CostControlWebApplication.Domain
         /// </summary>
         public string Address { get; set; }
         /// <summary>
-        /// 项目类型
+        /// 項目类型
         /// </summary>
         public long ProjectTypeId { get; set; }
 

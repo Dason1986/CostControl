@@ -63,7 +63,7 @@ namespace CostControlWebApplication.Services
         {
             long parentID = dto.ParentID;
             if (parentID <= 0) throw new LogicException("上级编号无效");
-            if (string.IsNullOrEmpty(dto.Name)) throw new LogicException("名称不能为空");
+            if (string.IsNullOrEmpty(dto.Name)) throw new LogicException("名稱不能为空");
             if (string.IsNullOrEmpty(dto.DataValue)) throw new LogicException("数值不能为空");
             var entity = new BasicData
             {
@@ -84,7 +84,7 @@ namespace CostControlWebApplication.Services
         {
             long parentID = dto.ParentID;
             if (parentID <= 0) throw new LogicException("上级编号无效");
-            if (string.IsNullOrEmpty(dto.Name)) throw new LogicException("名称不能为空");
+            if (string.IsNullOrEmpty(dto.Name)) throw new LogicException("名稱不能为空");
             if (string.IsNullOrEmpty(dto.DataValue)) throw new LogicException("数值不能为空");
             BasicData entity = repository.GetId(dto.ID);
             if (entity == null) throw new LogicException("修改数据不存在");

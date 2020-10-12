@@ -19,7 +19,7 @@
                                 <el-table v-loading.body="props.row.isEditing" v-bind:data.sync="props.row.childs" height="200"
                                           style="width: 100%">
                                     <el-table-column label="排序编号" prop="indexNo">        </el-table-column>
-                                    <el-table-column label="名称" prop="name">        </el-table-column>
+                                    <el-table-column label="名稱" prop="name">        </el-table-column>
                                     <el-table-column label="数据值" prop="dataValue">        </el-table-column>
                                     <el-table-column label="描述" prop="remark" v-bind:show-overflow-tooltip="true">        </el-table-column>
                                     <el-table-column label="狀態" prop="state" v-bind:formatter="formatterStatusCode"></el-table-column>
@@ -34,7 +34,7 @@
                         </el-table-column>
 
                         <el-table-column label="排序编号" prop="indexNo">        </el-table-column>
-                        <el-table-column label="名称" prop="name">        </el-table-column>
+                        <el-table-column label="名稱" prop="name">        </el-table-column>
                         <el-table-column label="数据值" prop="dataValue">        </el-table-column>
                         <el-table-column label="描述" prop="remark" v-bind:show-overflow-tooltip="true">        </el-table-column>
                         <el-table-column label="狀態">
@@ -62,8 +62,8 @@
                         <div class="el-card__body">
 
                             <el-form ref="singleSelection" v-bind:rules="basicdaterules" v-bind:model="singleSelection" label-width="80px">
-                                <el-form-item label="名称" prop="name">
-                                    <el-input v-model="singleSelection.name" placeholder="名称"></el-input>
+                                <el-form-item label="名稱" prop="name">
+                                    <el-input v-model="singleSelection.name" placeholder="名稱"></el-input>
                                 </el-form-item>
                                 <el-form-item label="数据值" prop="dataValue">
 
@@ -124,7 +124,7 @@
                     editrectype:'',
                     basicdaterules: {
                         name: [
-                            { required: true, message: '请输入中文名称', trigger: 'blur' },
+                            { required: true, message: '请输入中文名稱', trigger: 'blur' },
 
                         ],
                         dataValue: [

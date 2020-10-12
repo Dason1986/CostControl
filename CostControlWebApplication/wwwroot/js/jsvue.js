@@ -6,11 +6,9 @@
         return value;
     },
         this.Boolean = function (value) {
-            if (value instanceof Boolean) {
-                return value ? '是' : '否';
-            }
-            if (value === 1 || value === '1') return '是';
-            if (value === 0 || value === '0') return '否';
+
+            if (value === true || value === 1 || value === '1') return '是';
+            if (value === false || value === 0 || value === '0') return '否';
             return value;
         };
 }
@@ -24,7 +22,12 @@ Vue.mixin({
             return false;
         },
         formatterStatusCode: function (row, column, cell) { return _enumFormatter.StatusCode(cell); },
-        formatterBoolean: function (row, column, cell) { return _enumFormatter.Boolean(cell); },
+        formatterBoolean: function (row, column, cell) {
+
+            var returnvalue = _enumFormatter.Boolean(cell);
+   
+            return returnvalue;
+        },
         formatterOmit: function (row, column, cell) {
             if (cell) {
                 if (cell.length > 10) {
@@ -36,11 +39,12 @@ Vue.mixin({
             return cell;
         },
         formatterOf: function (array, cellValue) {
-           
+
             var itemfilter = array.filter(x => x.id == cellValue);
 
             if (itemfilter && itemfilter.length > 0) return itemfilter[0].label;
-            return cellValue; },
+            return cellValue;
+        },
     },
     filters: {
 
@@ -49,7 +53,10 @@ Vue.mixin({
 
         },
         filterBoolean: function (value) {
-            return _enumFormatter.Boolean(value);
+
+            var returnvalue = _enumFormatter.Boolean(value);
+          
+            return returnvalue;
         },
 
     }

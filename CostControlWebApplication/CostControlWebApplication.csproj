@@ -4,9 +4,17 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
     <UserSecretsId>1fbedbc1-7a26-4c58-9a54-e5b1f56df75e</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
-    <Product>工程成本核算系统</Product>
+    <Product>工程成本覈算系統</Product>
     <Company>BingoX</Company>
+    <Authors>Dason</Authors>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="FileStorage\**" />
+    <Content Remove="FileStorage\**" />
+    <EmbeddedResource Remove="FileStorage\**" />
+    <None Remove="FileStorage\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="10.0.0" />

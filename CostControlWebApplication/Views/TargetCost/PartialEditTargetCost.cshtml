@@ -204,6 +204,12 @@
                     </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="暫估費用明細表" name="tab2">
+           
+                    <el-row>
+                        <el-button icon="el-icon-search" circle></el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostin=true"></el-button>
+
+                    </el-row>
                     <el-table border>
                         <el-table-column label="BQ編號"> </el-table-column>
                         <el-table-column label="項目特征"> </el-table-column>
@@ -228,6 +234,12 @@
                     </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="BQ明細" name="tab3">
+                   
+                    <el-row>
+                        <el-button icon="el-icon-search" circle></el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostin=true"></el-button>
+
+                    </el-row>
                     <el-table border>
                         <el-table-column label="項目"> </el-table-column>
                         <el-table-column label="內容"> </el-table-column>
@@ -245,6 +257,12 @@
                     </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="主要飾面材料費" name="tab4">
+                   
+                    <el-row>
+                        <el-button icon="el-icon-search" circle></el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostin=true"></el-button>
+
+                    </el-row>
                     <el-table :data="getdatasource(7201)" border>
                         <el-table-column label="日期"> </el-table-column>
                         <el-table-column label="項目類別"> </el-table-column>
@@ -254,6 +272,12 @@
                     </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="輔助性使用材料" name="tab5">
+                    
+                    <el-row>
+                        <el-button icon="el-icon-search" circle></el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostin=true"></el-button>
+
+                    </el-row>
                     <el-table :data="getdatasource(7202)" border>
                         <el-table-column label="日期"> </el-table-column>
                         <el-table-column label="項目類別"> </el-table-column>
@@ -265,7 +289,12 @@
 
 
                 <el-tab-pane label="項目人力成本" name="tab6">
+                   
+                    <el-row>
+                        <el-button icon="el-icon-search" circle></el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostin=true"></el-button>
 
+                    </el-row>
                     <el-table :data="getdatasource(7301)" border>
                         <el-table-column label="日期"> </el-table-column>
                         <el-table-column label="項目類別"> </el-table-column>
@@ -275,6 +304,12 @@
                     </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="項目工人工資" name="tab7">
+                    
+                    <el-row>
+                        <el-button icon="el-icon-search" circle></el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostin=true"></el-button>
+
+                    </el-row>
 
                     <el-table :data="getdatasource(7302)" border>
                         <el-table-column label="日期"> </el-table-column>
@@ -285,6 +320,12 @@
                     </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="項目管理雜費" name="tab8">
+                  
+                    <el-row>
+                        <el-button icon="el-icon-search" circle></el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostin=true"></el-button>
+
+                    </el-row>
                     <el-table :data="getdatasource(7401)" border>
                         <el-table-column label="日期"> </el-table-column>
                         <el-table-column label="項目類別"> </el-table-column>
@@ -294,6 +335,12 @@
                     </el-table>
                 </el-tab-pane>
                 <el-tab-pane label="項目應酬費" name="tab9">
+                   
+                    <el-row>
+                        <el-button icon="el-icon-search" circle></el-button>
+                        <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostin=true"></el-button>
+
+                    </el-row>
                     <el-table :data="getdatasource(7402)" border>
                         <el-table-column label="日期"> </el-table-column>
                         <el-table-column label="項目類別"> </el-table-column>
@@ -346,12 +393,11 @@
                 return {
                     eldialogvisible: this.visible,
                     trageCastDetailType:@Html.GetBasics(BasicsCode.TrageCastDetailType),
-
+                    innerVisiblecostin:false,
                     activeName: "tab0",
                     isDisabled: true,
                     itemSummary:[],
-                    item: {
-                        id: '11', name: '項目1', code: 'Mi-gghfsd009', address: '黑沙XXX路', managerName: '林', supremeManagerName: '子', detailType: [], attachmentFiles:[], summary: [], details: [] },
+                    item: { detailType: [], attachmentFiles:[], summary: [], details: [] },
 
 
                 };
@@ -370,7 +416,7 @@
 
                  //   this.costdatasource = await this.$http.get("/api/targetcost/detail/" + this.targetcostid).body;
                 },
-
+                onSearchCost: function () {},
                 onSumbit: async function () {
 
                     await this.$http.put("/api/targetcost/" + this.targetcostid, this.item);

@@ -9,7 +9,7 @@
     <section class="content-header">
         <h1>
             用户管理
-            <small>查询</small>
+            <small>查詢</small>
         </h1>
         <ol class="breadcrumb">
             <li>系统管理</li>
@@ -24,7 +24,7 @@
 
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">查询</h3>
+                        <h3 class="box-title">查詢</h3>
                         <el-button class="btn btn-default" size="small" icon="fa fa-truck" v-on:click="onNew()">添加供應商</el-button>
                     </div>
 
@@ -61,7 +61,7 @@
 
 
                                         <button class="btn btn-info" type="submit" v-on:click="onsearch(true)">
-                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查询
+                                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span> 查詢
                                         </button>
 
                                         <button class="btn btn-default" v-on:click="onreset">
@@ -103,7 +103,7 @@
 
                                         <el-table-column fixed="right" label="操作" width="250">
                                             <template scope="scope">
-                                                @*<el-button  @@click="openUploadDetails(scope.row)" size="small">上传记录</el-button>*@
+                                                @*<el-button  @@click="openUploadDetails(scope.row)" size="small">上傳记录</el-button>*@
                                                 <el-button @@click="openBinding(scope.row)" size="small" type="danger">修改</el-button>
                                             </template>
                                         </el-table-column>

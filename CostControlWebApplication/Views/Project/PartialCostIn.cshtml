@@ -13,10 +13,10 @@
 
 
     <div>
-        <bg-add-costin :visible.sync="innerVisiblecostin" v-on:closed="onSearchCost" :projectid="projectid"></bg-add-costin>
+        <bg-add-costin :visible.sync="innerVisiblecostin" v-on:closed="onSearchCost" :item="rec" :projectid="projectid"></bg-add-costin>
         <el-row>
             <el-button icon="el-icon-search" circle></el-button>
-            <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostin=true" ></el-button>
+            <el-button type="primary" icon="el-icon-edit" circle @@click="onAdd" ></el-button>
 
         </el-row>
         <el-table style="width: 100%" :data="datasource">
@@ -60,7 +60,14 @@
             </el-table-column>
             <el-table-column prop="surplusSecuringAmount" label="餘額（保固金）">
             </el-table-column>
-            <el-table-column prop="remark" label="備註">
+            <el-table-column prop="remark" label="備註" :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-button @@click="onEdit(scope.row)">修改</el-button>
+                    <el-button>归档</el-button>
+
+                </template>
             </el-table-column>
         </el-table>
 
@@ -101,8 +108,14 @@
                 },
                 onSearchCost: function () {
 
+                },
+                onAdd: function () {
+                    this.rec = undefined;
+                    this.innerVisiblecostin = true
+                } , onEdit: function (val) {
+                    this.rec = val;
+                    this.innerVisiblecostin = true
                 }
-
 
 
 

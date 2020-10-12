@@ -66,7 +66,7 @@ namespace CostControlWebApplication.Services
         {
             if (updatePasswordRequest == null) throw new LogicException("无效请求");
             if (updatePasswordRequest.UserId <= 0) throw new LogicException("用户无效");
-            if (updatePasswordRequest.Password == updatePasswordRequest.ComfirmPassword) throw new LogicException("两次密码不一致");
+            if (updatePasswordRequest.Password == updatePasswordRequest.ComfirmPassword) throw new LogicException("两次密碼不一致");
             var pwdmd5 = BingoX.Security.SecurityExtension.MD5.Encrypt(updatePasswordRequest.Password);
             AccountUser user = repository.GetUserById(updatePasswordRequest.UserId);
             if (user == null) throw new LogicException("用户不存在");

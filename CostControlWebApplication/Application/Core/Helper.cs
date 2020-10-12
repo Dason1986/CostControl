@@ -1,6 +1,8 @@
 ﻿using BingoX;
 using BingoX.AspNetCore;
 using BingoX.DataAccessor;
+using BingoX.Domain;
+using BingoX.Helper;
 using CostControlWebApplication.Domain;
 using CostControlWebApplication.Services;
 using Microsoft.AspNetCore.Html;
@@ -13,25 +15,25 @@ using System.Web;
 
 namespace CostControlWebApplication
 {
-    public class BasicsCode
-    {
-        public const string TrageCastProjectType = "006";
-        public const string Currency = "003";
-        public const string ProjectMain = "004";
-        public const string SettlementMethod = "001";
-        public const string ContractType = "002";
-        public const string CostType = "005";
-        public const string ProjectType = "008";
-        public const string Undertaking = "009";
-        public const string Department = "010";
-        public const string FileType = "011";
-        public const string TrageCastDetailType = "007";
-    }
     public static class Helper
     {
+        public static void CopyFromGroup<T>(this T entry, object obj, string groupName) where T : IDomainEntry
+        {
+            var propertis = typeof(T).GetProperties().Where(n => n.GetAttribute<System.ComponentModel.CategoryAttribute>()?.Category == groupName).ToArray();
+            var fromType = obj.GetType();
+            foreach (var item in propertis)
+            {
+                var propertyInfo = fromType.GetProperty(item.Name);
+                if (propertyInfo == null) continue;
+                var value =propertyInfo.FastGetValue(obj);
+
+                BingoX.Helper.FastReflectionExtensions.FastSetValue(item, entry, value);
+            }
+        }
+
         public static bool IsAdmin(this ICurrentUser stafferRequest)
         {
-            if (stafferRequest == null) throw new LogicException("未登录");
+            if (stafferRequest == null) throw new LogicException("未登錄");
 
             return string.Equals(stafferRequest.Role, "Admin", System.StringComparison.CurrentCultureIgnoreCase);
         }
@@ -72,9 +74,9 @@ namespace CostControlWebApplication
                     Childs=  new []
                     {
                         new SidebarMenu{Name = "目标成本", Url = "/TargetCost" , Icon = "fa fa-cubes" },
-                        new SidebarMenu{Name = "项目台帐", Url = "/Project" , Icon = "fa fa-cubes" },
-                        new SidebarMenu{Name = "项目收入", Url = "/ProjectIncome", Icon = "fa fa-cube"  },
-                        new SidebarMenu{Name = "项目成本", Url = "/ProjectCost", Icon = "fa fa-cube"  },
+                        new SidebarMenu{Name = "項目臺帳", Url = "/Project" , Icon = "fa fa-cubes" },
+                        new SidebarMenu{Name = "項目收入", Url = "/ProjectIncome", Icon = "fa fa-cube"  },
+                        new SidebarMenu{Name = "項目成本", Url = "/ProjectCost", Icon = "fa fa-cube"  },
 
                     }}
             };

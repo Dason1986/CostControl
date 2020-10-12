@@ -23,6 +23,12 @@ namespace CostControlWebApplication.Application.Data
         IDataAccessor<ProjectCostOut> dataAccessorProjectCostOut;
         IDataAccessor<VIProjectInfo> dataAccessorVIProjectInfo;
         IDataAccessor<ProjectAboutFile> dataAccessorAboutFiles;
+
+        public bool ExistCode(string code)
+        {
+            return dataAccessorProjectInfo.Exist(x => x.Code == code);
+        }
+
         public void Add(ProjectInfo entity)
         {
             dataAccessorProjectInfo.Add(entity);
@@ -32,6 +38,16 @@ namespace CostControlWebApplication.Application.Data
         {
             int total = 0;
             return dataAccessorVIProjectInfo.PageList(specification, ref total).ProjectedAsPagingList(total, specification);
+        }
+        public IPagingList<VIProjectCostIn> PagingList(ISpecification<VIProjectCostIn> specification)
+        {
+            int total = 0;
+            return CreateWrapper<VIProjectCostIn>().PageList(specification, ref total).ProjectedAsPagingList(total, specification);
+        }
+        public IPagingList<VIProjectCostOut> PagingList(ISpecification<VIProjectCostOut> specification)
+        {
+            int total = 0;
+            return CreateWrapper<VIProjectCostOut>().PageList(specification, ref total).ProjectedAsPagingList(total, specification);
         }
         public IList<ProjectCostIn> ProjectCostInList(long projectId)
         {
@@ -63,51 +79,31 @@ namespace CostControlWebApplication.Application.Data
         {
             dataAccessorProjectCostOut.Add(entity);
         }
-
+        public void UpdateCostout(ProjectCostOut entity)
+        {
+            dataAccessorProjectCostOut.Update(entity);
+        }
         public IList<ProjectAboutFile> AboutFilesList(long id)
         {
-            return dataAccessorAboutFiles.Where(n=>n.ProjectId==id);
+            return dataAccessorAboutFiles.Where(n => n.ProjectId == id);
         }
         public void AddAboutFile(ProjectAboutFile entity)
         {
             dataAccessorAboutFiles.Add(entity);
         }
-    }
-    public class TargetCostRepository : Repository
-    {
-        public TargetCostRepository(RepositoryContextOptions options) : base(options)
+
+        public ProjectCostOut GetCostout(long id)
         {
-            dataAccessorTargetCost = CreateWrapper<TargetCost>();
-            dataAccessorTargetCostDetail = CreateWrapper<TargetCostDetail>();
+            return dataAccessorProjectCostOut.GetId(id);
         }
 
-
-        IDataAccessor<TargetCostDetail> dataAccessorTargetCostDetail;
-        IDataAccessor<TargetCost> dataAccessorTargetCost;
-        public void Add(TargetCost entity)
+        public ProjectCostIn GetCostIn(long id)
         {
-            dataAccessorTargetCost.Add(entity);
-        }
-
-        internal void AddDetail(TargetCostDetail entity)
+            return dataAccessorProjectCostIn.GetId(id);
+        } 
+        public void UpdateCostIn(ProjectCostIn entity)
         {
-            throw new NotImplementedException();
-        }
-
-        public TargetCost GetId(long id)
-        {
-            return dataAccessorTargetCost.GetId(id);
-        }
-
-        public IList<TargetCostDetail> GetDetails(long id)
-        {
-            return dataAccessorTargetCostDetail.Where(n => n.TargetCostId == id);
-        }
-
-        public IPagingList<TargetCost> PagingList(ISpecification<TargetCost> specification)
-        {
-            int total = 0;
-            return dataAccessorTargetCost.PageList(specification, ref total).ProjectedAsPagingList(total, specification);
+            dataAccessorProjectCostIn.Update(entity);
         }
     }
 }

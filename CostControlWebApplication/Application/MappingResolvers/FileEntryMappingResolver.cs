@@ -5,10 +5,11 @@ using CostControlWebApplication.Domain;
 
 namespace CostControlWebApplication.Application.MappingResolvers
 {
-    public class FileEntryMappingResolver : IMappingResolver<FileEntry, FileEntryDto>
+    public class FileEntryMappingResolver : IMappingResolver<FileEntry,  ProjectAboutFile>
     {
-        public void Map(IMappingExpression<FileEntry, FileEntryDto> mapping)
+        public void Map(IMappingExpression<FileEntry, ProjectAboutFile> mapping)
         {
+           
             mapping.ForMember(n => n.FileSize, opt => opt.MapFrom((x,y)=>FileUtility.GetFileSizeDisplay(x.FileSize)));
         }
 

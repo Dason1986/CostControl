@@ -27,6 +27,8 @@
                             <el-select v-model="fileData.fileType" placeholder="文件類型">
                                 <el-option v-for="item in fileTypeOptions"
                                            :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    <span style="float: left">{{ item.label }}</span>
+                                    <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                                 </el-option>
                             </el-select>
                         </div>
@@ -40,11 +42,11 @@
                                :multiple="false" :show-file-list="false"
                                :on-success="handleUploadExceed"  :before-upload="checkupload"  
                                :auto-upload="false">
-                        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+                        <el-button slot="trigger" size="small" type="primary">選取文件</el-button>
 
 
                     </el-upload>
-                    <el-button style="margin-left: 10px;" size="small" type="success" @@click="submitUpload">上传到服务器</el-button>
+                    <el-button style="margin-left: 10px;" size="small" type="success" @@click="submitUpload">上傳到伺服器</el-button>
 
                 </div>
             </div>
@@ -53,7 +55,7 @@
 
 
             <el-button icon="el-icon-search" circle></el-button>
-            <el-button size="small" icon="el-icon-upload" @@click="innerVisiblecostout=true">点击上传</el-button>
+            <el-button size="small" icon="el-icon-upload" @@click="innerVisiblecostout=true">點擊上傳</el-button>
 
         </el-row>
         <el-table style="width: 100%" :data="datasource">
@@ -61,12 +63,14 @@
             </el-table-column>
             <el-table-column prop="fileName" label="文件名稱">
             </el-table-column>
+            <el-table-column prop="fileSize" label="文件大小">
+            </el-table-column>
             <el-table-column prop="created" label="上傳人員">
             </el-table-column>
             <el-table-column label="操作">
                 <template slot-scope="scope">
-                    <button> 下載</button>
-                 
+                    <el-button> 下載</el-button>
+
                 </template>
             </el-table-column>
         </el-table>

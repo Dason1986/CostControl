@@ -23,7 +23,30 @@
 
                 <el-card class="box-card">
 
+                    <div class="row" v-if="projectid===undefined">
+                        <div class="col-md-3 form-inline">
 
+                            <div class="form-group">
+                                <label>項目编号</label>
+                                <el-select v-model="rec.projectid"
+                                           filterable
+                                           remote
+                                           reserve-keyword
+                                           placeholder="请输入关键词"
+                                           :remote-method="remoteMethod"
+                                           :loading="loading">
+                                    <el-option v-for="item in options"
+                                                  :key="item.value" :label="item.label" :value="item.id" >
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+
+
+                        </div>
+                    </div>
 
 
                     <div class="row">
@@ -56,9 +79,11 @@
                                 <el-select placeholder="上家" v-model="rec.lastHomeId" filterable>
                                     <el-option v-for="item in lastHomeOptions"
                                                :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                             
                                     </el-option>
                                 </el-select>
-                             
+
                             </div>
 
 
@@ -191,7 +216,7 @@
 
                             <div class="form-group">
                                 <label>收款日期（工程款）</label>
-                            
+
                                 <el-date-picker type="date" v-model="rec.receivedProjectDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="收款日期（工程款）">
                                 </el-date-picker>
                             </div>
@@ -238,7 +263,7 @@
 
 
                         </div>
-                       
+
                     </div>
                     <div class="row">
 
@@ -274,9 +299,10 @@
             data: function () {
                 return {
                     eldialogvisible: this.visible,
-
+                    loading: false,
+                    options :[],
                     lastHomeOptions:@Html.GetLastHome(),
-                    rec: {}
+                    rec: { projectid: undefined }
                 };
             },
             filters: {
@@ -285,10 +311,24 @@
             methods: {
 
 
-
+                remoteMethod: function (query) {
+                    if (query !== '') {
+                        this.loading = true;
+                        this.$http.get('/api/Project/Search', { params: { code: query } }).then(x => {
+                            this.loading = false;
+                            this.options = x.data;
+                        }).catch(x => { this.loading = false; })
+                    }
+                },
                 onSumbit: async function () {
-                    console.log('projectid', this.rec.projectid)
-                    await this.$http.post("/api/Project/costin", this.rec);
+                 
+
+                    if (this.item === undefined) {
+                        await this.$http.post("/api/Project/costin", this.rec);
+                    } else {
+                        await this.$http.put("/api/Project/costin/" + this.rec.id, this.rec);
+                    }
+
                     this.eldialogvisible = false;
                     this.$emit('closed', true);
 
@@ -304,7 +344,15 @@
                 visible: function (val) {
 
                     if (val) this.rec.projectid = this.projectid;
+                    else this.rec.projectid = undefined;
                     this.eldialogvisible = val;
+                },
+                item: function (val) {
+
+                    console.log('in',val)
+                    if (val) this.rec = {...val};
+                    else this.rec = {};
+                
                 },
                 eldialogvisible: function (val) {
 
@@ -312,11 +360,11 @@
 
                     this.$emit('update:visible', val)
                 },
-              
+
 
             },
             props: {
-
+                item: Object,
                 projectid: String,
                 visible: Boolean
             }

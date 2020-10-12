@@ -4,6 +4,15 @@ namespace CostControlWebApplication.Application.Services.Dtos
 {
     public class ProjectCostOutDto:IDto
     {
+        public long Id { get; set; }
+        public string Code { get; set; }
+
+        public string Name { get; set; }
+
+        public string CostType { get; set; }
+        public string Department { get; set; }
+        public string Currency { get; set; }
+        public string SettlementMethod { get; set; }
         public long ProjectId { get; set; }
         public string OrderNo { get; set; }
 

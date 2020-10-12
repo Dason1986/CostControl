@@ -50,12 +50,13 @@
                         <div class="col-md-3 form-inline">
                             <div class="form-group">
 
-                                <label>项目类型</label>
+                                <label>項目类型</label>
 
-                                <el-select v-model="rec.projectTypeId" filterable placeholder="项目类型">
+                                <el-select v-model="rec.projectTypeId" filterable placeholder="項目类型">
                                     <el-option v-for="item in projectTypeOptions"
-                                               :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled"
-                                               >
+                                               :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                                     </el-option>
                                 </el-select>
                             </div>
@@ -79,12 +80,12 @@
                         <div class="col-md-3 form-inline">
                             <div class="form-group">
 
-                                <label>上传成本文件</label>
+                                <label>上傳成本文件</label>
                                 <el-upload class="upload-demo"
                                            action="/api/file/temp"
                                            :show-file-list="false"
                                            :on-success="handleUploadExceed">
-                                    <el-button size="small" icon="el-icon-upload">点击上传</el-button>
+                                    <el-button size="small" icon="el-icon-upload">點擊上傳</el-button>
 
                                 </el-upload>
                                 {{rec.fileName}}

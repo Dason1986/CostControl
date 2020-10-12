@@ -16,7 +16,7 @@
 
         public string Account { get; set; }
         /// <summary>
-        /// 密码
+        /// 密碼
         /// </summary>
 
         public string Password { get; set; }

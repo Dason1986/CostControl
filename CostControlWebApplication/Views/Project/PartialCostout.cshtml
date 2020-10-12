@@ -11,10 +11,10 @@
 <script type="text/x-template" id="costout">
 
     <div>
-        <bg-add-costout :visible.sync="innerVisiblecostout" v-on:closed="onSearchCost"  :projectid="projectid"></bg-add-costout>
+        <bg-add-costout :visible.sync="innerVisiblecostout" v-on:closed="onSearchCost" :item="rec" :projectid="projectid"></bg-add-costout>
         <el-row>
             <el-button icon="el-icon-search" circle></el-button>
-            <el-button type="primary" icon="el-icon-edit" circle @@click="innerVisiblecostout=true"></el-button>
+            <el-button type="primary" icon="el-icon-edit" circle @@click="onAdd"></el-button>
 
         </el-row>
 
@@ -55,11 +55,18 @@
             </el-table-column>
             <el-table-column prop="exchangeDate" label="兌票日期">
             </el-table-column>
-            <el-table-column prop="confirmation" label="會計確認" >
+            <el-table-column prop="confirmation" label="會計確認" :formatter="formatterBoolean">
             </el-table-column>
             <el-table-column prop="handover" label="單據是否交接" :formatter="formatterBoolean">
             </el-table-column>
-            <el-table-column prop="remark" label="備註">
+            <el-table-column prop="remark" label="備註" :show-overflow-tooltip="true">
+            </el-table-column>
+            <el-table-column label="操作">
+                <template slot-scope="scope">
+                    <el-button @@click="onEdit(scope.row)">修改</el-button>
+                    <el-button>归档</el-button>
+
+                </template>
             </el-table-column>
         </el-table>
 
@@ -76,7 +83,7 @@
             template: '#costout',
             data: function () {
                 return {
-                   
+
 
                     innerVisiblecostout: false,
                     rec: {}
@@ -86,11 +93,17 @@
 
             },
             methods: {
-
-                addcostout: function () {
-                    this.innerVisiblecostout = true;
-                    console.log('addcostout', this.innerVisiblecostout);
+    
+                onAdd: function () {
+                    this.rec = undefined;
+                    this.innerVisiblecostout = true
                 },
+
+                onEdit: function (val) {
+                    this.rec = val;
+                    this.innerVisiblecostout = true
+                },
+
                 onSearchCost: function () {
 
                 },

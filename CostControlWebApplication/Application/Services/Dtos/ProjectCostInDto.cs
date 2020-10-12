@@ -4,6 +4,11 @@ namespace CostControlWebApplication.Application.Services.Dtos
 {
     public class ProjectCostInDto : IDto
     {
+        public long Id { get; set; }
+        public string Code { get; set; }
+
+        public string Name { get; set; }
+        public string LastHome { get; set; }
         public long ProjectId { get; set; }
         public string InvoiceDate { get; set; }
         public long LastHomeId { get; set; }

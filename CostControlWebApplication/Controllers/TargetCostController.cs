@@ -18,7 +18,12 @@ namespace CostControlWebApplication.Controllers
             return View(list);
 
         }
-        [HttpGet("~/api/TargetCost")]
+    } 
+    [Authorize, ApiControllerAttribute, Route("~/api/TargetCost")]
+
+    public class TargetCostApiController : Controller
+    {
+        [HttpGet()]
         public IPagingList GetList([FromServices] TargetCostService service, [FromQuery] ProjectQueryRequest queryRequest)
         {
             IPagingList list = service.GetProjects(queryRequest).ProjectedAsPagingList<TargetCostListItmeDto>();
@@ -27,23 +32,23 @@ namespace CostControlWebApplication.Controllers
 
         }
 
-        [HttpPost("~/api/TargetCost")]
+        [HttpPost()]
         public void AddTargetCost([FromServices] TargetCostService service, [FromBody] TargetCostDto dto)
         {
-            TargetCost entity = dto.ProjectedAs<TargetCost>();
-            service.Add(entity);
+           
+            service.Add(dto);
 
 
         }
 
-        [HttpGet("~/api/targetcost/{id}")]
+        [HttpGet("{id}")]
         public TargetCostDto Get([FromServices] TargetCostService service, [FromRoute] long id)
         {
             var dto = service.Get(id);
             return dto;
 
         }
-        [HttpGet("~/api/targetcost/detail/{id}")]
+        [HttpGet("detail/{id}")]
         public TargetCostDetailDto[] GetDetails([FromServices] TargetCostService service, [FromRoute] long id)
         {
             var dto = service.GetDetails(id).ProjectedAsArray<TargetCostDetailDto>();

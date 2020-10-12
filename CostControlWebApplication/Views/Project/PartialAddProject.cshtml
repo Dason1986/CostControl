@@ -6,7 +6,7 @@
 <script type="text/x-template" id="addproject">
 
     <el-dialog width="90%"
-               title="新增工程项目"
+               title="新增工程項目"
                :visible.sync="eldialogvisible"
                append-to-body>
         <span slot="footer" class="dialog-footer">
@@ -43,15 +43,15 @@
                             </div>
 
                         </div>
-                        <div class="col-md-3 form-inline">
+                        @*<div class="col-md-3 form-inline">
                             <div class="form-group">
 
-                                <label>必需上传審批單</label>
+                                <label>必需上傳審批單</label>
                                 <el-switch placeholder="材料採購審批單" v-model="project.mustApprovelFile">
                                 </el-switch>
                             </div>
 
-                        </div>
+                        </div>*@
                     </div>
                     <div class="row">
 
@@ -161,6 +161,8 @@
                                     <el-select placeholder="項目主體" v-model="project.projectMainId">
                                         <el-option v-for="item in projectMainOptions"
                                                    :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                            <span style="float: left">{{ item.label }}</span>
+                                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                                         </el-option>
                                     </el-select>
                                 </div>
@@ -175,6 +177,8 @@
                                 <el-select placeholder="項目类型" v-model="project.projectTypeId" filterable>
                                     <el-option v-for="item in projectTypeOptions"
                                                :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                                     </el-option>
                                 </el-select>
 
@@ -188,6 +192,8 @@
                                 <el-select placeholder="項目合約" v-model="project.contractTypeId" filterable>
                                     <el-option v-for="item in contractTypeOptions"
                                                :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                                     </el-option>
                                 </el-select>
 
@@ -201,6 +207,8 @@
                                 <el-select placeholder="承接类型" v-model="project.undertakingId" filterable>
                                     <el-option v-for="item in undertakingOptions"
                                                :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                                     </el-option>
                                 </el-select>
 
@@ -214,6 +222,8 @@
                                 <el-select placeholder="合約結算方式" v-model="project.settlementMethodId" filterable>
                                     <el-option v-for="item in settlementMethodOptions"
                                                :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
                                     </el-option>
                                 </el-select>
 

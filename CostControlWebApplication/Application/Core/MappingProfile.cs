@@ -52,9 +52,8 @@ namespace CostControlWebApplication
             CreateMap<Enum, string>().ConvertUsing(s => Convert.ToInt32(s).ToString());
             //   CreateMap<Enum, string>().ConvertUsing(s => s == null ? string.Empty : BingoX.Utility.EnumUtility.GetDescription(s));
           
-            Create<TargetCost, TargetCostListItmeDto>();
-            Create<TargetCost, TargetCostDto>();
-            Create<FileEntry, ProjectAboutFile>();
+        
+         
             InitDto();
 
             //CreateEntityToDto(mappingResolvers, valueModelentities, valueModeldtos);
