@@ -1,9 +1,15 @@
 ﻿using BingoX.AspNetCore.Extensions;
+using BingoX.Helper;
+using CostControlWebApplication.Application.AD;
+using CostControlWebApplication.Application.Data;
+using CostControlWebApplication.Domain;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace CostControlWebApplication
@@ -22,7 +28,7 @@ namespace CostControlWebApplication
 
             var assembly = this.GetType().Assembly;
 
- 
+
             var jwtSeetings = new JwtSeetings();
             //绑定jwtSeetings
             configuration.Bind("JWT", jwtSeetings);
@@ -46,6 +52,24 @@ namespace CostControlWebApplication
                 };
             });
             services.AddSingleton<ISerialNumberProvider, SerialNumberProvider>();
+            services.AddScoped<ActiveDirectoryService>(x =>
+            {
+                var repository = x.GetService<SettingRepository>();
+                var LDAP = repository.Where(x => x.GroupCode == "LDAP");
+                if (LDAP.IsEmpty()) return null;
+                if (!LDAP.GetValue<bool>("Enabled")) return null;
+                return new ActiveDirectoryService(new ActiveDirectoryOption { LDAPService = LDAP.GetValue<string>("LDAPService"), Uid = LDAP.GetValue<string>("Uid"), Pwd = LDAP.GetValue<string>("Pwd") });
+            });
+        }
+    }
+
+  static   class SettingHelper
+    {
+        public static T GetValue<T> (this IList<SystemSetting> systems,string code)
+        {
+            var item = systems.FirstOrDefault(n => string.Equals(code, n.Code, System.StringComparison.CurrentCultureIgnoreCase));
+            if (item != null) return BingoX.Utility.StringUtility.Cast<T>(item.DataValue).Value;
+            return default;
         }
     }
 }

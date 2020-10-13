@@ -2,6 +2,7 @@
 using BingoX.AspNetCore;
 using BingoX.ComponentModel.Data;
 using BingoX.DataAccessor;
+using CostControlWebApplication.Application.AD;
 using CostControlWebApplication.Application.Data;
 using CostControlWebApplication.Application.Services.Dtos;
 using CostControlWebApplication.Domain;
@@ -12,14 +13,16 @@ namespace CostControlWebApplication.Services
 {
     public class AccountService : IService
     {
-        public AccountService(AccountRepository repository,ResourceService resourceService, IBoundedContext bounded)
+        public AccountService(AccountRepository repository, ResourceService resourceService, ActiveDirectoryService activeDirectoryService, IBoundedContext bounded)
         {
             this.repository = repository;
             this.resourceService = resourceService;
+            this.activeDirectoryService = activeDirectoryService;
             Bounded = bounded;
         }
         private readonly AccountRepository repository;
         private readonly ResourceService resourceService;
+        private readonly ActiveDirectoryService activeDirectoryService;
 
         public IBoundedContext Bounded { get; private set; }
 
@@ -42,9 +45,9 @@ namespace CostControlWebApplication.Services
             repository.UnitOfWork.Commit();
             resourceService.ChangedUser();
         }
-        public void AddUser(AccountUser  dto)
+        public void AddUser(AccountUser dto)
         {
-          
+
             AccountUser user = repository.GetUser(dto.Account);
             if (user != null) throw new LogicException("帐号已经存在，不能添加");
             user = new AccountUser()
@@ -87,8 +90,23 @@ namespace CostControlWebApplication.Services
 
         public AccountUser Login(string account, string password)
         {
-            var pwd = BingoX.Security.SecurityExtension.MD5.Encrypt(password);
-            return repository.Get(account, pwd);
+            if (activeDirectoryService == null)
+            {
+                var pwd = BingoX.Security.SecurityExtension.MD5.Encrypt(password);
+                return repository.Get(account, pwd);
+            }
+            else if (activeDirectoryService.Login(account, password))
+            {
+                var info = activeDirectoryService.GetUserInfoDirectoryEntry(account);
+                return new AccountUser
+                {
+                    State = CommonState.Enabled,
+                    Account = account,
+                    Name = info.FindFirst("Displayname").Value,
+                    RoleType = info.FindFirst("Role").Value == "Admin" ? RoleType.Admin : RoleType.Staffer
+                };
+            }
+            return null;
         }
     }
 }

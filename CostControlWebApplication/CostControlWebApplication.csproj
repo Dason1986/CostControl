@@ -28,7 +28,8 @@
     <PackageReference Include="BingoX.Repository.AspNetCore.SqlSugar" Version="2.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
     <PackageReference Include="NLog" Version="4.7.4" />
-    <PackageReference Include="sqlSugarCore" Version="5.0.0.15" /> 
+    <PackageReference Include="sqlSugarCore" Version="5.0.0.15" />
+    <PackageReference Include="System.DirectoryServices" Version="4.7.0" /> 
   </ItemGroup>
 
 </Project>
