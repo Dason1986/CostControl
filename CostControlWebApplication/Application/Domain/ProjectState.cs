@@ -1,10 +1,11 @@
 ﻿namespace CostControlWebApplication.Domain
 {
-    public enum ProjectState
+    public enum ProcurementState
     {
-        Abnormal = -1,
-        None = 0,
-        Progress = 1,
-        Complete = 10,
+   
+      
+        Draft = 0,
+        Enabled = 1,
+        Submit = 2,
     }
 }

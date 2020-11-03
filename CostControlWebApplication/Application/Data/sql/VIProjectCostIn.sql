@@ -28,9 +28,9 @@ SELECT
 	`projectcostin`.`SurplusSecuringAmount` AS `SurplusSecuringAmount`,
 	`projectcostin`.`SurplusProjectAmount` AS `SurplusProjectAmount`,
 	`supplier`.`Name` AS `LastHome`,
-	`projectinfo`.`Code` AS `Code`,
-	`projectinfo`.`Name` AS `Name` 
+	`projectmaster`.`Code` AS `Code`,
+	`projectmaster`.`Name` AS `Name` 
 FROM
 	  `projectcostin` 
 		JOIN `supplier` ON  `projectcostin`.`LastHomeId` = `supplier`.`ID` 
-	  JOIN `projectinfo` ON  `projectcostin`.`ProjectId` = `projectinfo`.`ID`  
+	  JOIN `projectmaster` ON  `projectcostin`.`ProjectId` = `projectmaster`.`ID`  

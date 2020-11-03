@@ -10,9 +10,23 @@ using System.Threading.Tasks;
 
 namespace CostControlWebApplication.Application.MappingResolvers
 {
-    public class ProjectMappingListItmeResolver : IMappingResolver<VIProjectInfo, ProjectInfoListItmeDto> 
+    public class ProjectMasterResolver : IMappingResolver<VIProjectMaster, ProjectMasterDto>
     {
-        public void Map(IMappingExpression<VIProjectInfo, ProjectInfoListItmeDto> mapping)
+        public void Map(IMappingExpression<VIProjectMaster, ProjectMasterDto> mapping)
+        {
+
+            mapping.IncludeBase<IDate, IDateDto>();
+        }
+
+
+
+
+
+
+    }
+    public class ProjectMappingListItmeResolver : IMappingResolver<VIProjectStandingbook, ProjectStandingbookListItmeDto>
+    {
+        public void Map(IMappingExpression<VIProjectStandingbook, ProjectStandingbookListItmeDto> mapping)
         {
             mapping.ForMember(n => n.StateDisplay, opt => opt.MapFrom<ProjectResolver>());
             mapping.IncludeBase<IDate, IDateDto>();
@@ -20,16 +34,16 @@ namespace CostControlWebApplication.Application.MappingResolvers
 
 
 
-      
+
 
 
     }
-    public class ProjectMappingResolver :  IMappingResolver<VIProjectInfo, ProjectInfoDto>
+    public class ProjectMappingResolver : IMappingResolver<VIProjectStandingbook, ProjectStandingbookDto>
     {
-       
 
 
-        public void Map(IMappingExpression<VIProjectInfo, ProjectInfoDto> mapping)
+
+        public void Map(IMappingExpression<VIProjectStandingbook, ProjectStandingbookDto> mapping)
         {
 
             mapping.ForMember(n => n.StateDisplay, opt => opt.MapFrom<ProjectResolver>());
@@ -38,7 +52,7 @@ namespace CostControlWebApplication.Application.MappingResolvers
 
 
     }
-    public class ProjectResolver : IValueResolver<VIProjectInfo, ProjectInfoListItmeDto, string>, IValueResolver<VIProjectInfo, ProjectInfoDto, string>
+    public class ProjectResolver : IValueResolver<VIProjectStandingbook, ProjectStandingbookListItmeDto, string>, IValueResolver<VIProjectStandingbook, ProjectStandingbookDto, string>
     {
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly CacheConfigService cacheConfigService;
@@ -49,7 +63,7 @@ namespace CostControlWebApplication.Application.MappingResolvers
             cacheConfigService = _httpContextAccessor.HttpContext.RequestServices.GetService<CacheConfigService>();
         }
 
-        public string Resolve(VIProjectInfo source, ProjectInfoListItmeDto destination, string destMember, ResolutionContext context)
+        public string Resolve(VIProjectStandingbook source, ProjectStandingbookListItmeDto destination, string destMember, ResolutionContext context)
         {
 
 
@@ -60,7 +74,7 @@ namespace CostControlWebApplication.Application.MappingResolvers
 
         }
 
-        public string Resolve(VIProjectInfo source, ProjectInfoDto destination, string destMember, ResolutionContext context)
+        public string Resolve(VIProjectStandingbook source, ProjectStandingbookDto destination, string destMember, ResolutionContext context)
         {
 
 
@@ -70,7 +84,7 @@ namespace CostControlWebApplication.Application.MappingResolvers
             return string.Format("{0:n2}%", source.CompletionRatio);
 
         }
-        void Amount(VIProjectInfo source, ProjectInfoListItmeDto destination)
+        void Amount(VIProjectStandingbook source, ProjectStandingbookListItmeDto destination)
         {
             if (source.ContractAmount > 0)
             {

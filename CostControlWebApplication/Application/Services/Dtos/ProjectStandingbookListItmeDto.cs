@@ -1,6 +1,6 @@
 ﻿namespace CostControlWebApplication.Application.Services.Dtos
 {
-    public class ProjectInfoListItmeDto : IDto,IDateDto
+    public class ProjectStandingbookListItmeDto : IDto, IDateDto
     {
         public long ID { get; set; }
         public string SupremeManagerName { get; set; }

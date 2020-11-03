@@ -73,10 +73,13 @@ namespace CostControlWebApplication
                 new SidebarMenu { Name = "工程管理", Url = "#", Icon = "fa fa-files-o" ,
                     Childs=  new []
                     {
-                        new SidebarMenu{Name = "目标成本", Url = "/TargetCost" , Icon = "fa fa-cubes" },
-                        new SidebarMenu{Name = "項目臺帳", Url = "/Project" , Icon = "fa fa-cubes" },
+                        new SidebarMenu{Name = "项目立项", Url = "/ProjectMaster", Icon = "fa fa-cube"  },
+                        new SidebarMenu{Name = "采购审批", Url = "/Procurement", Icon = "fa fa-cube"  },
+                        new SidebarMenu{Name = "目标測算", Url = "/TargetCost" , Icon = "fa fa-cubes" },
                         new SidebarMenu{Name = "項目收入", Url = "/ProjectIncome", Icon = "fa fa-cube"  },
                         new SidebarMenu{Name = "項目成本", Url = "/ProjectCost", Icon = "fa fa-cube"  },
+                        new SidebarMenu{Name = "项目核算", Url = "/ProjectCost", Icon = "fa fa-cube"  },
+                        new SidebarMenu{Name = "項目臺帳", Url = "/Standingbook" , Icon = "fa fa-cubes" },
 
                     }}
             };

@@ -1,27 +1,11 @@
-﻿using BingoX.Domain;
-using CostControlWebApplication.Application;
-using System;
+﻿using System.Collections;
+using System.Collections.Generic;
 
-namespace CostControlWebApplication.Domain
+namespace CostControlWebApplication.Application.Services.Dtos
 {
-    public class ProjectInfo : Entity, ISnowflakeEntity<ProjectInfo>, IDate
+    public class ProjectStandingbookDto : ProjectStandingbookListItmeDto
     {
 
-
-        /// <summary>
-        /// 項目編號A
-        /// </summary>
-        public string Code { get; set; }
-
-        /// <summary>
-        /// 項目名稱B
-        /// </summary>
-        public string Name { get; set; }
-
-        /// <summary>
-        /// 項目地址
-        /// </summary>
-        public string Address { get; set; }
         /// <summary>
         /// 最終責任人D1
         /// </summary>
@@ -69,31 +53,7 @@ namespace CostControlWebApplication.Domain
         /// 核算毛利率N（%）
         /// </summary>
         public decimal AccountingGrossProfitRate { get; set; }
-        /// <summary>
-        /// 完工百分比E（%）
-        /// </summary>
-        public decimal CompletionRatio { get; set; }
-        /// <summary>
-        /// 合同金額L
-        /// </summary>
-        public decimal ContractAmount { get; set; }
 
-        /// <summary>
-        /// 必需上傳審批單
-        /// </summary>
-        public bool MustApprovelFile { get; set; }
-        /// <summary>
-        /// 成本金額L
-        /// </summary>
-        public decimal CostAmount { get; set; }
-        /// <summary>
-        /// 後加金額L1
-        /// </summary>
-        public decimal AdditionalAmount { get; set; }
-        /// <summary>
-        /// 結算金額R
-        /// </summary>
-        public decimal BalanceAmount { get; set; }
 
         /// <summary>
         /// 保固應收Z
@@ -104,7 +64,7 @@ namespace CostControlWebApplication.Domain
         /// </summary>
         public decimal SecuringAmountRate { get; set; }
         /// <summary>
-        /// 保固金比例
+        /// 保固應付
         /// </summary>
         public decimal SecuringPayableAmount { get; set; }
         /// <summary>
@@ -128,24 +88,8 @@ namespace CostControlWebApplication.Domain
         /// </summary>
         public string Remark { get; set; }
 
-        /// <summary>
-        /// 開工時間
-        /// </summary>
-        public DateTime? BeginDate { get; set; }
-        /// <summary>
-        /// 估算的開工時間
-        /// </summary>
-        public DateTime? EstimatedBeginDate { get; set; }
-        /// <summary>
-        /// 開工時間
-        /// </summary>
-        public DateTime? EndDate { get; set; }
-        /// <summary>
-        /// 估算的開工時間
-        /// </summary>
-        public DateTime? EstimatedEndDate { get; set; }
-
-
-        public ProjectState State { get; set; }
+        public IList<ProjectCostInDto> CostIn { get; set; }
+        public IList<ProjectCostOutDto> CostOut { get; set; }
+        public IList<ProjectAboutFileDto> AboutFiles { get; set; }
     }
 }

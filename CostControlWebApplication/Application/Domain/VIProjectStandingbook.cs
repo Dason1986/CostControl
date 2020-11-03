@@ -1,11 +1,16 @@
-﻿namespace CostControlWebApplication.Domain
+﻿using CostControlWebApplication.Application;
+using System;
+
+namespace CostControlWebApplication.Domain
 {
-    public class VIProjectInfo : ProjectInfo, BingoX.Domain.ISnowflakeEntity<VIProjectInfo>
+    public class VIProjectStandingbook : ProjectStandingbook, BingoX.Domain.ISnowflakeEntity<VIProjectStandingbook>, IDate
     {
 
+     
 
-
-        public string SupremeManagerName { get; set; }
+        public string Code { get; set; }
+        public string  Name { get; set; }
+     
 
         public string ManagerName { get; set; }
         public string SetterName { get; set; }
@@ -46,5 +51,24 @@
         public decimal PayableAmount { get; set; }
         public string FirstName { get; set; }
         public string SecondName { get; set; }
+
+        /// <summary>
+        /// 開工時間
+        /// </summary>
+        public DateTime? BeginDate { get; set; }
+
+        /// <summary>
+        /// 開工時間
+        /// </summary>
+        public DateTime? EndDate { get; set; }
+
+        /// <summary>
+        /// 預計開始日期
+        /// </summary>
+        public DateTime? EstimatedBeginDate { get; set; }
+        /// <summary>
+        /// 預計結束日期
+        /// </summary>
+        public DateTime? EstimatedEndDate { get; set; }
     }
 }

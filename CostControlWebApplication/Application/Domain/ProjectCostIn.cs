@@ -4,6 +4,7 @@ using System.ComponentModel;
 
 namespace CostControlWebApplication.Domain
 {
+     
     public class VIProjectCostIn : ProjectCostIn, ISnowflakeEntity<VIProjectCostIn>
     {
         public string Code { get; set; }

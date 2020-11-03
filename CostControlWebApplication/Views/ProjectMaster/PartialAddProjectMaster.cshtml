@@ -1,0 +1,291 @@
+﻿
+@{
+
+
+}
+<style>
+    .box-card {
+        width: 100%;
+    }
+</style>
+<script type="text/x-template" id="addProjectMaster">
+
+    <el-dialog width="80%"
+               title="項目立項"
+               :visible.sync="eldialogvisible"
+               append-to-body>
+        <span slot="footer" class="dialog-footer">
+            <el-button @@click="eldialogvisible = false">取 消</el-button>
+            <el-button type="danger" @@click="onSumbit()">保存</el-button>
+        </span>
+        <el-container>
+            <el-main>
+
+                <el-card class="box-card">
+
+                    <el-divider content-position="left">基礎信息</el-divider>
+
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <label>項目代碼</label>
+                                    <input type="text" class="form-control" v-model="rec.code" placeholder="項目代碼">
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>項目名稱</label>
+                                <input type="text" class="form-control" v-model="rec.name" placeholder="項目名稱">
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>項目类型</label>
+
+                                <el-select v-model="rec.projectTypeId" filterable placeholder="項目类型">
+                                    <el-option v-for="item in projectTypeOptions"
+                                               :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <label>項目經理</label>
+                                    <el-select placeholder="項目經理" v-model="rec.managerId" filterable>
+                                        <el-option v-for="item in userOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id">
+                                        </el-option>
+                                    </el-select>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>合約金額</label>
+                                <el-input-number v-model="rec.contractAmount" placeholder="合約金額"></el-input-number>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+
+
+                        <div class="col-md-12 form-inline">
+                            <div class="form-group">
+
+                                <label>項目地址</label>
+                                <input type="text" class="form-control" v-model="rec.address" style="width: 700px;" placeholder="項目地址">
+
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <el-divider content-position="left">判給關係</el-divider>
+                    <div class="row">
+
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>定作人</label>
+                                <el-select placeholder="定作人" v-model="rec.setterId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>承建商</label>
+                                <el-select placeholder="承建商" v-model="rec.contractorsId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>第一分判</label>
+                                <el-select placeholder="第一分判" v-model="rec.firstId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>第二分判</label>
+                                <el-select placeholder="第二分判" v-model="rec.secondId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <el-divider content-position="left">時間</el-divider>
+                    <div class="row">
+
+
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>預計開始</label>
+                                <el-date-picker type="date" v-model="rec.estimatedBeginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估開始時間">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>預計結束</label>
+                                <el-date-picker type="date" v-model="rec.estimatedEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估結束時間">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>實際開始</label>
+                                <el-date-picker type="date" v-model="rec.beginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="實際開始">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>實際結束</label>
+                                <el-date-picker type="date" v-model="rec.endDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="實際結束">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-12 form-inline">
+                            <div class="form-group">
+
+                                <label>備註</label>
+                                <el-input type="textarea"
+                                          :autosize="{ minRows: 3, maxRows: 7}" style="width: 700px;"
+                                          placeholder="備註"
+                                          v-model="rec.remark">
+                                </el-input>
+                            </div>
+
+                        </div>
+                    </div>
+                </el-card>
+
+            </el-main>
+        </el-container>
+    </el-dialog>
+
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('bg-add-projectmaster',
+        {
+
+            template: '#addProjectMaster',
+            data: function () {
+                return {
+                    eldialogvisible: this.visible,
+                    userOptions:@Html.GetUserOptions(),
+                    supplierOptions:@Html.GetLastHome(),
+                    projectTypeOptions:@Html.GetBasics(BasicsCode.ProjectMasterProjectType),
+                    rec: { fileName:''}
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+
+
+
+                onSumbit: async function () {
+                    console.log('onSumbit');
+                    await this.$http.post("/api/Project/Master" ,this.rec);
+                    this.eldialogvisible = false;
+                    this.$emit('closed', true);
+
+                },
+                handleUploadExceed: function (response, file, fileList) {
+
+                    this.rec.fileid = response.id;
+                    this.rec.fileName = response.fileName;
+                },
+
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+                visible: function (val) {
+
+
+                    this.eldialogvisible = val;
+                },
+                eldialogvisible: function (val) {
+
+                    if (val) return;
+
+                    this.$emit('update:visible', val)
+                }
+
+            },
+            props: {
+
+
+                visible: Boolean
+            }
+        });
+
+
+</script>

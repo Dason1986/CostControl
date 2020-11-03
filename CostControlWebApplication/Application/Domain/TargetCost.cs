@@ -4,15 +4,42 @@ using System;
 
 namespace CostControlWebApplication.Domain
 {
-    public class TargetCost : Entity, ISnowflakeEntity<TargetCost>, IEstimatedDate
+
+    public class VIProjectTargetCost : ProjectTargetCost, ISnowflakeEntity<VIProjectTargetCost>
     {
+        public string Name { get; set; }
+
         public string Code { get; set; }
 
-        public string Name { get; set; }
-        /// <summary>
-        /// 地址 
-        /// </summary>
         public string Address { get; set; }
+ 
+
+        public long FirstId { get; set; }
+        public long SecondId { get; set; }
+
+        public long SetterId { get; set; }
+
+        public long ManagerId { get; set; }
+
+        public long ContractorsId { get; set; }
+
+        public string ProjectType { get; set; }
+
+        public string FirstName { get; set; }
+        public string SecondName { get; set; }
+
+        public string SetterName { get; set; }
+
+        public string ManagerName { get; set; }
+
+        public string ContractorsName { get; set; }
+    }
+    public class ProjectTargetCost : Entity, ISnowflakeEntity<ProjectTargetCost>, IEstimatedDate
+    {
+
+
+        public long ProjectId { get; set; }
+      
         /// <summary>
         /// 項目类型
         /// </summary>

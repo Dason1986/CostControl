@@ -1,8 +1,8 @@
 ﻿CREATE OR REPLACE  VIEW `VIProjectCostOut` AS
 SELECT
  
-projectinfo.`Code`,
-projectinfo.`Name`,
+projectmaster.`Code`,
+projectmaster.`Name`,
 projectcostout.ID,
 projectcostout.CreatedDate,
 projectcostout.Created,
@@ -37,7 +37,7 @@ SettlementMethod.`Name` SettlementMethod,
 Party.`Name` Party
 FROM
 projectcostout
-INNER JOIN projectinfo ON projectcostout.ProjectId = projectinfo.ID
+INNER JOIN projectmaster ON projectcostout.ProjectId = projectmaster.ID
 
 LEFT JOIN basicdata AS Department ON projectcostout.DepartmentId = Department.ID 
 LEFT JOIN basicdata AS CostType ON projectcostout.CostTypeId = CostType.ID 

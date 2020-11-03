@@ -12,29 +12,99 @@ namespace CostControlWebApplication.Application.Data
     {
         public ProjectRepository(RepositoryContextOptions options) : base(options)
         {
-            dataAccessorProjectInfo = CreateWrapper<ProjectInfo>();
+            dataAccessorProjectStandingbook = CreateWrapper<ProjectStandingbook>();
             dataAccessorProjectCostIn = CreateWrapper<ProjectCostIn>();
             dataAccessorProjectCostOut = CreateWrapper<ProjectCostOut>();
-            dataAccessorVIProjectInfo = CreateWrapper<VIProjectInfo>();
+            dataAccessorVIProjectInfo = CreateWrapper<VIProjectStandingbook>();
             dataAccessorAboutFiles = CreateWrapper<ProjectAboutFile>();
+            dataAccessorProjectMaster = CreateWrapper<ProjectMaster>();
+            dataAccessorVIProjectMaster = CreateWrapper<VIProjectMaster>();
+            dataAccessorProjectProcurement = CreateWrapper<ProjectProcurement>();
+            dataAccessorVIProjectProcurement = CreateWrapper<VIProjectProcurement>();
+            dataAccessorProjectProcurementBQItem = CreateWrapper<ProcurementBQItem>();
         }
-        IDataAccessor<ProjectInfo> dataAccessorProjectInfo;
+
+
+        IDataAccessor<ProjectStandingbook> dataAccessorProjectStandingbook;
+
         IDataAccessor<ProjectCostIn> dataAccessorProjectCostIn;
         IDataAccessor<ProjectCostOut> dataAccessorProjectCostOut;
-        IDataAccessor<VIProjectInfo> dataAccessorVIProjectInfo;
+        IDataAccessor<VIProjectStandingbook> dataAccessorVIProjectInfo;
         IDataAccessor<ProjectAboutFile> dataAccessorAboutFiles;
+        IDataAccessor<ProjectMaster> dataAccessorProjectMaster;
+        IDataAccessor<VIProjectMaster> dataAccessorVIProjectMaster;
+        IDataAccessor<ProjectProcurement> dataAccessorProjectProcurement;
+        IDataAccessor<VIProjectProcurement> dataAccessorVIProjectProcurement;
+        IDataAccessor<ProcurementBQItem> dataAccessorProjectProcurementBQItem;
 
         public bool ExistCode(string code)
         {
-            return dataAccessorProjectInfo.Exist(x => x.Code == code);
+            return dataAccessorProjectMaster.Exist(x => x.Code == code);
         }
-
-        public void Add(ProjectInfo entity)
+        public bool ExistProcurement(long id)
         {
-            dataAccessorProjectInfo.Add(entity);
+            return dataAccessorProjectProcurement.Exist(x => x.ID == id);
         }
 
-        public IPagingList<VIProjectInfo> PagingList(ISpecification<VIProjectInfo> specification)
+        public void AddBQItems(List<ProcurementBQItem> items)
+        {
+            dataAccessorProjectProcurementBQItem.AddRange(items);
+        }
+
+        public void AddProcurement(ProjectProcurement entity)
+        {
+            dataAccessorProjectProcurement.Add(entity);
+        }
+        public void UpdateProcurement(ProjectProcurement entity)
+        {
+            dataAccessorProjectProcurement.Update(entity);
+        }
+
+        public ProjectProcurement GetProcurement(long id)
+        {
+            return dataAccessorProjectProcurement.GetId(id);
+        }
+
+        public void Add(ProjectMaster entity)
+        {
+            dataAccessorProjectMaster.Add(entity);
+        }
+
+        public IList<ProjectAboutFile> GetProcurementFiles(long id)
+        {
+            return dataAccessorAboutFiles.Where(n => n.ForeignID == id);
+        }
+
+        public IList<ProjectAboutFile> GetFiles(long id)
+        {
+            return dataAccessorAboutFiles.Where(n => n.ProjectId == id);
+        }
+
+        public IList<VIProjectProcurement> GetProcurements(long id)
+        {
+            return dataAccessorVIProjectProcurement.Where(n => n.ProjectId == id);
+        }
+
+        public IList<ProcurementBQItem> GetProcurementBQItems(long id)
+        {
+            return CreateWrapper<ProcurementBQItem>().Where(n => n.ProcurementId == id);
+        }
+
+        public void Add(ProjectStandingbook entity)
+        {
+            dataAccessorProjectStandingbook.Add(entity);
+        }
+        public IPagingList<VIProjectProcurement> PagingList(Specification<VIProjectProcurement> specification)
+        {
+            int total = 0;
+            return dataAccessorVIProjectProcurement.PageList(specification, ref total).ProjectedAsPagingList(total, specification);
+        }
+        public IPagingList<VIProjectMaster> PagingList(ISpecification<VIProjectMaster> specification)
+        {
+            int total = 0;
+            return dataAccessorVIProjectMaster.PageList(specification, ref total).ProjectedAsPagingList(total, specification);
+        }
+        public IPagingList<VIProjectStandingbook> PagingList(ISpecification<VIProjectStandingbook> specification)
         {
             int total = 0;
             return dataAccessorVIProjectInfo.PageList(specification, ref total).ProjectedAsPagingList(total, specification);
@@ -65,9 +135,9 @@ namespace CostControlWebApplication.Application.Data
             return ProjectCostOutList(projectId).Sum(n => n.ExpendAmount);
         }
 
-        public VIProjectInfo GetProject(long id)
+        public VIProjectMaster GetProjectMaster(long id)
         {
-            return dataAccessorVIProjectInfo.GetId(id);
+            return dataAccessorVIProjectMaster.GetId(id);
         }
 
         public void AddCostin(ProjectCostIn entity)
@@ -97,10 +167,14 @@ namespace CostControlWebApplication.Application.Data
             return dataAccessorProjectCostOut.GetId(id);
         }
 
+        public ProjectStandingbook GetStandingbook(long id)
+        {
+            return dataAccessorProjectStandingbook.GetId(id);
+        }
         public ProjectCostIn GetCostIn(long id)
         {
             return dataAccessorProjectCostIn.GetId(id);
-        } 
+        }
         public void UpdateCostIn(ProjectCostIn entity)
         {
             dataAccessorProjectCostIn.Update(entity);

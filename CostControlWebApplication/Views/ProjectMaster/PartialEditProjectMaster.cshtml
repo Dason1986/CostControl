@@ -1,0 +1,360 @@
+﻿
+@{
+
+
+}
+<style>
+    .demo-drawer__content {
+        display: flex;
+        flex-direction: column;
+        height: 100%
+    }
+
+        .demo-drawer__content form {
+            flex: 1
+        }
+
+    .demo-drawer__footer {
+        display: flex
+    }
+
+        .demo-drawer__footer button {
+            flex: 1
+        }
+</style>
+<script type="text/x-template" id="editProjectMaster">
+
+    <el-dialog width="90%"
+               title="項目明細"
+               :visible.sync="eldialogvisible"
+               append-to-body>
+
+
+
+        <el-card>
+
+
+            <div class="card-body">
+                <h5 class="card-title">{{rec.name}}[{{rec.code}}] </h5>
+            
+
+            </div>
+            <el-tabs v-model="activeName">
+                <el-tab-pane label="基本信息" name="tab0">
+                    <el-card>
+                        <el-divider content-position="left">基礎信息</el-divider>
+
+                        <div class="row">
+
+
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>項目类型</label>
+
+                                    <el-select v-model="rec.projectTypeId" filterable placeholder="項目类型">
+                                        <el-option v-for="item in projectTypeOptions"
+                                                   :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                            <span style="float: left">{{ item.label }}</span>
+                                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                        </el-option>
+                                    </el-select>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <div class="form-group">
+                                        <label>項目經理</label>
+                                        <el-select placeholder="項目經理" v-model="rec.managerId" filterable>
+                                            <el-option v-for="item in userOptions"
+                                                       :key="item.value" :label="item.label" :value="item.id">
+                                            </el-option>
+                                        </el-select>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>合約金額</label>
+                                    <el-input-number v-model="rec.contractAmount" placeholder="合約金額"></el-input-number>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        <div class="row">
+
+
+                            <div class="col-md-12 form-inline">
+                                <div class="form-group">
+
+                                    <label>項目地址</label>
+                                    <input type="text" class="form-control" v-model="rec.address" style="width: 700px;" placeholder="項目地址">
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <el-divider content-position="left">判給關係</el-divider>
+                        <div class="row">
+
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>定作人</label>
+                                    <el-select placeholder="定作人" v-model="rec.setterId" filterable>
+                                        <el-option v-for="item in supplierOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>承建商</label>
+                                    <el-select placeholder="承建商" v-model="rec.contractorsId" filterable>
+                                        <el-option v-for="item in supplierOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>第一分判</label>
+                                    <el-select placeholder="第一分判" v-model="rec.firstId" filterable>
+                                        <el-option v-for="item in supplierOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>第二分判</label>
+                                    <el-select placeholder="第二分判" v-model="rec.secondId" filterable>
+                                        <el-option v-for="item in supplierOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
+                                    </el-select>
+                                </div>
+
+                            </div>
+                        </div>
+                        <el-divider content-position="left">時間</el-divider>
+                        <div class="row">
+
+
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>預計開始</label>
+                                    <el-date-picker type="date" v-model="rec.estimatedBeginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估開始時間">
+                                    </el-date-picker>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>預計結束</label>
+                                    <el-date-picker type="date" v-model="rec.estimatedEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估結束時間">
+                                    </el-date-picker>
+                                </div>
+
+                            </div>
+
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>實際開始</label>
+                                    <el-date-picker type="date" v-model="rec.beginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="實際開始">
+                                    </el-date-picker>
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>實際結束</label>
+                                    <el-date-picker type="date" v-model="rec.endDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="實際結束">
+                                    </el-date-picker>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="row">
+
+                            <div class="col-md-12 form-inline">
+                                <div class="form-group">
+
+                                    <label>備註</label>
+                                    <el-input type="textarea"
+                                              :autosize="{ minRows: 3, maxRows: 7}" style="width: 700px;"
+                                              placeholder="備註"
+                                              v-model="rec.remark">
+                                    </el-input>
+                                </div>
+
+                            </div>
+                        </div>
+                    </el-card>
+                </el-tab-pane>
+                <el-tab-pane label="採購審批" name="tab1">
+                    <el-button type="primary" icon="el-icon-edit" circle @@click="onAddProcurement()"></el-button>
+                    <el-table :data="datasourceprocurement" border style="width: 100%">
+
+                        <el-table-column label="操作" width="80">
+                            <template slot-scope="scope">
+                                <div class="row"> <div class="cell-value"><el-button type="text" style="padding: 0px;" @@click="onOpenProcurement(scope.row)"> 查看 </el-button></div></div>
+
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="提交" width="210">
+                            <template slot-scope="scope">
+                                <div class="row"><div class="cell-lable">提交人: </div><div class="cell-value">{{scope.row.created}} </div></div>
+                                <div class="row"><div class="cell-lable">時間: </div><div class="cell-value"> {{scope.row.createdDate}} </div></div>
+                            </template>
+                        </el-table-column>
+                        <el-table-column label="採購審批類型" prop="procurementTypeName"> </el-table-column>
+                        <el-table-column label="材料/外判類型" prop="supplierType"> </el-table-column>
+                        <el-table-column label="供應商/分判商" prop="supplierName"> </el-table-column>
+                        <el-table-column label="採購金額" prop="procurementAmount"> </el-table-column>
+                        <el-table-column label="利潤比例" prop="profitsRate"> </el-table-column>
+                        <el-table-column label="項目負責人意見" prop="managerOpinion"> </el-table-column>
+                        <el-table-column label="成本部意見" prop="costerOpinion"> </el-table-column>
+                        <el-table-column label="部門經理意見" prop="departmentOpinion"> </el-table-column>
+                        <el-table-column label="備註" prop="remark"> </el-table-column>
+
+                        <el-table-column label="狀態" prop="state"> </el-table-column>
+
+
+
+
+                    </el-table>
+                    <bg-add-procurement :visible.sync="innerVisibleProcurement" v-on:closed="getitemInfo" :id="procurementid" :projectid="projectid"></bg-add-procurement>
+                </el-tab-pane>
+
+                <el-tab-pane label="相關文件" name="tab2">
+                    <el-table border :data="files">
+                        <el-table-column label="文件分組" prop="fileType"> </el-table-column>
+                        <el-table-column label="文件名称" prop="fileName"> </el-table-column>
+                        <el-table-column label="大小" prop="fileSize"> </el-table-column>
+                        <el-table-column label="上传时间" prop="createdDate"> </el-table-column>
+
+                    </el-table>
+
+                </el-tab-pane>
+            </el-tabs>
+
+         
+        </el-card>
+    </el-dialog>
+
+
+</script>
+
+<script type="text/javascript">
+
+
+
+
+    Vue.component('bg-edit-projectmaster',
+        {
+
+            template: '#editProjectMaster',
+            data: function () {
+                return {
+                    eldialogvisible: this.visible,
+                    userOptions:@Html.GetUserOptions(),
+                    supplierOptions:@Html.GetLastHome(),
+                    projectTypeOptions:@Html.GetBasics(BasicsCode.ProjectMasterProjectType),
+                    rec: {  },
+                    innerVisibleProcurement:false,
+                    activeName: "tab0",
+                    procurementid: undefined,
+                    projectid: undefined,
+                    datasourceprocurement: [],
+                    files:[]
+
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+                onOpenProcurement: function (item) {
+                    this.procurementid = item.id;
+                    this.projectid = item.projectId;
+                    this.innerVisibleProcurement = true;
+                },
+                onAddProcurement: function () {
+                    this.procurementid = undefined;
+                    this.projectid = undefined;
+                    this.innerVisibleProcurement = true;
+                },
+                getitemInfo: async function () {
+
+                    this.$http.get("/api/Project/Master/" + this.id).then(result => {
+                        this.rec = result.data;
+                        this.datasourceprocurement = this.rec.procurements;
+                        this.files = this.rec.files;
+                    });
+
+                 //   this.costdatasource = await this.$http.get("/api/targetcost/detail/" + this.targetcostid).body;
+                },
+                onSearchCost: function () {},
+                onSumbit: async function () {
+
+                    await this.$http.put("/api/Project/Master/" + this.id, this.rec);
+                    this.eldialogvisible = false;
+                    this.$emit('closed', true);
+
+                }
+
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+                visible: function (val) {
+                    if (val && this.id) {
+                        this.getitemInfo();
+                    }
+                    this.eldialogvisible = val;
+                },
+                eldialogvisible: function (val) {
+
+                    if (val) return;
+
+                    this.$emit('update:visible', val)
+                }
+
+            },
+            props: {
+                id: String,
+                visible: Boolean
+            }
+        });
+
+
+</script>

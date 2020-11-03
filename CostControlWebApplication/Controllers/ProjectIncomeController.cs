@@ -11,7 +11,7 @@ namespace CostControlWebApplication.Controllers
     {
 
 
-        public IActionResult Index([FromServices] ProjectService service, [FromQuery] ProjectQueryRequest queryRequest)
+        public IActionResult Index([FromServices] CostInOutService service, [FromQuery] ProjectQueryRequest queryRequest)
         {
             IPagingList list = service.GetProjectCostin(queryRequest);
             return View(list);
@@ -22,7 +22,7 @@ namespace CostControlWebApplication.Controllers
     public class ProjectIncomeApiController : Controller
     {
     [HttpGet()]
-        public IPagingList GetProjects([FromServices] ProjectService service, [FromQuery] ProjectQueryRequest queryRequest)
+        public IPagingList GetProjects([FromServices] CostInOutService service, [FromQuery] ProjectQueryRequest queryRequest)
         {
             IPagingList list = service.GetProjectCostin(queryRequest);
 

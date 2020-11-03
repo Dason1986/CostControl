@@ -3,7 +3,7 @@ using System;
 
 namespace CostControlWebApplication.Domain
 {
-    public class TargetCostDetail : Entity, ISnowflakeEntity<TargetCostDetail>
+    public class ProjectTargetCostDetail : Entity, ISnowflakeEntity<ProjectTargetCostDetail>
     {
         public long TargetCostId { get; set; }
         public long Code { get; set; }

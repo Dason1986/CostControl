@@ -16,14 +16,19 @@ namespace CostControlWebApplication.Services
         public FileStorageServie(IBoundedContext boundedContext)
         {
             rootPath = Path.Combine(boundedContext.ContentRootPath, "FileStorage");
+            this.boundedContext = boundedContext;
         }
         private readonly string rootPath;
+        private readonly IBoundedContext boundedContext;
+
         public FileEntry AddFile(Stream stream, string path)
         {
             var buffer = stream.ToArray();
             var realPath = Path.Combine(rootPath, path);
+            
             FileInfo fileInfo = new FileInfo(realPath);
             if (!fileInfo.Directory.Exists) fileInfo.Directory.Create();
+            realPath = Path.Combine(fileInfo.Directory.FullName, boundedContext.Generator.New()+"_"+Path.GetFileName(path));
             File.WriteAllBytes(realPath, buffer);
             return new FileEntry { StoragePath = realPath, FileSize = buffer.Length, FileName = Path.GetFileName(path) };
         }

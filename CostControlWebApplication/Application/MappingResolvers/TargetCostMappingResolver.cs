@@ -22,9 +22,9 @@ namespace CostControlWebApplication.Application.MappingResolvers
 
 
     }
-    public class TargetCostMappingResolver : IMappingResolver<TargetCost, TargetCostDto> 
+    public class TargetCostMappingResolver : IMappingResolver<ProjectTargetCost, ProjectTargetCostDto> 
     {
-        public void Map(IMappingExpression<TargetCost, TargetCostDto> mapping)
+        public void Map(IMappingExpression<ProjectTargetCost, ProjectTargetCostDto> mapping)
         {
             mapping.IncludeBase<IEstimatedDate, IDateDto>();
         }
@@ -34,12 +34,12 @@ namespace CostControlWebApplication.Application.MappingResolvers
 
 
     }
-    public class TargetCostListItmeMappingResolver :  IMappingResolver<TargetCost, TargetCostListItmeDto>
+    public class TargetCostListItmeMappingResolver :  IMappingResolver<ProjectTargetCost, ProjectTargetCostListItmeDto>
     {
         
 
 
-        public void Map(IMappingExpression<TargetCost, TargetCostListItmeDto> mapping)
+        public void Map(IMappingExpression<ProjectTargetCost, ProjectTargetCostListItmeDto> mapping)
         {
             mapping.IncludeBase<IEstimatedDate, IDateDto>();
             //       mapping.ForMember(n => n.State, opt => opt.MapFrom(ProjectResolver.StateDisplay));

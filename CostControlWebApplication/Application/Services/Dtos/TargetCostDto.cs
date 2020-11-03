@@ -4,7 +4,7 @@ using System;
 namespace CostControlWebApplication.Application.Services.Dtos
 {
   
-    public class TargetCostListItmeDto : IDto, IDateDto
+    public class ProjectTargetCostListItmeDto : IDto, IDateDto
     {
         public long ID { get; set; }
         public string Code { get; set; }
@@ -65,24 +65,14 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// </summary>
         public decimal ContractOutAmount { get; set; }
     }
-    public class TargetCostDto : TargetCostListItmeDto
+    public class ProjectTargetCostDto : ProjectTargetCostListItmeDto
     {
         public TargetCostSummaryItem[] Summary { get; set; }
 
         public TargetCostDetailDto[] Details { get; set; }
         public TargetCostDetailDto[] AttachmentFiles { get; set; }
     } 
-    public class AttachmentFile
-    {
-        public string FileName { get; set; }
-        public string FileType { get; set; }
-
-        public string DownlownUrl { get; set; }
-
-        public string Size { get; set; }
-
-        public string UpcloadDate { get; set; }
-    }
+   
     public class TargetCostSummaryItem
     {
         public int Id { get; set; }

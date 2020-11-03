@@ -95,7 +95,7 @@ namespace CostControlWebApplication.Application.AD
         /// </summary>
         /// <param name="commonName">用户公共名称</param>
         /// <returns>如果找到该用户则返回用户的对象,否则返回 null</returns>
-        public System.Security.Claims.ClaimsIdentity GetUserInfoDirectoryEntry(string commonName)
+        public ClaimsIdentity GetUserInfoDirectoryEntry(string commonName)
         {
             var de = GetDirectoryObject();
             var deSearch = new DirectorySearcher(de);
@@ -113,9 +113,10 @@ namespace CostControlWebApplication.Application.AD
                 var id = de.Guid;
                 //     var claims = de.Properties.Cast<PropertyValueCollection>().Select(n => new System.Security.Claims.Claim(n.PropertyName, GetProperty(n).ToString())).ToList();
                 ClaimsIdentity identity = new ClaimsIdentity("Basic", "Name", "Role");
-                identity.AddClaim(new Claim("Name", de.Username));
-                identity.AddClaim(new Claim("Displayname", displayname?? description));
+                identity.AddClaim(new Claim("Name", commonName));
+                identity.AddClaim(new Claim("Displayname", displayname ?? description));
                 identity.AddClaim(new Claim("ID", de.Guid.ToString()));
+                identity.AddClaim(new Claim("mail", GetProperty(de, "mail").ToString()));
                 identity.AddClaim(new Claim("Role", memberof.ToString().Contains("costmanager") ? "Admin" : "Staffer"));
                 //memberOf 所在用户组
                 de.Close();
@@ -189,7 +190,7 @@ namespace CostControlWebApplication.Application.AD
         }
         object GetProperty(DirectoryEntry entry, string propertyName)
         {
-            if (!entry.Properties.Contains(propertyName)) return null;
+            if (!entry.Properties.Contains(propertyName)) return string.Empty;
             return GetProperty(entry.Properties[propertyName]);
 
 

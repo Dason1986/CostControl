@@ -26,15 +26,18 @@ namespace CostControlWebApplication
         private readonly Assembly entityAssembly;
         private readonly Assembly dtoAssembly;
         private readonly MethodInfo methodCreateMap;
+        private readonly MethodInfo mapMethon;
         private readonly IDictionary<string, object> mapdic = new Dictionary<string, object>();
         public MappingProfile()
         {
             methodCreateMap = this.GetType().GetMethods().Where(n => n.Name == "CreateMap").ToList()[0];
-
+            mapMethon = this.GetType().GetMethods().Where(n => n.Name == "Map").ToList()[0];
             mapperAssembly = this.GetType().Assembly;
             entityAssembly = this.GetType().Assembly;
             dtoAssembly = this.GetType().Assembly;
+    
             OnConfigure();
+
         }
 
         protected void OnConfigure()
@@ -48,12 +51,12 @@ namespace CostControlWebApplication
             CreateMap<string, int>().ConvertUsing(s => Convert.ToInt32(s));
             CreateMap<bool, int>().ConvertUsing(s => s ? 1 : 0);
             CreateMap<int, bool>().ConvertUsing(s => s > 0);
-            CreateMap<DateTime?, string>().ConvertUsing(s => string.Format("{0:yyyy-MM-dd}",s));
+            CreateMap<DateTime?, string>().ConvertUsing(s => string.Format("{0:yyyy-MM-dd}", s));
             CreateMap<Enum, string>().ConvertUsing(s => Convert.ToInt32(s).ToString());
             //   CreateMap<Enum, string>().ConvertUsing(s => s == null ? string.Empty : BingoX.Utility.EnumUtility.GetDescription(s));
-          
-        
-         
+
+            Create(typeof(FileEntry), typeof(ProjectAboutFile));
+
             InitDto();
 
             //CreateEntityToDto(mappingResolvers, valueModelentities, valueModeldtos);
@@ -90,9 +93,20 @@ namespace CostControlWebApplication
             if (mapdic.ContainsKey(key)) return mapdic[key];
             var genericMethod = methodCreateMap.MakeGenericMethod(type1, type2);
             var mapp = genericMethod.Invoke(this, null);
+
             mapdic.Add(key, mapp);
             return mapp;
         }
+      public  void Map<T1, T2>(IMappingExpression<T1, T2> mapping) where T2 : Domain.Entity 
+                                                             where T1 :IDto
+        {
+            mapping.ForMember(n => n.Modified, act => act.Ignore());
+            mapping.ForMember(n => n.Created, act => act.Ignore());
+            mapping.ForMember(n => n.CreatedDate, act => act.Ignore());
+            mapping.ForMember(n => n.ModifiedDate, act => act.Ignore());
+        }
+
+
         private void CreateEntityToDto(Type[] mappingResolvers, Type[] entities, Type[] dtos)
         {
 
@@ -115,9 +129,12 @@ namespace CostControlWebApplication
 
 
                 Create(entity, dtoitem);
-                Create( dtoitem, entity);
+                var mapper = Create(dtoitem, entity);
+                if (typeof(Domain.Entity).IsAssignableFrom(entity) && typeof(IDto).IsAssignableFrom(dtoitem))
+                {
 
-
+                    mapMethon.MakeGenericMethod(dtoitem, entity).Invoke(this,  new object[] { mapper });
+                }
             }
         }
 

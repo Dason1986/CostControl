@@ -11,19 +11,21 @@ namespace CostControlWebApplication.Application.Data
     {
         public TargetCostRepository(RepositoryContextOptions options) : base(options)
         {
-            dataAccessorTargetCost = CreateWrapper<TargetCost>();
-            dataAccessorTargetCostDetail = CreateWrapper<TargetCostDetail>();
+            dataAccessorTargetCost = CreateWrapper<ProjectTargetCost>();
+            dataAccessorTargetCostDetail = CreateWrapper<ProjectTargetCostDetail>();
+            dataAccessorVITargetCostDetail = CreateWrapper<VIProjectTargetCost>();
         }
 
 
-        IDataAccessor<TargetCostDetail> dataAccessorTargetCostDetail;
-        IDataAccessor<TargetCost> dataAccessorTargetCost;
-        public void Add(TargetCost entity)
+        IDataAccessor<ProjectTargetCostDetail> dataAccessorTargetCostDetail;
+        IDataAccessor<VIProjectTargetCost> dataAccessorVITargetCostDetail;
+        IDataAccessor<ProjectTargetCost> dataAccessorTargetCost;
+        public void Add(ProjectTargetCost entity)
         {
             dataAccessorTargetCost.Add(entity);
         }
 
-        internal void AddDetail(TargetCostDetail entity)
+        internal void AddDetail(ProjectTargetCostDetail entity)
         {
             throw new NotImplementedException();
         }
@@ -33,20 +35,20 @@ namespace CostControlWebApplication.Application.Data
             throw new NotImplementedException();
         }
 
-        public TargetCost GetId(long id)
+        public ProjectTargetCost GetId(long id)
         {
             return dataAccessorTargetCost.GetId(id);
         }
 
-        public IList<TargetCostDetail> GetDetails(long id)
+        public IList<ProjectTargetCostDetail> GetDetails(long id)
         {
             return dataAccessorTargetCostDetail.Where(n => n.TargetCostId == id);
         }
 
-        public IPagingList<TargetCost> PagingList(ISpecification<TargetCost> specification)
+        public IPagingList<VIProjectTargetCost> PagingList(ISpecification<VIProjectTargetCost> specification)
         {
             int total = 0;
-            return dataAccessorTargetCost.PageList(specification, ref total).ProjectedAsPagingList(total, specification);
+            return dataAccessorVITargetCostDetail.PageList(specification, ref total).ProjectedAsPagingList(total, specification);
         }
     }
 }

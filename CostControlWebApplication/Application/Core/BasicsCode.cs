@@ -3,6 +3,9 @@
     public class BasicsCode
     {
         public const string TrageCastProjectType = "006";
+        public const string ProjectMasterProjectType = "013";
+        public const string ProcurementType = "015";
+ 
         public const string Currency = "003";
         public const string ProjectMain = "004";
         public const string SettlementMethod = "001";

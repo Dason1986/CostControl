@@ -23,20 +23,20 @@ namespace CostControlWebApplication.Services
         }
 
 
-        public IPagingList<TargetCostListItmeDto> GetProjects(ProjectQueryRequest queryRequest)
+        public IPagingList<ProjectTargetCostListItmeDto> GetTargetCosts(ProjectQueryRequest queryRequest)
         {
-            ISpecification<TargetCost> specification = new Specification<TargetCost>();
+            var specification = new Specification<VIProjectTargetCost>();
             if (!string.IsNullOrEmpty(queryRequest.Code)) specification.And(n => n.Code.Contains(queryRequest.Code));
             if (!string.IsNullOrEmpty(queryRequest.Name)) specification.And(n => n.Name.Contains(queryRequest.Name));
             specification.SetPage(queryRequest);
 
-            return repository.PagingList(specification).ProjectedAsPagingList<TargetCostListItmeDto>();
+            return repository.PagingList(specification).ProjectedAsPagingList<ProjectTargetCostListItmeDto>();
 
         }
 
-        public TargetCostDto Get(long id)
+        public ProjectTargetCostDto Get(long id)
         {
-            var dto = repository.GetId(id).ProjectedAs<TargetCostDto>();
+            var dto = repository.GetId(id).ProjectedAs<ProjectTargetCostDto>();
             if (dto == null) return dto;
             dto.Details = new TargetCostDetailDto[] { };
             dto.Summary = new TargetCostSummaryItem[] {
@@ -67,11 +67,10 @@ namespace CostControlWebApplication.Services
 
         }
 
-        public void Add(TargetCostDto dto)
+        public void Add(ProjectTargetCostDto dto)
         {
-            TargetCost entity = dto.ProjectedAs<TargetCost>();
-            if (string.IsNullOrEmpty(entity.Code)) entity.Code = serialNumberProvider.Dequeue(SerialNumberCode.TargetCost);
-            else if (repository.ExistCode(entity.Code)) throw new LogicException("编号已经存在");
+            ProjectTargetCost entity = dto.ProjectedAs<ProjectTargetCost>();
+
             entity.State = CommonState.Enabled;
             entity.Created(this);
             repository.Add(entity);
@@ -79,13 +78,13 @@ namespace CostControlWebApplication.Services
         }
         public void Add(TargetCostDetailDto dto)
         {
-            TargetCostDetail entity = dto.ProjectedAs<TargetCostDetail>();
+            ProjectTargetCostDetail entity = dto.ProjectedAs<ProjectTargetCostDetail>();
 
             entity.Created(this);
             repository.AddDetail(entity);
             repository.UnitOfWork.Commit();
         }
-        public IList<TargetCostDetail> GetDetails(long id)
+        public IList<ProjectTargetCostDetail> GetDetails(long id)
         {
             return repository.GetDetails(id);
         }

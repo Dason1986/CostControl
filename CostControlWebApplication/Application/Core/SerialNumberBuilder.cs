@@ -62,7 +62,6 @@ namespace CostControlWebApplication
     public class SerialNumberCode
     {
         public const string ProjectCode = "ProjectNo";
-        public const string TargetCost = "TargetCost";
     }
     /// <summary>
     ///

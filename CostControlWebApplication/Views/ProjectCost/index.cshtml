@@ -180,21 +180,11 @@
                     </div>
                 </div>
             </div>
-        </div>
-        <bg-add-costout :visible.sync="innerVisiblecostout" :item="rec" v-on:closed="onSearchBatch" :projectid="getprojectId()">></bg-add-costout>
-        <bg-edit-project :visible.sync="innerVisibleEditProject" v-on:closed="onSearchBatch" :projectid="getprojectId()"></bg-edit-project>
+        </div> 
     </section>
 </div>
 
-
-<partial name="~/Views/Shared/bg/PartialOmit.cshtml" />
-<partial name="~/Views/Project/PartialAddProject.cshtml" />
-<partial name="~/Views/Project/PartialEditProject.cshtml" />
-<partial name="~/Views/Project/PartialCostIn.cshtml" />
-<partial name="~/Views/Project/PartialCostout.cshtml" />
-<partial name="~/Views/Project/PartialAddCostIn.cshtml" />
-<partial name="~/Views/Project/PartialAddCostout.cshtml" />
-<partial name="~/Views/Project/PartialAboutFiles.cshtml" />
+ 
 
 <script>
 

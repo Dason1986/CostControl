@@ -1,27 +1,14 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using BingoX.Domain;
+using CostControlWebApplication.Application;
+using System;
 
-namespace CostControlWebApplication.Application.Services.Dtos
+namespace CostControlWebApplication.Domain
 {
-    public class ProjectInfoDto : ProjectInfoListItmeDto
+    public class ProjectStandingbook : Entity, ISnowflakeEntity<ProjectStandingbook>
     {
 
-        /// <summary>
-        /// 最終責任人D1
-        /// </summary>
-        public long SupremeManagerId { get; set; }
-        /// <summary>
-        /// 定作人
-        /// </summary>
-        public long SetterId { get; set; }
-        /// <summary>
-        /// 項目經理D
-        /// </summary>
-        public long ManagerId { get; set; }
-        /// <summary>
-        /// 承建商I
-        /// </summary>
-        public long ContractorsId { get; set; }
+  
+       
         /// <summary>
         /// 項目主體
         /// </summary>
@@ -37,14 +24,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// </summary>
         public long SettlementMethodId { get; set; }
 
-        /// <summary>
-        /// 第一分判J
-        /// </summary>
-        public long FirstId { get; set; }
-        /// <summary>
-        /// 第二分判K
-        /// </summary>
-        public long SecondId { get; set; }
+       
         /// <summary>
         /// 目標毛利率M（%）
         /// </summary>
@@ -53,7 +33,29 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// 核算毛利率N（%）
         /// </summary>
         public decimal AccountingGrossProfitRate { get; set; }
+        /// <summary>
+        /// 完工百分比E（%）
+        /// </summary>
+        public decimal CompletionRatio { get; set; }
+        /// <summary>
+        /// 合同金額L
+        /// </summary>
+        public decimal ContractAmount { get; set; }
+        /// <summary>
+        /// 成本金額
+        /// </summary>
+        public decimal CostAmount { get; set; }
 
+     
+       
+        /// <summary>
+        /// 後加金額L1
+        /// </summary>
+        public decimal AdditionalAmount { get; set; }
+        /// <summary>
+        /// 結算金額R
+        /// </summary>
+        public decimal BalanceAmount { get; set; }
 
         /// <summary>
         /// 保固應收Z
@@ -64,7 +66,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// </summary>
         public decimal SecuringAmountRate { get; set; }
         /// <summary>
-        /// 保固應付
+        /// 保固金比例
         /// </summary>
         public decimal SecuringPayableAmount { get; set; }
         /// <summary>
@@ -88,8 +90,8 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// </summary>
         public string Remark { get; set; }
 
-        public IList<ProjectCostInDto> CostIn { get; set; }
-        public IList<ProjectCostOutDto> CostOut { get; set; }
-        public IList<ProjectAboutFileDto> AboutFiles { get; set; }
+       
+
+ 
     }
 }

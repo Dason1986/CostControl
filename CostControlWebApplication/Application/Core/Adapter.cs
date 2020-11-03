@@ -30,7 +30,7 @@ namespace CostControlWebApplication
             return new QueryPagerResponse<TDes>(new List<TDes>(pagingList), total, specification.PageIndex, specification.PageSize) { TotalPages = totalPages };
 
         }
-        public static IPagingList<TDes> ProjectedAsPagingList<TDes>(this IPagingList pagingList )
+        public static IPagingList<TDes> ProjectedAsPagingList<TDes>(this IPagingList pagingList)
         {
             var totalPages = (int)System.Math.Ceiling((double)pagingList.Total / pagingList.PageSize);
             return new QueryPagerResponse<TDes>(ProjectedAsCollection<TDes>(pagingList.Items), pagingList.PageIndex, pagingList.PageSize, pagingList.Total) { TotalPages = totalPages };//(ProjectedAsCollection<TDes>(pagingList), total);
@@ -49,6 +49,22 @@ namespace CostControlWebApplication
             if (items == null) return default(TProjection);
 
             return mapping != null ? mapping.Map<TProjection>(items) : Mapping.Map<TProjection>(items);
+        }
+
+        /// <summary>
+        /// Project a type using a DTO
+        /// </summary>
+        /// <typeparam name="TProjection">The dto projection</typeparam>
+        /// <param name="items"></param>
+        /// <returns>The projected type</returns>
+        public static void ProjectedAs<TProjection>(this object items, TProjection projection ,IMapper mapping = null)
+
+        {
+
+            if (items == null) return;
+
+            if (mapping != null) mapping.Map(items, projection);
+            else Mapping.Map(items, projection);
         }
         /// <summary>
         /// Project a type using a DTO

@@ -7,13 +7,13 @@ namespace CostControlWebApplication.Application
 {
     public interface IDateDto
     {
-        public string BeginDate { get; set; }
-        public string EndDate { get; set; }
+        string BeginDate { get; set; }
+        string EndDate { get; set; }
     }
     public interface IDate : IEstimatedDate
     {
-        public DateTime? BeginDate { get; set; }
-        public DateTime? EndDate { get; set; }
+        DateTime? BeginDate { get; set; }
+        DateTime? EndDate { get; set; }
     }
     public interface IEstimatedDate
     {

@@ -60,7 +60,8 @@ namespace GreeSaas.WebApplication.Controllers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
            
             var claims = new Claim[]
-                      {
+                      { 
+                            new Claim(ClaimTypes.NameIdentifier,user.ID.ToString()),
                             new Claim("Account",user.Account),
                             new Claim(ClaimTypes.Name,user.Name),
                             new Claim(ClaimTypes.Role,user.RoleType.ToString()), 
@@ -89,7 +90,7 @@ namespace GreeSaas.WebApplication.Controllers
             }
             else
             {
-                return Redirect("/Project");
+                return Redirect("/ProjectMaster");
             }
 
 
