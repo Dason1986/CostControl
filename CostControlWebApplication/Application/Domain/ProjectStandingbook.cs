@@ -8,6 +8,7 @@ namespace CostControlWebApplication.Domain
     {
 
   
+        public long ProjectId { get; set; }
        
         /// <summary>
         /// 項目主體
@@ -40,11 +41,7 @@ namespace CostControlWebApplication.Domain
         /// <summary>
         /// 合同金額L
         /// </summary>
-        public decimal ContractAmount { get; set; }
-        /// <summary>
-        /// 成本金額
-        /// </summary>
-        public decimal CostAmount { get; set; }
+        public decimal ContractAmount { get; set; } 
 
      
        

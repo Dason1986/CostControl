@@ -1,9 +1,17 @@
-﻿using CostControlWebApplication.Domain;
+﻿using BingoX.DataAccessor;
+using CostControlWebApplication.Domain;
 
 namespace CostControlWebApplication.Services
 {
     static class EntityHelper
     {
+        public static Specification<T> GetSpecification<T>()where T : Entity
+        {
+            Specification<T> specification = new Specification<T>();
+            specification.OrderbyDesc(n => n.ID);
+            return specification;
+        }
+
         public static void Created<T>(this T t, IBaseService service) where T : Entity
         {
             t.ID = service.Bounded.Generator.New();

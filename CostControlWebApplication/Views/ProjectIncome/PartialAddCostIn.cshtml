@@ -28,7 +28,7 @@
 
                             <div class="form-group">
                                 <label>項目编号</label>
-                                <el-select v-model="rec.projectid"
+                                <el-select v-model="rec.projectId"
                                            filterable
                                            remote
                                            reserve-keyword
@@ -301,8 +301,8 @@
                     eldialogvisible: this.visible,
                     loading: false,
                     options :[],
-                    lastHomeOptions:@Html.GetLastHome(),
-                    rec: { projectid: undefined }
+                    lastHomeOptions:@Html.GetSupplier(),
+                    rec: { projectId: undefined }
                 };
             },
             filters: {
@@ -320,10 +320,15 @@
                         }).catch(x => { this.loading = false; })
                     }
                 },
+                getItem: function () {
+                    this.$http.get("/api/Project/costin/" + this.id).then(req => {
+                        this.rec = req.data;
+                    });
+                },
                 onSumbit: async function () {
                  
 
-                    if (this.item === undefined) {
+                    if (this.id === undefined) {
                         await this.$http.post("/api/Project/costin", this.rec);
                     } else {
                         await this.$http.put("/api/Project/costin/" + this.rec.id, this.rec);
@@ -342,18 +347,16 @@
             },
             watch: {
                 visible: function (val) {
-
-                    if (val) this.rec.projectid = this.projectid;
-                    else this.rec.projectid = undefined;
+              
+                    if (val) {
+                        if (this.id) this.getItem();
+                        else {                           
+                            this.rec.projectId = this.projectid;
+                        }
+                    }
                     this.eldialogvisible = val;
                 },
-                item: function (val) {
-
-                    console.log('in',val)
-                    if (val) this.rec = {...val};
-                    else this.rec = {};
-                
-                },
+               
                 eldialogvisible: function (val) {
 
                     if (val) return;
@@ -364,7 +367,7 @@
 
             },
             props: {
-                item: Object,
+                id:String,
                 projectid: String,
                 visible: Boolean
             }

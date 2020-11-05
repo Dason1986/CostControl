@@ -17,6 +17,10 @@ namespace CostControlWebApplication.Application.Services.Dtos
         public string Fax { get; set; }
         public string ManName { get; set; }
         public string ManTel { get; set; }
+        public string RoleType { get; set; }
         public string State { get; set; }
+
+        public bool IsCompany { get; set; }
+        public string Code { get; set; }
     }
 }

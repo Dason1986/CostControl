@@ -60,9 +60,9 @@
 
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">查詢</h3>
+                        <h3 class="box-title">項目收入</h3>
 
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @@click="onAdd()"></el-button>
+                        <el-button type="primary" icon="el-icon-edit" size="mini" @@click="onAdd()">添加項目收入</el-button>
                     </div>
                     <div class="box-body">
 
@@ -222,7 +222,7 @@
             methods: {
                 formatterLastHome: function (row, column, cellValue, index) {
 
-                    var projectTypes =@Html.GetLastHome( );
+                    var projectTypes =@Html.GetSupplier( );
                     var itemfilter = projectTypes.filter(x => x.id == cellValue);
 
                     if (itemfilter && itemfilter.length>0) return itemfilter[0].label;

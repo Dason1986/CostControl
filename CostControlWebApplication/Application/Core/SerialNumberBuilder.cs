@@ -7,67 +7,66 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
+using CostControlWebApplication.Domain;
 
 namespace CostControlWebApplication
 {
     public class SerialNumberProvider : ISerialNumberProvider
     {
-        public SerialNumberProvider(IServiceProvider serviceProvider)
+        private readonly string format;
+        private readonly IRepository<Supplier> repository;
+
+        public SerialNumberProvider(string format, IRepository<Supplier> repository)
         {
-            repository = serviceProvider.CreateScope().ServiceProvider.GetService<IRepository<SerialNumber>>();
-            dic = repository.QueryAll().ToDictionary(n => n.Code, x =>
-            {
-                SerialNumberBuilder builder = new SerialNumberBuilder(x);
-
-                return builder;
-            });
-
+            this.format = format;
+            this.repository = repository;
         }
-        readonly Dictionary<string, SerialNumberBuilder> dic;
-        private readonly IRepository<SerialNumber> repository;
-        object lockobj = new object();
+
 
         public string Dequeue(string code)
         {
-            lock (lockobj)
+            var supplier = repository.Get(n => n.Code == code);
+            if (supplier == null) throw new LogicException("编号代码不存在");
+
+            return Dequeue(supplier);
+        }
+        public string Dequeue(Supplier supplier)
+        {
+
+            if (supplier == null) throw new LogicException("编号代码不存在");
+            var bulider = new SerialNumberBuilder(supplier.Code, format, supplier.CurrentNumber);
+            try
             {
-                if (dic.ContainsKey(code))
-                {
-                    var builder = dic[code];
-                    var number = builder.Dequeue();
-                    repository.Update(builder.SerialNumber);
-                    repository.UnitOfWork.Commit();
-                    return number;
-                }
-                throw new LogicException("编号代码不存在");
+                var number = bulider.Dequeue();
+                return number;
+            }
+            finally
+            {
+                supplier.CurrentNumber = bulider.CurrentNumber;
+                repository.Update(supplier);
+                repository.UnitOfWork.Commit();
             }
 
         }
     }
-    public class SerialNumber : IStringEntity<SerialNumber>, IDomainEntry
-    {
-        [SqlSugar.SugarColumn(IsPrimaryKey = true, IsIdentity = false)]
-        public string Code { get; set; }
 
-        public string Name { get; set; }
-        public int CurrentNumber { get; set; }
-        public string SerialNumberFormat { get; set; }
-        public int Buildrecord { get; private set; }
-        string IEntity<SerialNumber, string>.ID { get => Code; set => Code = value; }
-    }
     public interface ISerialNumberProvider
     {
         string Dequeue(string code);
+        string Dequeue(Supplier supplier);
     }
-    public class SerialNumberCode
-    {
-        public const string ProjectCode = "ProjectNo";
-    }
+
     /// <summary>
     ///
     /// </summary>
     public class SerialNumberBuilder : ISerialNumberBuilder
     {
+        public SerialNumberBuilder(string code, string format, int currentNumber)
+        {
+            Code = code;
+            SerialNumberFormat = format;
+            CurrentNumber = currentNumber;
+        }
         /// <summary>
         /// /
         /// </summary>
@@ -78,24 +77,9 @@ namespace CostControlWebApplication
         /// </summary>
         public string SerialNumberFormat { get; private set; }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public int Buildrecord { get; private set; }
 
-        /// <summary>
-        /// /
-        /// </summary>
-        /// <param name="format"></param>
-        /// <param name="currentNumber"></param>
-        /// <param name="buildrecord"></param>
-        public void SetOption(string format, int currentNumber, int buildrecord)
-        {
-            if (format == null) throw new ArgumentNullException("format");
-            SerialNumberFormat = format;
-            CurrentNumber = currentNumber;
-            Buildrecord = buildrecord;
-        }
+
+
 
         /// <summary>
         ///
@@ -104,13 +88,9 @@ namespace CostControlWebApplication
 
         private static readonly object Lockobj = new object();
 
-        private readonly Queue<string> _numberQueue = new Queue<string>();
 
-        public SerialNumberBuilder(SerialNumber x)
-        {
-            SerialNumber = x;
-            SetOption(x.SerialNumberFormat, x.CurrentNumber, x.Buildrecord);
-        }
+
+        public string Code { get; set; }
 
         /// <summary>
         ///
@@ -128,62 +108,6 @@ namespace CostControlWebApplication
             }
         }
 
-        /// <summary>
-        ///
-        /// </summary>
-        public void CreateSerialNumber()
-        {
-            lock (Lockobj)
-            {
-                if (SerialNumberFormat == null) throw new ArgumentException("SerialNumberFormat");
-                var matches = GetEnumerateVariables(SerialNumberFormat);
-
-                var groupCollections = matches as GroupCollection[] ?? matches.ToArray();
-                for (int i = 1; i <= Buildrecord; i++)
-                {
-                    String numberstr = SerialNumberFormat;
-                    foreach (var variable in groupCollections)
-                    {
-                        var param = variable["Param"].Value;
-
-                        switch (variable["Key"].Value)
-                        {
-                            case "Date":
-                                if (string.IsNullOrEmpty(param))
-                                {
-                                    param = "ddMMyyyy";
-                                }
-
-                                numberstr = numberstr.Replace(variable[0].Value, DateTime.Now.ToString(param));
-
-                                break;
-
-                            case "Number":
-
-                                if (string.IsNullOrEmpty(param))
-                                {
-                                    param = "d8";
-                                }
-
-                                numberstr = numberstr.Replace(variable[0].Value, (CurrentNumber + i).ToString(param));
-
-                                break;
-                        }
-                    }
-                    _numberQueue.Enqueue(numberstr);
-                }
-            }
-        }
-
-        /// <summary>
-        ///
-        /// </summary>
-        public int Count
-        {
-            get { return _numberQueue.Count; }
-        }
-
-        public SerialNumber SerialNumber { get; }
 
         /// <summary>
         ///
@@ -193,15 +117,48 @@ namespace CostControlWebApplication
         {
             lock (Lockobj)
             {
-                if (Count == 0)
-                {
-                    this.CreateSerialNumber();
-                }
+                if (SerialNumberFormat == null) throw new ArgumentException("SerialNumberFormat");
+                var matches = GetEnumerateVariables(SerialNumberFormat);
 
-                var sn = _numberQueue.Dequeue();
+                var groupCollections = matches as GroupCollection[] ?? matches.ToArray();
+
+                String numberstr = SerialNumberFormat;
+                foreach (var variable in groupCollections)
+                {
+                    var param = variable["Param"].Value;
+
+                    switch (variable["Key"].Value)
+                    {
+                        case "Code":
+
+
+                            numberstr = numberstr.Replace(variable[0].Value, Code);
+
+                            break;
+                        case "Date":
+                            if (string.IsNullOrEmpty(param))
+                            {
+                                param = "ddMMyyyy";
+                            }
+
+                            numberstr = numberstr.Replace(variable[0].Value, DateTime.Now.ToString(param));
+
+                            break;
+
+                        case "Number":
+
+                            if (string.IsNullOrEmpty(param))
+                            {
+                                param = "d8";
+                            }
+
+                            numberstr = numberstr.Replace(variable[0].Value, (CurrentNumber + 1).ToString(param));
+
+                            break;
+                    }
+                }
                 CurrentNumber++;
-                this.SerialNumber.CurrentNumber = CurrentNumber;
-                return sn;
+                return numberstr;
             }
         }
     }

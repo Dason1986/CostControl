@@ -23,24 +23,40 @@ namespace CostControlWebApplication.Services
         public void AddSuppiler(SupplierDto dto)
         {
             Supplier entity = new Supplier();
-            entity.Created(this); 
+            if (dto.IsCompany)
+            {
+                if (string.IsNullOrEmpty(dto.Code)) throw new BingoX.LogicException("爲公司時編號不能爲空");
+                if(repository.Exist(x => x.Code == dto.Code))throw new BingoX.LogicException("編號已經存在");
+            }
+            entity.Created(this);
             entity.Name = dto.Name;
             entity.ManName = dto.ManName;
             entity.ManTel = dto.ManTel;
             entity.OfficeTel = dto.OfficeTel;
             entity.Address = dto.Address;
-            entity.State = dto.State== "1"? CommonState.Enabled: CommonState.Disabled  ;
+            entity.Code = dto.Code;
+            entity.IsCompany = dto.IsCompany;
+            entity.State = dto.State == "1" ? CommonState.Enabled : CommonState.Disabled;
             repository.Add(entity);
             repository.UnitOfWork.Commit();
             resourceService.ChangedSupplier();
         }
         public void UpdateSuppiler(SupplierDto dto)
         {
+            if (dto.IsCompany)
+            {
+                if (string.IsNullOrEmpty(dto.Code)) throw new BingoX.LogicException("爲公司時編號不能爲空");
+                var exist = repository.Get(x => x.Code == dto.Code);
+                if(exist!=null && exist.ID!= dto.ID) throw new BingoX.LogicException("編號已經存在");
+            }
             Supplier entity = repository.GetId(dto.ID);
+            if (entity == null) throw new BingoX.AspNetCore.NotFoundEntityException();
             entity.Modified(this);
             entity.ManName = dto.ManName;
             entity.ManTel = dto.ManTel;
             entity.OfficeTel = dto.OfficeTel;
+            entity.Code = dto.Code;
+            entity.IsCompany = dto.IsCompany;
             entity.Address = dto.Address;
             entity.State = dto.State == "1" ? CommonState.Enabled : CommonState.Disabled;
             repository.Update(entity);

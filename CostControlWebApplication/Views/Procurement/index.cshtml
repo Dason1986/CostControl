@@ -27,9 +27,9 @@
 
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">查詢</h3>
+                        <h3 class="box-title">採購審批</h3>
 
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @@click="onAddTargetcost()"></el-button>
+                        <el-button type="primary" icon="el-icon-edit" size="mini" @@click="onAddTargetcost()">添加採購審批</el-button>
                     </div>
                     <div class="box-body">
 
@@ -82,29 +82,14 @@
                     <div class="box-footer" align="right">
 
                         <el-table :data="datasource" border style="width: 100%">
-
-                            <el-table-column label="編號/名稱" width="180">
+                            <el-table-column label="操作">
                                 <template slot-scope="scope">
-                                    <div class="row">編號:<div class="cell-value"><el-button type="text" style="padding: 0px;" @@click="onOpenProject(scope.row)"> {{scope.row.code}} </el-button></div></div>
-                                    <div class="row">名稱:<div class="cell-value">{{scope.row.name}} </div></div>
+                                    <el-button type="text" style="padding: 0px;" @@click="onOpenProject(scope.row)"> 查看 </el-button>
+
                                 </template>
                             </el-table-column>
-                            <el-table-column label="提交">
-                                <template slot-scope="scope">
-                                    <div class="row"><div class="cell-lable">提交人: </div><div class="cell-value">{{scope.row.created}} </div></div>
-                                    <div class="row"><div class="cell-lable">時間: </div><div class="cell-value"> {{scope.row.createdDate}} </div></div>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="採購審批類型" prop="procurementTypeName"> </el-table-column>
-                            <el-table-column label="材料/外判類型" prop="supplierType"> </el-table-column>
-                            <el-table-column label="供應商/分判商" prop="supplierName"> </el-table-column>
-                            <el-table-column label="採購金額" prop="procurementAmount"> </el-table-column>
-                            <el-table-column label="利潤比例" prop="profitsRate"> </el-table-column>
-                            <el-table-column label="項目負責人意見" prop="managerOpinion"> </el-table-column>
-                            <el-table-column label="成本部意見" prop="costerOpinion"> </el-table-column>
-                            <el-table-column label="部門經理意見" prop="departmentOpinion"> </el-table-column>
-
-                            <el-table-column label="狀態" prop="state"> </el-table-column>
+                            @Html.GetTableColumn(typeof(ProjectProcurementDto))
+     
 
 
 

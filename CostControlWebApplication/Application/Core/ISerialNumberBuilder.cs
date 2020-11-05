@@ -15,15 +15,8 @@
         /// </summary>
         string SerialNumberFormat { get; }
 
-        /// <summary>
-        /// 生成一批序號
-        /// </summary>
-        void CreateSerialNumber();
-
-        /// <summary>
-        /// 序號數量
-        /// </summary>
-        int Count { get; }
+ 
+         
 
         /// <summary>
         /// 取出最新序號

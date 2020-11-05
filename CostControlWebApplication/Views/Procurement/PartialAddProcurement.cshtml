@@ -16,8 +16,7 @@
                append-to-body>
         <span slot="footer" class="dialog-footer">
             <el-button @@click="eldialogvisible = false">取 消</el-button>
-            <el-button type="danger" @@click="onSave()">保存</el-button>
-            <el-button type="danger" @@click="onSumbit()">提交審批</el-button>
+            <el-button type="danger" @@click="onSave()">保存</el-button> 
         </span>
 
         <el-container>
@@ -632,7 +631,7 @@
                 return {
                     eldialogvisible: this.visible,
                     userOptions:@Html.GetUserOptions(),
-                    supplierOptions:@Html.GetLastHome(),
+                    supplierOptions:@Html.GetSupplier(),
                     loading: false,
                     activeName: 'tab1',
                     options: [],
@@ -678,6 +677,10 @@
                         this.rec = { id: x.data, files: [], items: [] };
                         
                         this.uploaddata.procurementid = this.rec.id;
+                        if (this.projectid) {
+                            this.rec.projectId = this.projectid;
+                            this.uploaddata.projectId = this.rec.projectId;
+                        }
                     });
                 },
                 onGetitem: function (id) {
@@ -687,15 +690,7 @@
                         this.uploaddata.projectId = this.rec.projectId;
                     });
                 },
-                onSumbit: async function () {
-
-
-                    await this.$http.post("/api/Project/Procurement/Submit", this.rec);
-
-                    this.eldialogvisible = false;
-                    this.$emit('closed', true);
-
-                },
+           
                 onSave: async function () {
 
                   

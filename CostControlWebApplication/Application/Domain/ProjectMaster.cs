@@ -6,7 +6,7 @@ namespace CostControlWebApplication.Domain
 {
     public class VIProjectMaster : ProjectMaster, ISnowflakeEntity<VIProjectMaster>
     {
-        public string ProjectType { get; set; }
+        public string ProjectMain { get; set; }
 
         public string FirstName { get; set; }
         public string SecondName { get; set; }
@@ -53,6 +53,10 @@ namespace CostControlWebApplication.Domain
         /// </summary>
         public long SecondId { get; set; }
         /// <summary>
+        /// 第二分判K
+        /// </summary>
+        public long ThirdId { get; set; }
+        /// <summary>
         /// 項目經理D
         /// </summary>
         public long ManagerId { get; set; }
@@ -69,7 +73,11 @@ namespace CostControlWebApplication.Domain
         /// <summary>
         ///  項目类型
         /// </summary>
-        public long ProjectTypeId { get; set; }
+        public long ProjectMainId { get; set; }
+        /// <summary>
+        ///  公司
+        /// </summary>
+        public long CompanyId { get; set; }
         /// <summary>
         /// 備註AH
         /// </summary>
@@ -78,7 +86,7 @@ namespace CostControlWebApplication.Domain
         /// <summary>
         /// 合同金額L
         /// </summary>
-        public decimal ContractAmount { get; set; }
+        public decimal ContractAmount { get; set; } 
         /// <summary>
         /// 預計開始日期
         /// </summary>

@@ -21,6 +21,7 @@ namespace CostControlWebApplication.Services
         }
         IList<BasicData> Basics;
         OptionEntry[] Supplier;
+        OptionEntry[] Company;
         OptionEntry[] User;
         IDictionary<string, OptionEntry[]> TreeBasics;
         private async Task Init()
@@ -53,13 +54,19 @@ namespace CostControlWebApplication.Services
             var http = serviceProvider.GetService<IHttpContextAccessor>().HttpContext;
             return Task.Run(() =>
             {
-                var repository = http.RequestServices.GetService<ResourceRepository>();
-                Supplier = repository.GetSupplier().Select(n =>
-                    {
-                        var entry = new OptionEntry { Label = n.Name, Value = n.ID.ToString(), Id = n.ID.ToString() };
-                        ForeachChild(entry);
-                        return entry;
-                    }).ToArray();
+                var repository = http.RequestServices.GetService<ResourceRepository>().GetSupplier();
+                Supplier = repository.Select(n =>
+                   {
+                       var entry = new OptionEntry { Label = n.Name, Value = n.ID.ToString(), Id = n.ID.ToString() };
+                       ForeachChild(entry);
+                       return entry;
+                   }).ToArray();
+                Company = repository.Where(n => n.IsCompany).Select(n =>
+                      {
+                          var entry = new OptionEntry { Label = n.Name, Value = n.ID.ToString(), Id = n.ID.ToString() };
+                          ForeachChild(entry);
+                          return entry;
+                      }).ToArray();
 
             }
            );
@@ -105,9 +112,13 @@ namespace CostControlWebApplication.Services
             return TreeBasics.ContainsKey(groupcode) ? TreeBasics[groupcode] : null;
         }
 
-        public OptionEntry[] GetLastHome()
+        public OptionEntry[] GetSupplier()
         {
             return Supplier;
+        }
+        public OptionEntry[] GetCompany()
+        {
+            return Company;
         }
         public OptionEntry[] GetUser()
         {

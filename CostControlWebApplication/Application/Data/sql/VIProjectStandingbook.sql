@@ -11,17 +11,17 @@ projectmaster.Address,
 ProjectStandingbook.projectId,
 projectmaster.SetterId,
 projectmaster.ManagerId,
-projectmaster.ContractorsId,
+projectmaster.ContractorsId, 
 ProjectStandingbook.ProjectMainId,
 ProjectStandingbook.ContractTypeId,
 ProjectStandingbook.SettlementMethodId,
 projectmaster.FirstId,
 projectmaster.SecondId,
+projectmaster.ThirdId,
 ProjectStandingbook.TargetGrossProfitRate,
 ProjectStandingbook.AccountingGrossProfitRate,
 ProjectStandingbook.CompletionRatio,
 ProjectStandingbook.ContractAmount,
-ProjectStandingbook.CostAmount,
 ProjectStandingbook.AdditionalAmount,
 ProjectStandingbook.BalanceAmount,
 ProjectStandingbook.SecuringAmount,
@@ -46,6 +46,7 @@ Contractors.Name AS ContractorsName,
 FirstId.Name AS FirstName,
 SecondId.Name AS SecondName,
 SetterId.Name AS SetterName,
+ThirdId.Name AS ThirdName,
 Manager.Name AS ManagerName, 
 	0 AS PayableAmount,
 	0 AS ReceivableAmount,
@@ -55,7 +56,7 @@ Manager.Name AS ManagerName,
 	0 AS CashInAmount 
 FROM
 projectmaster
-left JOIN  ProjectStandingbook ON  projectStandingbook.ProjectId = projectmaster.ID  
+JOIN  ProjectStandingbook ON  projectStandingbook.ProjectId = projectmaster.ID  
 LEFT JOIN basicdata AS projectMain ON ProjectStandingbook.ProjectMainId = projectMain.ID
 LEFT JOIN basicdata AS undertaking ON ProjectStandingbook.UndertakingId = undertaking.ID
 LEFT JOIN basicdata AS ProjectType ON ProjectStandingbook.ProjectTypeId = ProjectType.ID
@@ -65,6 +66,7 @@ LEFT JOIN supplier AS Contractors ON projectmaster.ContractorsId = Contractors.I
 LEFT JOIN supplier as FirstId ON projectmaster.FirstId = FirstId.ID 
 LEFT JOIN supplier as SecondId ON projectmaster.SecondId = SecondId.ID
 LEFT JOIN supplier as SetterId ON projectmaster.SetterId = SetterId.ID  
+LEFT JOIN supplier as ThirdId ON ProjectMaster.ThirdId = ThirdId.ID
 LEFT JOIN accountuser as Manager ON projectmaster.ManagerId = Manager.ID  
 
 

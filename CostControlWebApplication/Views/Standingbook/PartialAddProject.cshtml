@@ -107,20 +107,7 @@
                             </div>
 
                         </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
-
-                                <div class="form-group">
-                                    <label>目標成本</label>
-                                    <el-input-number placeholder="目標成本" v-model="project.costAmount" controls-position="right">
-                                    </el-input-number>
-
-                                </div>
-
-                            </div>
-
-                        </div>
-
+                       
                     </div>
                     <div class="row">
                         <div class="col-md-4 form-inline">
@@ -363,7 +350,7 @@
                     eldialogvisible: this.visible,
                     innerDrawer: false,
                     userOptions:@Html.GetUserOptions(),
-                    supplierOptions:@Html.GetLastHome(),
+                    supplierOptions:@Html.GetSupplier(),
                     projectMainOptions:@Html.GetBasics(BasicsCode.ProjectMain),
                     settlementMethodOptions:@Html.GetBasics(BasicsCode.SettlementMethod),
                     contractTypeOptions:@Html.GetBasics(BasicsCode.ContractType),

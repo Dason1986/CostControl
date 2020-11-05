@@ -8,12 +8,12 @@
     @*<my-role v-bind:data="title"></my-role>*@
     <section class="content-header">
         <h1>
-            用户管理
+            供應商管理
             <small>查詢</small>
         </h1>
         <ol class="breadcrumb">
             <li>系统管理</li>
-            <li class="active">用户管理</li>
+            <li class="active">供應商管理</li>
         </ol>
     </section>
     <!-- 主內容 -->
@@ -24,7 +24,7 @@
 
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">查詢</h3>
+                        <h3 class="box-title">供應商管理</h3>
                         <el-button class="btn btn-default" size="small" icon="fa fa-truck" v-on:click="onNew()">添加供應商</el-button>
                     </div>
 
@@ -97,7 +97,11 @@
                                         </el-table-column>
                                         <el-table-column label="聯繫人電話" prop="manTel">
                                         </el-table-column>
+                                        <el-table-column label="是否爲公司" prop="isCompany" :formatter="formatterBoolean">
+                                        </el-table-column>
 
+                                        <el-table-column label="項目編號代碼" prop="code">
+                                        </el-table-column>
 
 
 

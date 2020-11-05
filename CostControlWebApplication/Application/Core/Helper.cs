@@ -8,9 +8,12 @@ using CostControlWebApplication.Services;
 using Microsoft.AspNetCore.Html;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Web;
 
 namespace CostControlWebApplication
@@ -25,12 +28,17 @@ namespace CostControlWebApplication
             {
                 var propertyInfo = fromType.GetProperty(item.Name);
                 if (propertyInfo == null) continue;
-                var value =propertyInfo.FastGetValue(obj);
+                var value = propertyInfo.FastGetValue(obj);
 
                 BingoX.Helper.FastReflectionExtensions.FastSetValue(item, entry, value);
             }
         }
+        public static bool IsManager(this ICurrentUser stafferRequest)
+        {
+            if (stafferRequest == null) throw new LogicException("未登錄");
 
+            return string.Equals(stafferRequest.Role, "Manager", System.StringComparison.CurrentCultureIgnoreCase);
+        }
         public static bool IsAdmin(this ICurrentUser stafferRequest)
         {
             if (stafferRequest == null) throw new LogicException("未登錄");
@@ -51,15 +59,32 @@ namespace CostControlWebApplication
             var service = helper.ViewContext.HttpContext.RequestServices.GetService<ResourceService>();
             return helper.RawEntity(service.GetBasics(groupcode));
         }
-        public static IHtmlContent GetLastHome(this IHtmlHelper helper)
+        public static IHtmlContent GetSupplier(this IHtmlHelper helper)
         {
             var service = helper.ViewContext.HttpContext.RequestServices.GetService<ResourceService>();
-            return helper.RawEntity(service.GetLastHome());
+            return helper.RawEntity(service.GetSupplier());
+        }
+        public static IHtmlContent GetCompany(this IHtmlHelper helper)
+        {
+            var service = helper.ViewContext.HttpContext.RequestServices.GetService<ResourceService>();
+            return helper.RawEntity(service.GetCompany());
         }
         public static IHtmlContent GetUserOptions(this IHtmlHelper helper)
         {
             var service = helper.ViewContext.HttpContext.RequestServices.GetService<ResourceService>();
             return helper.RawEntity(service.GetUser());
+        }
+        public static IHtmlContent GetTableColumn(this IHtmlHelper helper, Type tableType)
+        {
+             
+            StringBuilder builder = new StringBuilder();
+            foreach (var item in tableType.GetProperties())
+            {
+                var att = item.GetAttribute<DisplayNameAttribute>();
+                if (att == null) continue;
+                builder.AppendFormat("<el-table-column label=\"{0}\" width=\"120\" prop=\"{1}{2}\"> </el-table-column>", att.DisplayName, item.Name[0].ToString().ToLower(), item.Name.Substring(1));
+            }
+            return helper.Raw(builder.ToString()); ;
         }
         public static SidebarMenu[] GetMenus(this IHtmlHelper helper)
         {
@@ -95,6 +120,21 @@ namespace CostControlWebApplication
                         new SidebarMenu{Name = "系統設置", Url = "/Platform/Setting", Icon = "fa fa-cog"  },
                         new SidebarMenu{Name = "基礎資料", Url = "/Platform/BasicData", Icon = "fa fa-cog"  },
                         new SidebarMenu{Name = "員工管理", Url = "/Platform/Staffer", Icon = "fa fa-user"  },
+                        new SidebarMenu{Name = "供應商管理", Url = "/Platform/Supplier", Icon = "fa fa-truck"  }
+                    }
+                });
+
+            }    
+            if (request.IsManager())
+            {
+                Menus.Add(new SidebarMenu
+                {
+                    Name = "系统管理",
+                    Url = "#",
+                    Icon = "fa fa-cogs",
+                    Childs = new[]
+                    {
+                      
                         new SidebarMenu{Name = "供應商管理", Url = "/Platform/Supplier", Icon = "fa fa-truck"  }
                     }
                 });

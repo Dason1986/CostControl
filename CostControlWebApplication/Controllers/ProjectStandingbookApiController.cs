@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using CostControlWebApplication.Services;
 using CostControlWebApplication.Application.Services.Dtos;
+using BingoX.ComponentModel.Data;
 
 namespace CostControlWebApplication.Controllers
 {
@@ -18,46 +19,15 @@ namespace CostControlWebApplication.Controllers
 
         }
 
-
-        [HttpPost("")]
-        public void AddProject([FromServices] StandingbookService service, [FromBody] ProjectStandingbookDto dto)
+        [HttpGet("")]
+        public IPagingList Index([FromServices] StandingbookService service, [FromQuery] ProjectQueryRequest queryRequest)
         {
 
-            service.Add(dto);
-
-
-        }
-        [HttpPost("costout")]
-        public void AddCostout([FromServices] CostInOutService service, [FromBody] ProjectCostOutDto dto)
-        {
-
-            service.AddCostout(dto);
-
+            IPagingList list = service.GetProjects(queryRequest).ProjectedAsPagingList<ProjectStandingbookDto>();
+            return list;
 
         }
-        [HttpPut("costout/{id}")]
-        public void EditCostout([FromServices] CostInOutService service, [FromBody] ProjectCostOutDto dto, [FromRoute] long id)
-        {
-
-            service.EditCostout(id, dto);
 
 
-        }
-        [HttpPost("costin")]
-        public void AddCostin([FromServices] CostInOutService service, [FromBody] ProjectCostInDto dto)
-        {
-
-            service.AddCostin(dto);
-
-
-        }
-        [HttpPut("costin/{id}")]
-        public void EditCostin([FromServices] CostInOutService service, [FromBody] ProjectCostInDto dto, [FromRoute] long id)
-        {
-
-            service.EditCostin(id, dto);
-
-
-        }
     }
 }

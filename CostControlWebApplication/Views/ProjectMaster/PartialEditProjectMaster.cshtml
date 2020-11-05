@@ -3,25 +3,7 @@
 
 
 }
-<style>
-    .demo-drawer__content {
-        display: flex;
-        flex-direction: column;
-        height: 100%
-    }
 
-        .demo-drawer__content form {
-            flex: 1
-        }
-
-    .demo-drawer__footer {
-        display: flex
-    }
-
-        .demo-drawer__footer button {
-            flex: 1
-        }
-</style>
 <script type="text/x-template" id="editProjectMaster">
 
     <el-dialog width="90%"
@@ -36,7 +18,7 @@
 
             <div class="card-body">
                 <h5 class="card-title">{{rec.name}}[{{rec.code}}] </h5>
-            
+
 
             </div>
             <el-tabs v-model="activeName">
@@ -219,41 +201,18 @@
                     </el-card>
                 </el-tab-pane>
                 <el-tab-pane label="採購審批" name="tab1">
-                    <el-button type="primary" icon="el-icon-edit" circle @@click="onAddProcurement()"></el-button>
-                    <el-table :data="datasourceprocurement" border style="width: 100%">
-
-                        <el-table-column label="操作" width="80">
-                            <template slot-scope="scope">
-                                <div class="row"> <div class="cell-value"><el-button type="text" style="padding: 0px;" @@click="onOpenProcurement(scope.row)"> 查看 </el-button></div></div>
-
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="提交" width="210">
-                            <template slot-scope="scope">
-                                <div class="row"><div class="cell-lable">提交人: </div><div class="cell-value">{{scope.row.created}} </div></div>
-                                <div class="row"><div class="cell-lable">時間: </div><div class="cell-value"> {{scope.row.createdDate}} </div></div>
-                            </template>
-                        </el-table-column>
-                        <el-table-column label="採購審批類型" prop="procurementTypeName"> </el-table-column>
-                        <el-table-column label="材料/外判類型" prop="supplierType"> </el-table-column>
-                        <el-table-column label="供應商/分判商" prop="supplierName"> </el-table-column>
-                        <el-table-column label="採購金額" prop="procurementAmount"> </el-table-column>
-                        <el-table-column label="利潤比例" prop="profitsRate"> </el-table-column>
-                        <el-table-column label="項目負責人意見" prop="managerOpinion"> </el-table-column>
-                        <el-table-column label="成本部意見" prop="costerOpinion"> </el-table-column>
-                        <el-table-column label="部門經理意見" prop="departmentOpinion"> </el-table-column>
-                        <el-table-column label="備註" prop="remark"> </el-table-column>
-
-                        <el-table-column label="狀態" prop="state"> </el-table-column>
-
-
-
-
-                    </el-table>
-                    <bg-add-procurement :visible.sync="innerVisibleProcurement" v-on:closed="getitemInfo" :id="procurementid" :projectid="projectid"></bg-add-procurement>
+                    <bg-procurement  :projectid="projectid" :datasource="rec.procurements"></bg-procurement>
                 </el-tab-pane>
+                <el-tab-pane label="項目收入" name="tab2">
+                    <bg-costin :projectid="projectid" :datasource="rec.costin"></bg-costin>
+                </el-tab-pane>
+                <el-tab-pane label="項目成本" name="tab3">
+                    <bg-costout :projectid="projectid" :datasource="rec.costout"></bg-costout>
+                </el-tab-pane>
+                <el-tab-pane label="項目臺帳" name="tab4">
 
-                <el-tab-pane label="相關文件" name="tab2">
+                </el-tab-pane>
+                <el-tab-pane label="相關文件" name="tab5">
                     <el-table border :data="files">
                         <el-table-column label="文件分組" prop="fileType"> </el-table-column>
                         <el-table-column label="文件名称" prop="fileName"> </el-table-column>
@@ -265,7 +224,7 @@
                 </el-tab-pane>
             </el-tabs>
 
-         
+
         </el-card>
     </el-dialog>
 
@@ -285,13 +244,13 @@
                 return {
                     eldialogvisible: this.visible,
                     userOptions:@Html.GetUserOptions(),
-                    supplierOptions:@Html.GetLastHome(),
+                    supplierOptions:@Html.GetSupplier(),
                     projectTypeOptions:@Html.GetBasics(BasicsCode.ProjectMasterProjectType),
                     rec: {  },
                     innerVisibleProcurement:false,
                     activeName: "tab0",
-                    procurementid: undefined,
-                    projectid: undefined,
+               
+                
                     datasourceprocurement: [],
                     files:[]
 
@@ -301,21 +260,13 @@
 
             },
             methods: {
-                onOpenProcurement: function (item) {
-                    this.procurementid = item.id;
-                    this.projectid = item.projectId;
-                    this.innerVisibleProcurement = true;
-                },
-                onAddProcurement: function () {
-                    this.procurementid = undefined;
-                    this.projectid = undefined;
-                    this.innerVisibleProcurement = true;
-                },
+            
                 getitemInfo: async function () {
 
-                    this.$http.get("/api/Project/Master/" + this.id).then(result => {
+                    this.$http.get("/api/Project/Master/" + this.projectid).then(result => {
                         this.rec = result.data;
-                        this.datasourceprocurement = this.rec.procurements;
+                        
+                      
                         this.files = this.rec.files;
                     });
 
@@ -324,7 +275,7 @@
                 onSearchCost: function () {},
                 onSumbit: async function () {
 
-                    await this.$http.put("/api/Project/Master/" + this.id, this.rec);
+                    await this.$http.put("/api/Project/Master/" + this.projectid, this.rec);
                     this.eldialogvisible = false;
                     this.$emit('closed', true);
 
@@ -337,7 +288,7 @@
             },
             watch: {
                 visible: function (val) {
-                    if (val && this.id) {
+                    if (val && this.projectid) {
                         this.getitemInfo();
                     }
                     this.eldialogvisible = val;
@@ -351,7 +302,7 @@
 
             },
             props: {
-                id: String,
+                projectid: String,
                 visible: Boolean
             }
         });

@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace CostControlWebApplication.Application.Services.Dtos
 {
@@ -8,27 +9,33 @@ namespace CostControlWebApplication.Application.Services.Dtos
         public long ID { get; set; }
         /// <summary>
         /// 項目編號A
-        /// </summary>
+        /// </summary> 
+        [DisplayName("項目編號")]
         public string Code { get; set; }
 
         /// <summary>
         /// 項目名稱B
         /// </summary>
+        [DisplayName("項目名稱")]
         public string Name { get; set; }
 
         public long ProjectId { get; set; }
         /// <summary>
         /// 採購審批類型
         /// </summary>
-        public int ProcurementType { get; set; }
+        public string ProcurementType { get; set; }
 
+        [DisplayName("採購審批類型")]
         public string ProcurementTypeName { get; set; }
         /// <summary>
         /// 項目負責人意見  1类
         /// </summary>
+        [DisplayName("項目負責人意見")]
         public string ManagerOpinion { get; set; }
+        [DisplayName("供應商/分判商")]
         public string SupplierName { get; set; }
 
+        [DisplayName("材料/外判類型")]
         public long SupplierType { get; set; }
         /// <summary>
         /// 供應商名稱
@@ -37,10 +44,12 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// <summary>
         /// 成本部意見
         /// </summary>
+        [DisplayName("成本部意見")]
         public string CosterOpinion { get; set; }
         /// <summary>
         /// 部門經理意見
         /// </summary>
+        [DisplayName("部門經理意見")]
         public string DepartmentOpinion { get; set; }
 
         /// <summary>
@@ -50,6 +59,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// <summary>
         /// B採購金額
         /// </summary>
+        [DisplayName("採購金額")]
         public decimal ProcurementAmount { get; set; }
 
         /// <summary>
@@ -108,12 +118,18 @@ namespace CostControlWebApplication.Application.Services.Dtos
         public string ExpenseCompany { get; set; }
 
 
+        [DisplayName("狀態")]
+        public string State { get; set; }
         /// <summary>
         /// 備註AH
         /// </summary>
+        [DisplayName("備註")]
         public string Remark { get; set; }
 
+        [DisplayName("提交時間")]
         public string CreatedDate { get; set; }
+
+        [DisplayName("提交人")]
         public string Created { get; set; }
         public IList<ProjectAboutFileDto> Files { get; set; }
 

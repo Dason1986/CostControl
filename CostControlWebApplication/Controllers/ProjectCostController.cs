@@ -18,15 +18,31 @@ namespace CostControlWebApplication.Controllers
 
         }
     }
-    [Authorize, ApiControllerAttribute, Route("~/api/ProjectCost")]
+    [Authorize, ApiControllerAttribute, Route("~/api/Project/costout")]
     public class  ProjectCostApiController : Controller
     {
-        [HttpGet()]
+        [HttpGet("~/api/ProjectCost")]
         public IPagingList GetProjects([FromServices] CostInOutService service, [FromQuery] ProjectQueryRequest queryRequest)
         {
             IPagingList list = service.GetProjectCostOut(queryRequest);
 
             return list;
+        }
+        [HttpPost("")]
+        public void AddCostout([FromServices] CostInOutService service, [FromBody] ProjectCostOutDto dto)
+        {
+
+            service.AddCostout(dto);
+
+
+        }
+        [HttpPut("/{id}")]
+        public void EditCostout([FromServices] CostInOutService service, [FromBody] ProjectCostOutDto dto, [FromRoute] long id)
+        {
+
+            service.EditCostout(id, dto);
+
+
         }
     }
 }

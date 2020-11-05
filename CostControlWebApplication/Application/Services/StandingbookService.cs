@@ -14,18 +14,11 @@ namespace CostControlWebApplication.Services
             this.repository = repository;
         }
         private readonly ProjectRepository repository;
-        public void Add(ProjectStandingbookDto dto)
-        {
-            ProjectStandingbook entity = dto.ProjectedAs<ProjectStandingbook>();
-
-            entity.Created(this);
-            repository.Add(entity);
-            repository.UnitOfWork.Commit();
-        }
+      
         public IPagingList<VIProjectStandingbook> GetProjects(ProjectQueryRequest queryRequest)
         {
 
-            Specification<VIProjectStandingbook> specification = new Specification<VIProjectStandingbook>();
+            Specification<VIProjectStandingbook> specification = EntityHelper.GetSpecification<VIProjectStandingbook>();
             specification.SetPage(queryRequest);
             return repository.PagingList(specification);
 
@@ -36,9 +29,9 @@ namespace CostControlWebApplication.Services
             var entity = repository.GetStandingbook(id);
             var dto = entity.ProjectedAs<ProjectStandingbookDto>();
             if (dto == null) return dto;
-            dto.CostOut = repository.ProjectCostOutList(id).ProjectedAsCollection<ProjectCostOutDto>();
-            dto.CostIn = repository.ProjectCostInList(id).ProjectedAsCollection<ProjectCostInDto>();
-            dto.AboutFiles = repository.AboutFilesList(id).ProjectedAsCollection<ProjectAboutFileDto>();
+            dto.CostOut = repository.GetCostouts(id).ProjectedAsCollection<ProjectCostOutDto>();
+            dto.CostIn = repository.GetCostins(id).ProjectedAsCollection<ProjectCostInDto>();
+            dto.AboutFiles = repository.AboutFiless(id).ProjectedAsCollection<ProjectAboutFileDto>();
 
             return dto;
         }

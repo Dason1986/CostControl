@@ -36,51 +36,9 @@
 
         <el-card>
 
-            <el-drawer :visible.sync="innerDrawer" :append-to-body="true" title="項目变更"
-                       custom-class="demo-drawer" ref="drawer">
-                <div class="demo-drawer__content">
-                    <el-form :model="form">
-                        <el-form-item label="項目名稱">
-
-                            <el-input v-model="form.name" placeholder="項目名稱">
-                            </el-input>
-                        </el-form-item>
-                        <el-form-item label="項目地址">
-
-                            <el-input v-model="form.address" placeholder="項目地址">
-                            </el-input>
-                        </el-form-item>
-                        <el-form-item label="項目經理">
-
-                            <el-select v-model="form.managerId" placeholder="項目經理">
-                                <el-option label="区域一" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="最終責任人">
-                            <el-select v-model="form.supremeManagerId" placeholder="最終責任人">
-                                <el-option label="区域一" value="shanghai"></el-option>
-                                <el-option label="区域二" value="beijing"></el-option>
-                            </el-select>
-                        </el-form-item>
-                        <el-form-item label="合同金額">
-                            <el-input-number placeholder="合同金額" v-model="form.contractAmount" controls-position="right">
-                            </el-input-number>
-                        </el-form-item>
-                        <el-form-item label="目標成本">
-                            <el-input-number placeholder="目標成本" v-model="form.costAmount" controls-position="right">
-                            </el-input-number>
-                        </el-form-item>
-                    </el-form>
-
-                    <div class="demo-drawer__footer">
-                        <el-button>  取 消   </el-button>
-                        <el-button type="primary">  确 定   </el-button>
-                    </div>
-                </div>
-            </el-drawer>
+            
             <div class="card-body">
-                <h5 class="card-title">{{project.name}}[{{project.code}}] <el-button size="small" @@click="innerDrawer=true" icon="el-icon-setting">項目变更【管理员使用】</el-button></h5>
+                <h5 class="card-title">{{project.name}}[{{project.code}}] </h5>
                 <p class="card-text">地址: {{project.address}}</p>
 
                 <div class="row">
@@ -186,19 +144,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-md-4 form-inline">
-                                <div class="form-group">
-
-                                    <div class="form-group">
-                                        <label>目標成本</label>
-                                        <el-input-number placeholder="目標成本" v-model="project.costAmount" controls-position="right">
-                                        </el-input-number>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
+                          
 
                         </div>
                         <div class="row">
@@ -456,7 +402,7 @@
                     isDisabled: false,
                     form: {},
                     userOptions:@Html.GetUserOptions(),
-                    supplierOptions:@Html.GetLastHome(),
+                    supplierOptions:@Html.GetSupplier(),
                     projectMainOptions:@Html.GetBasics(BasicsCode.ProjectMain),
                     settlementMethodOptions:@Html.GetBasics(BasicsCode.SettlementMethod),
                     contractTypeOptions:@Html.GetBasics(BasicsCode.ContractType),
@@ -472,7 +418,7 @@
             methods: {
 
                 getProjectInfo:   function () {
-                    this.$http.get("/api/Project/" + this.projectid).then(req => {
+                    this.$http.get("/api/Project/Standingbook/" + this.projectid).then(req => {
                         this.project = req.data;
                 
                     });

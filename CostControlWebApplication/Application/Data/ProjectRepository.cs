@@ -13,6 +13,7 @@ namespace CostControlWebApplication.Application.Data
         public ProjectRepository(RepositoryContextOptions options) : base(options)
         {
             dataAccessorProjectStandingbook = CreateWrapper<ProjectStandingbook>();
+            dataAccessorProjectTargetCost = CreateWrapper<ProjectTargetCost>();
             dataAccessorProjectCostIn = CreateWrapper<ProjectCostIn>();
             dataAccessorProjectCostOut = CreateWrapper<ProjectCostOut>();
             dataAccessorVIProjectInfo = CreateWrapper<VIProjectStandingbook>();
@@ -27,6 +28,7 @@ namespace CostControlWebApplication.Application.Data
 
         IDataAccessor<ProjectStandingbook> dataAccessorProjectStandingbook;
 
+        IDataAccessor<ProjectTargetCost> dataAccessorProjectTargetCost;
         IDataAccessor<ProjectCostIn> dataAccessorProjectCostIn;
         IDataAccessor<ProjectCostOut> dataAccessorProjectCostOut;
         IDataAccessor<VIProjectStandingbook> dataAccessorVIProjectInfo;
@@ -51,6 +53,11 @@ namespace CostControlWebApplication.Application.Data
             dataAccessorProjectProcurementBQItem.AddRange(items);
         }
 
+        public Supplier GetSupplier(long companyId)
+        {
+            return CreateWrapper<Supplier>().GetId(companyId);
+        }
+
         public void AddProcurement(ProjectProcurement entity)
         {
             dataAccessorProjectProcurement.Add(entity);
@@ -69,25 +76,37 @@ namespace CostControlWebApplication.Application.Data
         {
             dataAccessorProjectMaster.Add(entity);
         }
+        public void Add(ProjectTargetCost entity)
+        {
+            dataAccessorProjectTargetCost.Add(entity);
+        }
 
         public IList<ProjectAboutFile> GetProcurementFiles(long id)
         {
-            return dataAccessorAboutFiles.Where(n => n.ForeignID == id);
+            return dataAccessorAboutFiles.Where(n => n.ForeignID == id).OrderByDescending(n => n.ID).ToList();
+        }
+        public IList<ProjectCostIn> GetCostins(long id)
+        {
+            return CreateWrapper<ProjectCostIn>().Where(n => n.ProjectId == id).OrderByDescending(n => n.ID).ToList();
+        }
+        public IList<ProjectCostOut> GetCostouts(long id)
+        {
+            return CreateWrapper<ProjectCostOut>().Where(n => n.ProjectId == id).OrderByDescending(n => n.ID).ToList();
         }
 
         public IList<ProjectAboutFile> GetFiles(long id)
         {
-            return dataAccessorAboutFiles.Where(n => n.ProjectId == id);
+            return dataAccessorAboutFiles.Where(n => n.ProjectId == id).OrderByDescending(n => n.ID).ToList();
         }
 
         public IList<VIProjectProcurement> GetProcurements(long id)
         {
-            return dataAccessorVIProjectProcurement.Where(n => n.ProjectId == id);
+            return dataAccessorVIProjectProcurement.Where(n => n.ProjectId == id).OrderByDescending(n => n.ID).ToList();
         }
 
         public IList<ProcurementBQItem> GetProcurementBQItems(long id)
         {
-            return CreateWrapper<ProcurementBQItem>().Where(n => n.ProcurementId == id);
+            return CreateWrapper<ProcurementBQItem>().Where(n => n.ProcurementId == id).OrderByDescending(n => n.ID).ToList();
         }
 
         public void Add(ProjectStandingbook entity)
@@ -119,20 +138,11 @@ namespace CostControlWebApplication.Application.Data
             int total = 0;
             return CreateWrapper<VIProjectCostOut>().PageList(specification, ref total).ProjectedAsPagingList(total, specification);
         }
-        public IList<ProjectCostIn> ProjectCostInList(long projectId)
-        {
 
-            return dataAccessorProjectCostIn.Where(n => n.ProjectId == projectId);
-        }
-        public IList<ProjectCostOut> ProjectCostOutList(long projectId)
-        {
-
-            return dataAccessorProjectCostOut.Where(n => n.ProjectId == projectId);
-        }
 
         public decimal GetProjectExpendAmount(long projectId)
         {
-            return ProjectCostOutList(projectId).Sum(n => n.ExpendAmount);
+            return GetCostouts(projectId).Sum(n => n.ExpendAmount);
         }
 
         public VIProjectMaster GetProjectMaster(long id)
@@ -153,9 +163,9 @@ namespace CostControlWebApplication.Application.Data
         {
             dataAccessorProjectCostOut.Update(entity);
         }
-        public IList<ProjectAboutFile> AboutFilesList(long id)
+        public IList<ProjectAboutFile> AboutFiless(long id)
         {
-            return dataAccessorAboutFiles.Where(n => n.ProjectId == id);
+            return dataAccessorAboutFiles.Where(n => n.ProjectId == id).OrderByDescending(n => n.ID).ToList();
         }
         public void AddAboutFile(ProjectAboutFile entity)
         {
@@ -167,9 +177,9 @@ namespace CostControlWebApplication.Application.Data
             return dataAccessorProjectCostOut.GetId(id);
         }
 
-        public ProjectStandingbook GetStandingbook(long id)
+        public VIProjectStandingbook GetStandingbook(long id)
         {
-            return dataAccessorProjectStandingbook.GetId(id);
+            return dataAccessorVIProjectInfo.GetId(id);
         }
         public ProjectCostIn GetCostIn(long id)
         {

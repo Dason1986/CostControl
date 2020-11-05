@@ -70,7 +70,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
         public TargetCostSummaryItem[] Summary { get; set; }
 
         public TargetCostDetailDto[] Details { get; set; }
-        public TargetCostDetailDto[] AttachmentFiles { get; set; }
+        public ProjectAboutFileDto[] AttachmentFiles { get; set; }
     } 
    
     public class TargetCostSummaryItem

@@ -1,5 +1,6 @@
 ﻿using BingoX.AspNetCore.Extensions;
 using BingoX.Helper;
+using BingoX.Repository;
 using CostControlWebApplication.Application.AD;
 using CostControlWebApplication.Application.Data;
 using CostControlWebApplication.Domain;
@@ -51,7 +52,11 @@ namespace CostControlWebApplication
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSeetings.Secret))
                 };
             });
-            services.AddSingleton<ISerialNumberProvider, SerialNumberProvider>();
+            services.AddScoped<ISerialNumberProvider, SerialNumberProvider>(n =>
+            {
+                var repository = n.GetService<IRepository<Supplier>>();
+                return new SerialNumberProvider("{Code}{Date:yyyy}{Number:d3}", repository);
+            });
             services.AddScoped<ActiveDirectoryService>(x =>
             {
                 var repository = x.GetService<SettingRepository>();
@@ -62,10 +67,9 @@ namespace CostControlWebApplication
             });
         }
     }
-
-  static   class SettingHelper
+    static class SettingHelper
     {
-        public static T GetValue<T> (this IList<SystemSetting> systems,string code)
+        public static T GetValue<T>(this IList<SystemSetting> systems, string code)
         {
             var item = systems.FirstOrDefault(n => string.Equals(code, n.Code, System.StringComparison.CurrentCultureIgnoreCase));
             if (item != null) return BingoX.Utility.StringUtility.Cast<T>(item.DataValue).Value;

@@ -36,7 +36,7 @@ namespace CostControlWebApplication
             {
 
                 options.Filters.Add<LogerExceptionFilterAttribute>();
-            });
+            }).AddNewtonsoftJson(n=>n.SerializerSettings.Converters.Add(new NumberConverter()));
 
             services.FindConfigureServices(Configuration);
         }

@@ -1,10 +1,10 @@
-﻿@model IPagingList
+﻿ 
 @{
     Layout = "_ManagmentLayout";
 
 }
 
- 
+
 <div id="appProject">
 
 
@@ -26,9 +26,9 @@
 
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">查詢</h3>
+                        <h3 class="box-title">項目臺帳</h3>
 
-                        <el-button type="primary" icon="el-icon-edit" size="mini" @@click="onAddProject()"></el-button>
+                        
                     </div>
                     <div class="box-body">
 
@@ -48,19 +48,7 @@
                                 </div>
 
                             </div>
-                            <div class="col-md-4 form-inline">
-                                <div class="form-group">
-                                    <label>合約金額</label>
-                                    <el-select v-model="filterColumns.contractAmount" collapse-tags placeholder="合約金額">
-                                        <el-option v-for="item in contractAmountRangeOption"
-                                                   :key="item.value" :label="item.label" :value="item.value">
-                                 
-                                        </el-option>
-                                      
-                                    </el-select>
-                                </div>
-
-                            </div>
+                         
 
 
                         </div>
@@ -94,68 +82,16 @@
 
                         <el-table :data="datasource">
 
-                            <el-table-column label="編號/名稱" width="180">
+                            <el-table-column label="操作" width="180">
                                 <template slot-scope="scope">
-                                    <div class="row">編號:<div class="cell-value"><el-button type="text" style="padding: 0px;" @@click="onOpenProject(scope.row)"> {{scope.row.code}} </el-button></div></div>
-                                    <div class="row">名稱:<div class="cell-value">{{scope.row.name}} </div></div>
-                                    <div class="row">開始時間: <div class="cell-value">{{scope.row.beginDate}} </div></div>
-                                    <div class="row">完工時間: <div class="cell-value">{{scope.row.endDate}} </div></div>
+                                    <el-button type="text" style="padding: 0px;" @@click="onOpenProject(scope.row)"> 查看 </el-button>
                                 </template>
                             </el-table-column>
 
 
-                            <el-table-column label="相關" width="180">
-                                <template slot-scope="scope">
-                                    <div class="row">
-                                        <div class="cell-lable">主體: </div>
-                                        <div class="cell-value">
-                                            <bg-omit :value="scope.row.projectMain"></bg-omit>
-
-                                        </div>
-                                    </div>
-                                    <div class="row"><div class="cell-lable">承接: </div><div class="cell-value">{{scope.row.undertaking}} </div></div>
-                                    <div class="row"><div class="cell-lable">类型: </div><div class="cell-value"> {{scope.row.projectType}}</div></div>
-                                    <div class="row"><div class="cell-lable">合約: </div><div class="cell-value"> {{scope.row.contractType}}</div></div>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="地址" prop="address"></el-table-column>
-
-
-                            <el-table-column label="項目經理" prop="managerName"></el-table-column>
-                            <el-table-column label="最終責任人" prop="supremeManagerName"></el-table-column>
-
-                            <el-table-column label="判給關係" width="220">
-                                <template slot-scope="scope">
-                                    <div class="row"><div class="cell-lable">定作人: </div><div class="cell-value">{{scope.row.setterName}} </div></div>
-                                    <div class="row"><div class="cell-lable">承建商: </div><div class="cell-value"> {{scope.row.contractorsName}} </div></div>
-                                    <div class="row"><div class="cell-lable">第一分判: </div><div class="cell-value">{{scope.row.firstName}}  </div></div>
-                                    <div class="row"><div class="cell-lable">第二分判: </div><div class="cell-value">{{scope.row.secondName}}  </div></div>
-                                </template>
-                            </el-table-column>
-                            <el-table-column label="金額" width="220">
-                                <template slot-scope="scope">
-                                    <div class="row"><div class="cell-lable">合同金額: </div><div class="cell-value"> {{scope.row.contractAmount}}</div></div>
-                                    <div class="row"><div class="cell-lable">目標成本: </div><div class="cell-value"> {{scope.row.costAmount}}</div></div>
-                                    <div class="row"><div class="cell-lable">後加金額: </div><div class="cell-value"> {{scope.row.additionalAmount}}</div></div>
-                                    <div class="row"><div class="cell-lable">結算金額: </div><div class="cell-value"> {{scope.row.balanceAmount}}</div></div>
-
-                                </template>
-
-                            </el-table-column>
-                            <el-table-column label="賬款" width="220">
-                                <template slot-scope="scope">
-                                    <div class="row"><div class="cell-lable">現金流入: </div><div class="cell-value"> {{scope.row.cashInAmount}}</div></div>
-                                    <div class="row"><div class="cell-lable">應收賬款: </div><div class="cell-value"> {{scope.row.receivableAmount}}</div></div>
-                                    <div class="row"><div class="cell-lable">現金流出: </div><div class="cell-value"> {{scope.row.cashOutAmount}}</div></div>
-                                    <div class="row"><div class="cell-lable">應付賬款: </div><div class="cell-value"> {{scope.row.payableAmount}}</div></div>
-
-                                </template>
-
-                            </el-table-column>
-                            <el-table-column label="完工百分比" prop="stateDisplay"></el-table-column>
-
+                            @Html.GetTableColumn(typeof(ProjectStandingbookDto))
                         </el-table>
-                        <bg-add-project :visible.sync="innerVisibleAddProject" v-on:closed="onSearchBatch"></bg-add-project>
+
                         <bg-edit-project :visible.sync="innerVisibleEditProject" v-on:closed="onSearchBatch" :projectid="rec.id"></bg-edit-project>
                     </div>
                 </div>
@@ -170,13 +106,12 @@
     Vue.use(DYVue);
 </script>
 <partial name="~/Views/Shared/bg/PartialOmit.cshtml" />
-<partial name="~/Views/Standingbook/PartialAddProject.cshtml" />
 <partial name="~/Views/Standingbook/PartialEditProject.cshtml" />
-<partial name="~/Views/Standingbook/PartialCostIn.cshtml" />
-<partial name="~/Views/Standingbook/PartialCostout.cshtml" />
-<partial name="~/Views/Standingbook/PartialAddCostIn.cshtml" />
-<partial name="~/Views/Standingbook/PartialAddCostout.cshtml" />
-<partial name="~/Views/Standingbook/PartialAboutFiles.cshtml" />
+<partial name="~/Views/ProjectCost/PartialAddCostout.cshtml" />
+<partial name="~/Views/ProjectCost/PartialCostout.cshtml" />
+<partial name="~/Views/ProjectIncome/PartialAddCostIn.cshtml" />
+<partial name="~/Views/ProjectIncome/PartialCostIn.cshtml" />
+<partial name="~/Views/Standingbook/PartialAboutFiles.cshtml" /> 
 
 
 <script type="text/javascript">
@@ -189,10 +124,10 @@
             data: function () {
                 return {
 
-                    total:@Model.Total ,
-                    pagesize: @Model.PageSize,
+                    total:0 ,
+                    pagesize: 10,
                     contractAmountRangeOption:@Html.GetBasics(BasicsCode.ContractAmountRange) ,
-                    datasource: @Html.RawEntity(Model.Items),
+                    datasource: [],
                     rec: {id:''},
                     innerVisibleAddProject: false,
                     innerVisibleEditProject:false,
@@ -207,7 +142,7 @@
                     if (flag) { this.filterColumns.pageno = 1; }
                     var filter =  { ...this.filterColumns }
 
-                    var response = await this.$http.get("/api/Project", { params: filter });
+                    var response = await this.$http.get("/api/Project/Standingbook", { params: filter });
                     this.total = response.data.total;
                     this.datasource = response.data.items;
 
@@ -242,6 +177,9 @@
 
 
 
+            },
+            created: function () {
+                this.onSearchBatch(true);
             },
             updated: function(){
 

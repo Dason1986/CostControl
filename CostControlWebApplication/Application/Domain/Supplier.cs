@@ -19,6 +19,9 @@ namespace CostControlWebApplication.Domain
         public string Fax { get; set; }
         public string ManName { get; set; }
         public string ManTel { get; set; }
+        public bool IsCompany { get; set; }
+        public string Code { get; set; }
+        public int CurrentNumber { get; set; }
         public CommonState State { get; set; }
     }
 }

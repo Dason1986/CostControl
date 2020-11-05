@@ -20,7 +20,7 @@ namespace CostControlWebApplication.Services
         public IPagingList<VIProjectProcurement> GetProcurements(ProjectQueryRequest queryRequest)
         {
 
-            Specification<VIProjectProcurement> specification = new Specification<VIProjectProcurement>();
+            Specification<VIProjectProcurement> specification = EntityHelper.GetSpecification<VIProjectProcurement>();
             specification.SetPage(queryRequest);
             return repository.PagingList(specification);
 

@@ -1,0 +1,107 @@
+﻿
+@{
+
+
+}
+<style>
+    .box-card {
+        width: 100%;
+    }
+</style>
+<script type="text/x-template" id="procurement">
+
+    <div>
+        <el-button type="primary" icon="el-icon-edit" circle @@click="onAddProcurement()"></el-button>
+        <el-table :data="datasource" border style="width: 100%">
+
+            <el-table-column label="操作" width="80">
+                <template slot-scope="scope">
+                    <div class="row"> <div class="cell-value"><el-button type="text" style="padding: 0px;" @@click="onOpenProcurement(scope.row)"> 查看 </el-button></div></div>
+
+                </template>
+            </el-table-column>
+            <el-table-column label="提交" width="210">
+                <template slot-scope="scope">
+                    <div class="row"><div class="cell-lable">提交人: </div><div class="cell-value">{{scope.row.created}} </div></div>
+                    <div class="row"><div class="cell-lable">時間: </div><div class="cell-value"> {{scope.row.createdDate}} </div></div>
+                </template>
+            </el-table-column>
+            <el-table-column label="採購審批類型" prop="procurementTypeName"> </el-table-column>
+            <el-table-column label="材料/外判類型" prop="supplierType"> </el-table-column>
+            <el-table-column label="供應商/分判商" prop="supplierName"> </el-table-column>
+            <el-table-column label="採購金額" prop="procurementAmount"> </el-table-column>
+            <el-table-column label="利潤比例" prop="profitsRate"> </el-table-column>
+            <el-table-column label="項目負責人意見" prop="managerOpinion"> </el-table-column>
+            <el-table-column label="成本部意見" prop="costerOpinion"> </el-table-column>
+            <el-table-column label="部門經理意見" prop="departmentOpinion"> </el-table-column>
+            <el-table-column label="備註" prop="remark"> </el-table-column>
+
+            <el-table-column label="狀態" prop="state"> </el-table-column>
+
+
+
+
+        </el-table>
+        <bg-add-procurement :visible.sync="innerVisibleProcurement"  :id="procurementid"  v-on:closed="getProcurement" :projectid="projectid"></bg-add-procurement>
+    </div>
+
+</script>
+
+<script type="text/javascript">
+
+
+    Vue.component('bg-procurement',
+        {
+
+            template: '#procurement',
+            data: function () {
+                return {
+
+                    procurementid: undefined,
+                    innerVisibleProcurement: false,
+                    rec: {}
+                };
+            },
+            filters: {
+
+            },
+            methods: {
+
+                 onOpenProcurement: function (item) {
+                    this.procurementid = item.id;
+                 
+                    this.innerVisibleProcurement = true;
+                },
+                onAddProcurement: function () {
+                    this.procurementid = undefined;
+                
+                    this.innerVisibleProcurement = true;
+                },
+                getProcurement: function () {
+                    this.$http.get("/api/Project/Procurement/List/" + this.projectid).then(req => {
+                        this.datasource = req.data;
+                    });
+                   
+                }
+
+
+
+            },
+            updated: function () {
+
+            },
+            watch: {
+
+
+            },
+            props: {
+
+                datasource: Array,
+                projectid: String,
+              
+
+            }
+        });
+
+
+</script>

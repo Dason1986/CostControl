@@ -13,11 +13,11 @@ namespace CostControlWebApplication.Controllers
 
 
 
-        public IActionResult Index([FromServices] StandingbookService service, [FromQuery] ProjectQueryRequest queryRequest)
+        public IActionResult Index( )
         {
 
-            IPagingList list = service.GetProjects(queryRequest).ProjectedAsPagingList<ProjectStandingbookListItmeDto>();
-            return View(list);
+   
+            return View( );
 
         }
     }

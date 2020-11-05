@@ -12,9 +12,10 @@ ProjectMaster.SetterId,
 ProjectMaster.ManagerId,
 ProjectMaster.FirstId,
 ProjectMaster.SecondId, 
-ProjectMaster.State,
-
+ProjectMaster.ThirdId, 
+ProjectMaster.State, 
 ProjectMaster.ContractAmount,
+ProjectMaster.CompanyId,
 
 ProjectMaster.Remark,
 ProjectMaster.BeginDate,
@@ -22,22 +23,26 @@ ProjectMaster.EstimatedBeginDate,
 ProjectMaster.EndDate,
 ProjectMaster.EstimatedEndDate, 
 
-ProjectMaster.ProjectTypeId,
+ProjectMaster.ProjectMainId,
 ProjectMaster.ContractorsId,
 
-ProjectType.Name AS ProjectType,
+ProjectMain.Name AS ProjectMain,
 ContractorsId.Name AS ContractorsName,
 FirstId.Name AS FirstName,
 SecondId.Name AS SecondName,
+ThirdId.Name AS ThirdName,
 SetterId.Name AS SetterName,
+CompanyId.Name AS CompanyName,
 Manager.Name AS ManagerName
 
 FROM
 ProjectMaster
 
-LEFT JOIN basicdata AS ProjectType ON ProjectMaster.ProjectTypeId = ProjectType.ID
+LEFT JOIN basicdata AS ProjectMain ON ProjectMaster.ProjectMainId = ProjectMain.ID
 LEFT JOIN supplier as FirstId ON ProjectMaster.FirstId = FirstId.ID 
 LEFT JOIN supplier as SecondId ON ProjectMaster.SecondId = SecondId.ID
+LEFT JOIN supplier as ThirdId ON ProjectMaster.ThirdId = ThirdId.ID
 LEFT JOIN supplier as SetterId ON ProjectMaster.SetterId = SetterId.ID  
 LEFT JOIN supplier as ContractorsId ON ProjectMaster.ContractorsId = ContractorsId.ID  
+LEFT JOIN supplier as CompanyId ON ProjectMaster.CompanyId = CompanyId.ID  
 LEFT JOIN accountuser as Manager ON ProjectMaster.ManagerId = Manager.ID  

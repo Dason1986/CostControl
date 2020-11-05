@@ -31,8 +31,13 @@
                             <div class="form-group">
 
                                 <div class="form-group">
-                                    <label>項目代碼</label>
-                                    <input type="text" class="form-control" v-model="rec.code" placeholder="項目代碼">
+                                    <label>所屬公司</label>
+
+                                    <el-select placeholder="所屬公司" v-model="rec.companyId" filterable>
+                                        <el-option v-for="item in companyOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        </el-option>
+                                    </el-select>
                                 </div>
 
                             </div>
@@ -50,9 +55,9 @@
                         <div class="col-md-3 form-inline">
                             <div class="form-group">
 
-                                <label>項目类型</label>
+                                <label>項目主體</label>
 
-                                <el-select v-model="rec.projectTypeId" filterable placeholder="項目类型">
+                                <el-select v-model="rec.projectMainId" filterable placeholder="項目主體">
                                     <el-option v-for="item in projectTypeOptions"
                                                :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
                                         <span style="float: left">{{ item.label }}</span>
@@ -134,6 +139,8 @@
                             </div>
 
                         </div>
+                    </div>
+                    <div class="row">
                         <div class="col-md-3 form-inline">
                             <div class="form-group">
 
@@ -151,6 +158,18 @@
 
                                 <label>第二分判</label>
                                 <el-select placeholder="第二分判" v-model="rec.secondId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>第三分判</label>
+                                <el-select placeholder="第三分判" v-model="rec.thirdId" filterable>
                                     <el-option v-for="item in supplierOptions"
                                                :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
                                     </el-option>
@@ -182,24 +201,7 @@
 
                         </div>
 
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
 
-                                <label>實際開始</label>
-                                <el-date-picker type="date" v-model="rec.beginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="實際開始">
-                                </el-date-picker>
-                            </div>
-
-                        </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
-
-                                <label>實際結束</label>
-                                <el-date-picker type="date" v-model="rec.endDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="實際結束">
-                                </el-date-picker>
-                            </div>
-
-                        </div>
                     </div>
                     <div class="row">
 
@@ -216,6 +218,29 @@
 
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-md-12 form-inline">
+                            <div class="form-group">
+
+                                <label>立項目文件：</label>
+
+                                <el-upload class="upload-demo"
+                                           ref="upload"
+                                           action="/api/Project/Master"
+                                           :show-file-list="false"
+                                           :data="rec"
+                                           :auto-upload="false"
+                                           :on-change="handleUploadchange"
+                                           :on-success="handleUploadExceed">
+                                    <el-button size="small" icon="el-icon-upload">選擇立項文件</el-button>
+
+                                </el-upload>        {{rec.fileName}}
+                            </div>
+
+                        </div>
+
+                    </div>
+                  
                 </el-card>
 
             </el-main>
@@ -236,7 +261,8 @@
                 return {
                     eldialogvisible: this.visible,
                     userOptions:@Html.GetUserOptions(),
-                    supplierOptions:@Html.GetLastHome(),
+                    supplierOptions:@Html.GetSupplier(),
+                    companyOptions:@Html.GetCompany(),
                     projectTypeOptions:@Html.GetBasics(BasicsCode.ProjectMasterProjectType),
                     rec: { fileName:''}
                 };
@@ -249,11 +275,28 @@
 
 
                 onSumbit: async function () {
-                    console.log('onSumbit');
-                    await this.$http.post("/api/Project/Master" ,this.rec);
-                    this.eldialogvisible = false;
-                    this.$emit('closed', true);
+                    console.log('   this.$refs.upload', this.$refs.upload);
+                    var upload = this.$refs.upload;
+                    if (upload.uploadFiles.length == 0) {
 
+                      
+
+                            Vue.prototype.$notify({ title: "沒選擇立項目文件" });
+                            return;
+                        
+                    }
+                    upload.submit();
+                  //  this.$refs.upload.submit();
+                    //console.log('onSumbit');
+                    //await this.$http.post("/api/Project/Master" ,this.rec);
+                    //this.eldialogvisible = false;
+                //    this.$emit('closed', true);
+
+                },
+                handleUploadchange: function ( file, fileList) {
+
+                    console.log('handleUploadchange', file);
+                    this.rec.fileName = file.name;
                 },
                 handleUploadExceed: function (response, file, fileList) {
 

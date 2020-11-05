@@ -24,7 +24,7 @@
 
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">查詢</h3>
+                        <h3 class="box-title">用戶管理</h3>
                         <el-button class="btn btn-default" size="small" icon="el-icon-user-solid" v-on:click="onNew()">添加用戶</el-button>
                     </div>
 
@@ -122,9 +122,9 @@
                                          
                                            
                                     
-                                                    <el-button @@click="onStop(scope.row)" size="small" type="danger">停用</el-button>
+                                                    <el-button @@click="onStop(scope.row)" v-if="scope.row.roleType !== 'Admin'" size="small" type="danger">停用</el-button>
                                           
-                                                <el-button @@click="openDetails(scope.row)" size="small">明细</el-button>
+                                                <el-button @@click="openDetails(scope.row)"  v-if="scope.row.roleType !== 'Admin'" size="small">明细</el-button>
                                             </template>
                                         </el-table-column>
                                     </el-table>

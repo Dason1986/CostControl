@@ -82,6 +82,7 @@ namespace CostControlWebApplication.Services
             AccountUser user = repository.GetUserById(dto.ID);
             user.Name = dto.Name;
             user.Email = dto.Email;
+            user.RoleType = dto.RoleType;
 
             repository.UpdateUser(user);
             repository.UnitOfWork.Commit();

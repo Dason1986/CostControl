@@ -27,7 +27,16 @@
                 <el-form-item label="聯繫人電話">
                     <el-input v-model="elsupplier.manTel"></el-input>
                 </el-form-item>
-          
+                <el-form-item label="是否爲公司">
+
+                    <el-switch v-model="elsupplier.isCompany">
+                    </el-switch>
+                </el-form-item>
+                <el-form-item label="項目編號代碼">
+                    <el-input v-model="elsupplier.code"></el-input>
+                </el-form-item>
+
+            
                 <el-form-item label="狀態">
                     <el-select v-model="elsupplier.state" type="textarea">
                         <el-option value="1" label="啟用" key="1"></el-option>
@@ -69,7 +78,12 @@
             methods: {
                 onSave: function () {
                     var supplier = { ...this.elsupplier };
-                 
+
+                    if (supplier.isCompany && (supplier.code === '' || supplier.code == null)) {
+
+                        Vue.prototype.$notify({ title: "爲公司時項目代碼不能爲空" });
+                        return;
+                    }
                    
                     if (this.isEdit) {
                         this.$http.put("/api/Platform/Supplier/" + supplier.id, supplier).then((response) => {
