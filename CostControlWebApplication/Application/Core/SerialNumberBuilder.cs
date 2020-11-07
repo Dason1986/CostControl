@@ -84,7 +84,7 @@ namespace CostControlWebApplication
         /// <summary>
         ///
         /// </summary>
-        protected internal static readonly Regex VariableRegex = new Regex(@"({(?<Key>[^=]*?):(?<Param>[^=]*?)})|({(?<Key>[^=]*?)})");
+        protected internal static readonly Regex VariableRegex = new Regex(@"({(?<Key>[^=]*?)})");
 
         private static readonly object Lockobj = new object();
 
@@ -125,17 +125,19 @@ namespace CostControlWebApplication
                 String numberstr = SerialNumberFormat;
                 foreach (var variable in groupCollections)
                 {
-                    var param = variable["Param"].Value;
-
-                    switch (variable["Key"].Value)
+                    var array = variable["Key"].Value.Split(':', 2, StringSplitOptions.None);
+                    var key = array[0];
+                    string param = array.Length>1? array[1]:string.Empty;
+                   
+                    switch (key.ToLower())
                     {
-                        case "Code":
+                        case "code":
 
 
                             numberstr = numberstr.Replace(variable[0].Value, Code);
 
                             break;
-                        case "Date":
+                        case "date":
                             if (string.IsNullOrEmpty(param))
                             {
                                 param = "ddMMyyyy";
@@ -145,7 +147,7 @@ namespace CostControlWebApplication
 
                             break;
 
-                        case "Number":
+                        case "number":
 
                             if (string.IsNullOrEmpty(param))
                             {

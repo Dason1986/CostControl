@@ -8,6 +8,8 @@ using BingoX;
 using System.IO;
 using System.Linq;
 using BingoX.AspNetCore;
+using BingoX.Helper;
+using BingoX.Utility;
 
 namespace CostControlWebApplication.Controllers
 {
@@ -38,22 +40,15 @@ namespace CostControlWebApplication.Controllers
 
         }
 
-        [HttpGet("draft")]
-        public long GetId([FromServices] ProjectProcurementService service, [FromQuery] ProjectQueryRequest queryRequest)
-        {
-        
-          ProjectProcurement procurement=  service.GetDraftProcurement( );
-
-            return procurement.ID;
-
-        }
-        [HttpGet("{id}")]
-        public ProjectProcurementDto Get([FromServices] ProjectProcurementService service, [FromRoute] long id)
+      
+      
+        [Route("{id}")]
+        [HttpPost()]
+        public void  Submit([FromServices] ProjectProcurementService service, [FromRoute] long id)
         {
 
-            ProjectProcurementDto procurement = service.GetProcurement(id);
+            service.Submit(id);
 
-            return procurement;
 
         }
         [Route("")]
@@ -61,24 +56,21 @@ namespace CostControlWebApplication.Controllers
         public void Add([FromServices] ProjectProcurementService service, [FromBody] ProjectProcurementDto dto)
         {
 
-            service.Edit(dto);
+            service.AddOrEdit(dto);
 
 
         }
-
-      
-        [Route("file")]
-        [HttpPost]
-        public ProjectAboutFileDto UploadFile([FromServices] ProjectMasterService projectService, [FromServices] FileStorageServie storageServie, [FromForm] Microsoft.AspNetCore.Http.IFormCollection form, [FromForm] long procurementid, [FromForm] long projectId)
+        [HttpGet("{id}")]
+        public ProjectProcurementDto Get([FromServices] ProjectProcurementService service, [FromRoute] long id)
         {
-            if (form.Files.Count == 0) throw new LogicException("");
-            var file = form.Files.First();
-            var projectCode = projectService.GetProjectCode(projectId);
-            var path = Path.Combine("project", projectCode, "procurement", file.FileName);
-            var filedto = storageServie.AddFile(file.OpenReadStream(), path);
-            return projectService.AddAboutFile(projectId, procurementid, ProjectFileType.Procurement, filedto).ProjectedAs<ProjectAboutFileDto>();
+
+            ProjectProcurementDto procurement = service.GetProcurement(id);
+            procurement.AddFiles = EmptyUtility<long>.EmptyArray;
+            return procurement;
 
         }
+
+       
 
     }
 }

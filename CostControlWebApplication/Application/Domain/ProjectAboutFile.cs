@@ -11,9 +11,11 @@ namespace CostControlWebApplication.Domain
     }
     public enum ProjectFileType
     {
-        None = 0,
+        Temp = 0,
+        [Description("立項文件")]
+        Create =1,
         [Description("採購審批文件")]
-        Procurement = 1,
+        Procurement = 2,
         [Description("收入文件")]
         CostIn = 2,
         [Description("支出文件")]

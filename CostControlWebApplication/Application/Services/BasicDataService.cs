@@ -14,7 +14,7 @@ namespace CostControlWebApplication.Services
     public class BasicDataService : BaseService
     {
 
-        public BasicDataService(IRepository<BasicData> repository, ResourceService resourceService, IBoundedContext bounded, ICurrentUser user): base(bounded, user)
+        public BasicDataService(IRepository<BasicData> repository, ResourceService resourceService, IBoundedContext bounded, IStaffeUser user): base(bounded, user)
         {
             this.repository = repository;
             this.resourceService = resourceService;

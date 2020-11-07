@@ -13,11 +13,13 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 using System.Web;
 
 namespace CostControlWebApplication
 {
+   
     public static class Helper
     {
         public static void CopyFromGroup<T>(this T entry, object obj, string groupName) where T : IDomainEntry
@@ -33,13 +35,13 @@ namespace CostControlWebApplication
                 BingoX.Helper.FastReflectionExtensions.FastSetValue(item, entry, value);
             }
         }
-        public static bool IsManager(this ICurrentUser stafferRequest)
+        public static bool IsManager(this IStaffeUser stafferRequest)
         {
             if (stafferRequest == null) throw new LogicException("未登錄");
 
             return string.Equals(stafferRequest.Role, "Manager", System.StringComparison.CurrentCultureIgnoreCase);
         }
-        public static bool IsAdmin(this ICurrentUser stafferRequest)
+        public static bool IsAdmin(this IStaffeUser stafferRequest)
         {
             if (stafferRequest == null) throw new LogicException("未登錄");
 
@@ -90,7 +92,7 @@ namespace CostControlWebApplication
         {
 
 
-            var request = helper.ViewContext.HttpContext.RequestServices.GetService<ICurrentUser>();
+            var request = helper.ViewContext.HttpContext.RequestServices.GetService<IStaffeUser>();
             IList<SidebarMenu> Menus = new List<SidebarMenu>() {
               new SidebarMenu { Name = "Dashboard", Url = "/Dashboard", Icon = "fa fa-pie-chart"
 

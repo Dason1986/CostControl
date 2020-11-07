@@ -95,7 +95,14 @@ namespace CostControlWebApplication.Services
         }
         OptionEntry Create(BasicData basicData)
         {
-            OptionEntry entry = new OptionEntry { Label = basicData.Name, Value = basicData.DataValue, Id = basicData.ID.ToString(), Disabled = basicData.State == CommonState.Disabled };
+            OptionEntry entry = new OptionEntry
+            {
+                Label = basicData.Name,
+                Value = basicData.DataValue,
+                Id = basicData.ID.ToString(),
+                Remark = basicData.Remark?.Replace("\r\n","<br/>"),
+                Disabled = basicData.State == CommonState.Disabled
+            };
             return entry;
         }
         void ForeachChild(OptionEntry entry)
@@ -132,5 +139,6 @@ namespace CostControlWebApplication.Services
         public bool Disabled { get; set; }
         public OptionEntry[] Children { get; set; }
         public string Value { get; set; }
+        public string Remark { get; set; }
     }
 }

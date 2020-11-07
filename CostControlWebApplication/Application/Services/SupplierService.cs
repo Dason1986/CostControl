@@ -12,7 +12,7 @@ namespace CostControlWebApplication.Services
     public class SupplierService : BaseService
     {
 
-        public SupplierService(IRepository<Supplier> repository, ResourceService resourceService, IBoundedContext bounded, ICurrentUser user) : base(bounded, user)
+        public SupplierService(IRepository<Supplier> repository, ResourceService resourceService, IBoundedContext bounded, IStaffeUser user) : base(bounded, user)
         {
             this.repository = repository;
             this.resourceService = resourceService;

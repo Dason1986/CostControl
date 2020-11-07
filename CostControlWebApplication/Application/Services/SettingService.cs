@@ -9,7 +9,7 @@ namespace CostControlWebApplication.Services
     {
         private readonly SettingRepository repository;
 
-        public SettingService(SettingRepository repository, IBoundedContext bounded, ICurrentUser user):base(bounded, user)
+        public SettingService(SettingRepository repository, IBoundedContext bounded, IStaffeUser user):base(bounded, user)
         {
             this.repository = repository;
         }

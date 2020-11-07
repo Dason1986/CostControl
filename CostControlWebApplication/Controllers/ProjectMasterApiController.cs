@@ -19,23 +19,15 @@ namespace CostControlWebApplication.Controllers
 
             return list;
         }
-        //[HttpPost("")]
-        //public void Add([FromServices] ProjectMasterService service, [FromBody] ProjectMasterDto dto)
-        //{
-        //    service.Add(dto) ;
-
-
-        //}
-
         [HttpPost("")]
-        public void Add([FromServices] ProjectMasterService service, [FromForm] ProjectMasterDto dto, [FromForm] IFormCollection form)
+        public void Add([FromServices] ProjectMasterService service, [FromBody] ProjectMasterDto dto)
         {
-            var file = form.Files.First();
-            var filearray = file.OpenReadStream().ToArray();
-            service.Add(dto, new BingoX.ComponentModel.Compress.CompressEntry { Name = file.FileName, FileContent = filearray });
+            service.Add(dto);
 
 
         }
+
+
         [HttpGet("{id}")]
         public ProjectMasterDto GetProject([FromServices] ProjectMasterService service, [FromRoute] long id)
         {

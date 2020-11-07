@@ -77,7 +77,7 @@ namespace CostControlWebApplication.Domain
         /// <summary>
         /// 支付方式  2类
         /// </summary>
-        public string PaymentMethod { get; set; }
+        public long PaymentMethodId { get; set; }
 
 
         /// <summary>

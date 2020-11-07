@@ -12,7 +12,7 @@ namespace CostControlWebApplication.Services
 {
     public class CostInOutService : BaseService
     {
-        public CostInOutService(ProjectRepository repository, IBoundedContext bounded, ICurrentUser user) : base(bounded, user)
+        public CostInOutService(ProjectRepository repository, IBoundedContext bounded, IStaffeUser user) : base(bounded, user)
         {
             this.repository = repository;
 

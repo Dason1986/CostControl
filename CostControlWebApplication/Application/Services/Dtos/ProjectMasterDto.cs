@@ -24,6 +24,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// 項目編號A
         /// </summary>
         public string CompanyName { get; set; }
+        public long CompanyId { get; set; }
         /// <summary>
         /// 項目地址
         /// </summary>
@@ -43,7 +44,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
         public string SecondName { get; set; }
         [DisplayName("第三分判")]
         public string ThirdName { get; set; }
-         
+        public long CreateFileId { get; set; }
         public long ContractorsId { get; set; }
       
         public long ManagerId { get; set; }
@@ -58,7 +59,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// 合同金額L
         /// </summary>
         [DisplayName("合約金額")]
-        public string ContractAmount { get; set; }
+        public decimal ContractAmount { get; set; }
 
         /// <summary>
         /// 開工時間

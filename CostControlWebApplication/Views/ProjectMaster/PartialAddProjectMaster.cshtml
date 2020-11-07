@@ -226,11 +226,10 @@
 
                                 <el-upload class="upload-demo"
                                            ref="upload"
-                                           action="/api/Project/Master"
+                                           action="/api/Project/File"
+                                           :multiple="false"
                                            :show-file-list="false"
-                                           :data="rec"
-                                           :auto-upload="false"
-                                           :on-change="handleUploadchange"
+                                        
                                            :on-success="handleUploadExceed">
                                     <el-button size="small" icon="el-icon-upload">選擇立項文件</el-button>
 
@@ -275,32 +274,28 @@
 
 
                 onSumbit: async function () {
-                    console.log('   this.$refs.upload', this.$refs.upload);
-                    var upload = this.$refs.upload;
-                    if (upload.uploadFiles.length == 0) {
+                    //var upload = this.$refs.upload;
+                    //if (upload.uploadFiles.length == 0) {
 
                       
 
-                            Vue.prototype.$notify({ title: "沒選擇立項目文件" });
-                            return;
+                    //        Vue.prototype.$notify({ title: "沒選擇立項目文件" });
+                    //        return;
                         
-                    }
-                    upload.submit();
-                  //  this.$refs.upload.submit();
-                    //console.log('onSumbit');
-                    //await this.$http.post("/api/Project/Master" ,this.rec);
-                    //this.eldialogvisible = false;
-                //    this.$emit('closed', true);
+                    //}
+                    //console.log('   this.$refs.upload', this.$refs.upload);
+                    //upload.uploadFiles =[ upload.uploadFiles[upload.uploadFiles.length-1] ]
+                    //upload.submit();
+                    this.$refs.upload.submit();
+                    console.log('onSumbit');
+                    await this.$http.post("/api/Project/Master" ,this.rec);
+                    this.eldialogvisible = false;
+                    this.$emit('closed', true);
 
-                },
-                handleUploadchange: function ( file, fileList) {
-
-                    console.log('handleUploadchange', file);
-                    this.rec.fileName = file.name;
-                },
+                }, 
                 handleUploadExceed: function (response, file, fileList) {
 
-                    this.rec.fileid = response.id;
+                    this.rec.createFileId = response.id;
                     this.rec.fileName = response.fileName;
                 },
 

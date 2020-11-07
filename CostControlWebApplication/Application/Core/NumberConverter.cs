@@ -7,7 +7,7 @@ namespace CostControlWebApplication
     {
         public override bool CanConvert(Type objectType)
         {
-            return typeof(Decimal) == objectType || typeof(long) == objectType || typeof(int) == objectType;
+            return typeof(Decimal) == objectType ||  typeof(int) == objectType || typeof(Double) == objectType;
         }
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
@@ -15,7 +15,8 @@ namespace CostControlWebApplication
             if (reader.Value == null) return existingValue;
             var typecode = Convert.GetTypeCode(reader.Value);
             if (typecode == TypeCode.DBNull) return existingValue;
-            return Convert.ChangeType(reader.Value, objectType);
+            if (typecode == TypeCode.String && reader.Value.ToString().Length==0) return existingValue;
+            return BingoX.Utility.StringUtility.Cast(reader.Value.ToString(), objectType);
         }
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)

@@ -16,7 +16,7 @@ namespace CostControlWebApplication.Services
         private readonly TargetCostRepository repository;
         private readonly ISerialNumberProvider serialNumberProvider;
 
-        public TargetCostService(TargetCostRepository repository, ISerialNumberProvider serialNumberProvider, IBoundedContext bounded, ICurrentUser user) : base(bounded, user)
+        public TargetCostService(TargetCostRepository repository, ISerialNumberProvider serialNumberProvider, IBoundedContext bounded, IStaffeUser user) : base(bounded, user)
         {
             this.repository = repository;
             this.serialNumberProvider = serialNumberProvider;

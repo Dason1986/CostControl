@@ -6,6 +6,7 @@ using CostControlWebApplication.Application.Data;
 using CostControlWebApplication.Application.Services.Dtos;
 using CostControlWebApplication.Domain;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace CostControlWebApplication.Services
@@ -14,14 +15,16 @@ namespace CostControlWebApplication.Services
     {
 
 
-        public ProjectMasterService(ProjectRepository repository, ISerialNumberProvider serialNumberProvider, IBoundedContext bounded, ICurrentUser user) : base(bounded, user)
+        public ProjectMasterService(ProjectRepository repository, ISerialNumberProvider serialNumberProvider, FileStorageServie fileStorageServie, IBoundedContext bounded, IStaffeUser user) : base(bounded, user)
         {
             this.repository = repository;
             this.serialNumberProvider = serialNumberProvider;
-
+            this.fileStorageServie = fileStorageServie;
         }
         private readonly ProjectRepository repository;
         private readonly ISerialNumberProvider serialNumberProvider;
+        private readonly FileStorageServie fileStorageServie;
+
         public IPagingList<VIProjectMaster> GetProjects(ProjectQueryRequest queryRequest)
         {
 
@@ -30,31 +33,43 @@ namespace CostControlWebApplication.Services
             return repository.PagingList(specification);
 
         }
-        public void Add(ProjectMasterDto dto, BingoX.ComponentModel.Compress.CompressEntry fileentry)
+        public void Add(ProjectMasterDto dto )
         {
-            ProjectMaster entity = dto.ProjectedAs<ProjectMaster>();
-            if (entity.CompanyId <= 0) throw new LogicException("公司爲空");
-            Supplier supplier = repository.GetSupplier(entity.CompanyId);
+            if (dto.CreateFileId <= 0) throw new LogicException("立项目文件为空");
+            if (dto.CompanyId <= 0) throw new LogicException("公司爲空");
+            Supplier supplier = repository.GetSupplier(dto.CompanyId);
             if (supplier == null) throw new LogicException("選擇的公司無效");
             if (!supplier.IsCompany || string.IsNullOrEmpty(supplier.Code)) throw new LogicException("選擇的公司無效");
-            if (string.IsNullOrEmpty(entity.Name)) throw new LogicException("項目名稱不能爲空");
-            if (string.IsNullOrEmpty(entity.Address)) throw new LogicException("項目地址不能爲空");
-            if (entity.ContractAmount <= 0) throw new LogicException("合同金額不能小於等於0");
-            if (entity.ContractorsId <= 0) throw new LogicException("承建商爲空");
-            if (entity.ProjectMainId <= 0) throw new LogicException("項目主體爲空");
-            if (entity.ManagerId <= 0) throw new LogicException("項目經理爲空");
+            if (string.IsNullOrEmpty(dto.Name)) throw new LogicException("項目名稱不能爲空");
+            if (string.IsNullOrEmpty(dto.Address)) throw new LogicException("項目地址不能爲空");
+            if (dto.ContractAmount <= 0) throw new LogicException("合同金額不能小於等於0");
+            if (dto.ContractorsId <= 0) throw new LogicException("承建商爲空");
+            if (dto.ProjectMainId <= 0) throw new LogicException("項目主體爲空");
+            if (dto.ManagerId <= 0) throw new LogicException("項目經理爲空");
+            ProjectMaster entity = dto.ProjectedAs<ProjectMaster>();
             if (entity.BeginDate.HasValue && entity.EndDate.HasValue && entity.EndDate < entity.BeginDate) throw new LogicException("實際開始日期不能大於實際結束日期");
 
 
             if (entity.EstimatedBeginDate.HasValue && entity.EstimatedEndDate.HasValue && entity.EstimatedEndDate < entity.EstimatedBeginDate) throw new LogicException("評估開始日期不能大於評估結束日期");
 
+            ProjectAboutFile savefile = repository.GetFile(dto.CreateFileId);
+            if(savefile==null)throw new LogicException("立项目文件不存在");
             entity.Code = serialNumberProvider.Dequeue(supplier);
-            if (  string.IsNullOrEmpty(entity.Code)) throw new LogicException("生成項目編號失敗");
+            if (string.IsNullOrEmpty(entity.Code)) throw new LogicException("生成項目編號失敗");
 
+       
+
+            var path = Path.Combine("project", entity.Code, savefile.FileType.GetHashCode().ToString(), Bounded.Generator.New()+ savefile.FileName);
+          
+            fileStorageServie.Move(savefile.StoragePath, path);
+            savefile.StoragePath = path;
+            savefile.ProjectId = entity.ID;
+            savefile.FileType = ProjectFileType.Create;
             entity.State = CommonState.Enabled;
-
-
             entity.Created(this);
+
+    
+
             var standingbook = new ProjectStandingbook();
             standingbook.ProjectId = entity.ID;
             standingbook.Created(this);
@@ -63,9 +78,17 @@ namespace CostControlWebApplication.Services
             targetCost.ProjectId = entity.ID;
             targetCost.Created(this);
 
-            repository.Add(entity);
-            repository.Add(standingbook);
-            repository.Add(targetCost);
+
+            var calculation = new ProjectCalculation();
+            calculation.ProjectId = entity.ID;
+            calculation.Created(this);
+
+            repository.AddMaster(entity);
+            repository.AddCalculation(calculation);
+            repository.AddStandingbook(standingbook);
+            repository.AddTargetCost(targetCost);
+            repository.Update(savefile);
+
             repository.UnitOfWork.Commit();
         }
         public ProjectMasterDto GetProject(long id)

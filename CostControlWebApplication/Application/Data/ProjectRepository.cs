@@ -23,11 +23,15 @@ namespace CostControlWebApplication.Application.Data
             dataAccessorProjectProcurement = CreateWrapper<ProjectProcurement>();
             dataAccessorVIProjectProcurement = CreateWrapper<VIProjectProcurement>();
             dataAccessorProjectProcurementBQItem = CreateWrapper<ProcurementBQItem>();
+            dataAccessorProjectCalculation = CreateWrapper<ProjectCalculation>();
+            dataAccessorProjectCalculationDetail = CreateWrapper<ProjectCalculationDetail>();
         }
 
 
         IDataAccessor<ProjectStandingbook> dataAccessorProjectStandingbook;
 
+        IDataAccessor<ProjectCalculation> dataAccessorProjectCalculation;
+        IDataAccessor<ProjectCalculationDetail> dataAccessorProjectCalculationDetail;
         IDataAccessor<ProjectTargetCost> dataAccessorProjectTargetCost;
         IDataAccessor<ProjectCostIn> dataAccessorProjectCostIn;
         IDataAccessor<ProjectCostOut> dataAccessorProjectCostOut;
@@ -43,6 +47,12 @@ namespace CostControlWebApplication.Application.Data
         {
             return dataAccessorProjectMaster.Exist(x => x.Code == code);
         }
+
+        public void AddCalculationDetail(ProjectCalculationDetail entity)
+        {
+            dataAccessorProjectCalculationDetail.Add(entity);
+        }
+
         public bool ExistProcurement(long id)
         {
             return dataAccessorProjectProcurement.Exist(x => x.ID == id);
@@ -62,6 +72,12 @@ namespace CostControlWebApplication.Application.Data
         {
             dataAccessorProjectProcurement.Add(entity);
         }
+
+        internal ProjectAboutFile GetFile(long createFileId)
+        {
+            return dataAccessorAboutFiles.GetId(createFileId);
+        }
+
         public void UpdateProcurement(ProjectProcurement entity)
         {
             dataAccessorProjectProcurement.Update(entity);
@@ -72,11 +88,20 @@ namespace CostControlWebApplication.Application.Data
             return dataAccessorProjectProcurement.GetId(id);
         }
 
-        public void Add(ProjectMaster entity)
+        public void Update(ProjectAboutFile entity)
+        {
+            dataAccessorAboutFiles.Update(entity);
+        }
+
+        public void AddMaster(ProjectMaster entity)
         {
             dataAccessorProjectMaster.Add(entity);
         }
-        public void Add(ProjectTargetCost entity)
+        public void AddCalculation(ProjectCalculation entity)
+        {
+            dataAccessorProjectCalculation.Add(entity);
+        }
+        public void AddTargetCost(ProjectTargetCost entity)
         {
             dataAccessorProjectTargetCost.Add(entity);
         }
@@ -98,6 +123,10 @@ namespace CostControlWebApplication.Application.Data
         {
             return dataAccessorAboutFiles.Where(n => n.ProjectId == id).OrderByDescending(n => n.ID).ToList();
         }
+        public IList<ProjectAboutFile> GetFiles(long[] ids)
+        {
+            return dataAccessorAboutFiles.Where(n => ids.Contains(n.ID)).OrderByDescending(n => n.ID).ToList();
+        }
 
         public IList<VIProjectProcurement> GetProcurements(long id)
         {
@@ -109,7 +138,7 @@ namespace CostControlWebApplication.Application.Data
             return CreateWrapper<ProcurementBQItem>().Where(n => n.ProcurementId == id).OrderByDescending(n => n.ID).ToList();
         }
 
-        public void Add(ProjectStandingbook entity)
+        public void AddStandingbook(ProjectStandingbook entity)
         {
             dataAccessorProjectStandingbook.Add(entity);
         }

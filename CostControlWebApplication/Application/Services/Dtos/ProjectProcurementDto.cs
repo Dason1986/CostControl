@@ -36,7 +36,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
         public string SupplierName { get; set; }
 
         [DisplayName("材料/外判類型")]
-        public long SupplierType { get; set; }
+        public string SupplierType { get; set; }
         /// <summary>
         /// 供應商名稱
         /// </summary>
@@ -99,6 +99,11 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// </summary>
         public string PaymentMethod { get; set; }
 
+        /// <summary>
+        /// 支付方式  2类
+        /// </summary>
+        public string PaymentMethodId { get; set; }
+
 
         /// <summary>
         /// 聯繫電話  2类
@@ -134,5 +139,7 @@ namespace CostControlWebApplication.Application.Services.Dtos
         public IList<ProjectAboutFileDto> Files { get; set; }
 
         public IList<ProcurementBQItemDto> Items { get; set; }
+
+        public long[] AddFiles { get; set; }
     }
 }

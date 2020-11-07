@@ -12,7 +12,7 @@ namespace CostControlWebApplication.Domain
         public string Code { get; set; }
 
         public string Address { get; set; }
- 
+
 
         public long FirstId { get; set; }
         public long SecondId { get; set; }
@@ -39,7 +39,7 @@ namespace CostControlWebApplication.Domain
 
 
         public long ProjectId { get; set; }
-      
+
         /// <summary>
         /// 項目类型
         /// </summary>

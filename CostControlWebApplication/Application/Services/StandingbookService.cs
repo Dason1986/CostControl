@@ -9,7 +9,7 @@ namespace CostControlWebApplication.Services
 {
     public class StandingbookService : BaseService
     {
-        public StandingbookService(ProjectRepository repository, IBoundedContext bounded, ICurrentUser user) : base(bounded, user)
+        public StandingbookService(ProjectRepository repository, IBoundedContext bounded, IStaffeUser user) : base(bounded, user)
         {
             this.repository = repository;
         }

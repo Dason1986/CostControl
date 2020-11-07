@@ -1,4 +1,5 @@
-﻿using BingoX.AspNetCore.Extensions;
+﻿using BingoX.AspNetCore;
+using BingoX.AspNetCore.Extensions;
 using BingoX.Helper;
 using BingoX.Repository;
 using CostControlWebApplication.Application.AD;
@@ -11,6 +12,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Text;
 
 namespace CostControlWebApplication
@@ -56,6 +58,18 @@ namespace CostControlWebApplication
             {
                 var repository = n.GetService<IRepository<Supplier>>();
                 return new SerialNumberProvider("{Code}{Date:yyyy}{Number:d3}", repository);
+            });
+            services.AddScoped<IStaffeUser, SocpStaffeUser>(n =>
+            {
+                var user = n.GetService<ICurrentUser>();
+                return new SocpStaffeUser
+                {
+                    Claims = user.Claims,
+                    Name = user.Name,
+                    Role = user.Role,
+                    UserID = BingoX.Utility.StringUtility.Cast<long>(user.Claims.First(n => n.Type == "UserID")?.Value),
+                     NameIdentifier= BingoX.Utility.StringUtility.Cast<long>(user.Claims.First(n => n.Type == ClaimTypes.NameIdentifier)?.Value),
+                };
             });
             services.AddScoped<ActiveDirectoryService>(x =>
             {

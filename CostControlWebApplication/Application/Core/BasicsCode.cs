@@ -5,9 +5,10 @@
         public const string TrageCastProjectType = "006";
         public const string ProjectMasterProjectType = "013";
         public const string ProcurementType = "015";
+        public const string PaymentMethod = "004";
  
         public const string Currency = "003";
-        public const string ProjectMain = "004";
+     
         public const string SettlementMethod = "001";
         public const string ContractType = "002";
         public const string CostType = "005";
