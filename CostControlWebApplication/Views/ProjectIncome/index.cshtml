@@ -4,40 +4,7 @@
 
 }
 
-
-<style>
-    .box-card {
-        width: 100%;
-    }
-
-
-
-    .el-table .error-row {
-        background: #fdf7f7;
-    }
-
-    .el-table .success-row {
-        background: #f0f9eb;
-    }
-
-
-    .el-table .cell-lable {
-        min-width: 40px;
-        margin-left: 10px;
-    }
-
-    .el-table .cell-value {
-        margin-left: 10px;
-    }
-
-    .el-table .cell .row {
-        margin-left: 0px;
-    }
-
-    .el-table .cell .dtcell .right {
-        text-align: right;
-    }
-</style>
+ 
 <div id="appProject">
 
 
@@ -74,16 +41,17 @@
                                 </div>
 
                             </div>
+                            @{ if (Html.IsManager())
+                                {
+                                    <div class="col-md-4 form-inline">
+                                        <div class="form-group">
+                                            <label>項目經理</label>
+                                            <input type="text" class="form-control" placeholder="項目經理" v-model="filterColumns.manager">
+                                        </div>
 
-                            <div class="col-md-4 form-inline">
-                                <div class="form-group">
-                                    <label>項目經理</label>
-                                    <input type="text" class="form-control" placeholder="項目名稱" v-model="filterColumns.projectManager">
-                                </div>
-
-                            </div>
-
-
+                                    </div>
+                                }
+                            }
 
                         </div>
                         <div class="row " style="margin-top:5px">

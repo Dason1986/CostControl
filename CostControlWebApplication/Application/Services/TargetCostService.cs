@@ -23,14 +23,14 @@ namespace CostControlWebApplication.Services
         }
 
 
-        public IPagingList<ProjectTargetCostListItmeDto> GetTargetCosts(ProjectQueryRequest queryRequest)
+        public IPagingList<ProjectTargetCostDto> GetTargetCosts(ProjectQueryRequest queryRequest)
         {
             var specification = new Specification<VIProjectTargetCost>();
             if (!string.IsNullOrEmpty(queryRequest.Code)) specification.And(n => n.Code.Contains(queryRequest.Code));
             if (!string.IsNullOrEmpty(queryRequest.Name)) specification.And(n => n.Name.Contains(queryRequest.Name));
             specification.SetPage(queryRequest);
 
-            return repository.PagingList(specification).ProjectedAsPagingList<ProjectTargetCostListItmeDto>();
+            return repository.PagingList(specification).ProjectedAsPagingList<ProjectTargetCostDto>();
 
         }
 

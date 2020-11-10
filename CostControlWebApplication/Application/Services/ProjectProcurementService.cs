@@ -26,44 +26,68 @@ namespace CostControlWebApplication.Services
         public IPagingList<VIProjectProcurement> GetProcurements(ProjectQueryRequest queryRequest)
         {
 
-            Specification<VIProjectProcurement> specification = EntityHelper.GetSpecification<VIProjectProcurement>();
+            Specification<VIProjectProcurement> specification = this.GetSpecification<VIProjectProcurement>();
             specification.SetPage(queryRequest);
             return repository.PagingList(specification);
 
         }
-        public void Submit(ProjectProcurementDto dto)
-        {
-            if (dto.ID == 0 && !repository.ExistProcurement(dto.ID)) throw new BingoX.LogicException("編號不存在");
-            var entity = dto.ProjectedAs<ProjectProcurement>();
-            entity.State = ProcurementState.Submit;
-            repository.UpdateProcurement(entity);
-            repository.UnitOfWork.Commit();
-        }
+
         public void Submit(long procurementID)
         {
             var entity = repository.GetProcurement(procurementID);
             if (entity == null) throw new LogicException("提交編號不存在");
 
+            if (entity.State != ProcurementState.Save) throw new LogicException("当前状态不能提交！");
+
             var files = repository.GetProcurementFiles(procurementID);
             if (files.IsEmpty()) throw new LogicException("審批文件爲空");
             var items = repository.GetProcurementBQItems(procurementID);
-            if (items.IsEmpty()) throw new LogicException("BQ明細爲空");
+            if (items.IsEmpty() && entity.ProcurementType != ProcurementType.Paid) throw new LogicException("BQ明細爲空");
+            var calculation = repository.GetCalculation(entity.ProjectId);
             entity.State = ProcurementState.Submit;
             repository.UpdateProcurement(entity);
-            if (entity.ProcurementType == ProcurementType.Outsourcing)
-            {
-                var calculationItem = new ProjectCalculationDetail()
-                {
-                    ProcurementId = procurementID,
-                    ProjectId = entity.ProjectId,
-                    ContractAmount = entity.ProcurementAmount,
-                    EstimateCost = entity.OtherAmount,
-                    Remark=entity.Remark,                   
-                    GrossMargin = entity.ProfitsRate
-                };
-                calculationItem.Created(this);
 
-                repository.AddCalculationDetail(calculationItem);
+            switch (entity.ProcurementType)
+            {
+
+                case ProcurementType.Materials:
+                    {
+                        calculation.MaterialCost += entity.ThisProcurementAmount;
+                        break;
+                    }
+                case ProcurementType.Outsourcing:
+                    {
+                        var calculationItem = new ProjectCalculationDetail()
+                        {
+                            ProcurementId = procurementID,
+                            ProjectId = entity.ProjectId,
+                            ContractAmount = entity.ItemAmount,
+                            ProcurementAmount = entity.ProcurementAmount,
+                            EstimateCost = entity.OtherAmount,
+                            Remark = entity.Remark,
+                            GrossMargin = entity.ProfitsRate
+                        };
+                        calculationItem.Created(this);
+
+                        repository.AddCalculationDetail(calculationItem);
+                        //   if (entity.TotalPurchaseAmount <= 0) throw new BingoX.LogicException("總採購金額 不爲正數");
+                        break;
+                    }
+                case ProcurementType.Other:
+                    {
+                        calculation.MangerCost += entity.ThisProcurementAmount;
+                        break;
+                    }
+
+                case ProcurementType.Paid:
+                    {
+
+                        calculation.MangerCost += entity.PaidAmount;
+                        //  if (entity.TotalPurchaseAmount <= 0) throw new BingoX.LogicException("總採購金額 不爲正數");
+                        break;
+                    }
+                default:
+                    break;
             }
             repository.UnitOfWork.Commit();
         }
@@ -86,17 +110,44 @@ namespace CostControlWebApplication.Services
             }
             var project = repository.GetProjectMaster(dto.ProjectId);
             if (project == null) throw new BingoX.LogicException("项目不存在");
+            var ProcurementAmount = dto.Items.Sum(n => n.ProcurementAmount);//採購金額
+            var BidAmount = dto.Items.Sum(n => n.BidAmount);//中標總計
+            var ProcurementEndAmount = dto.Items.Sum(n => n.ProcurementEndAmount);//已採購金額
+            var ProcurementEndTotalAmount = dto.Items.Sum(n => n.ProcurementEndTotalAmount);//總採購金額
+            var OtherTotal = dto.Items.Sum(n => n.Total);//其他暫估 總計
+            entity.OtherAmount = OtherTotal;
+            entity.ItemAmount = BidAmount;
+            entity.ProfitsRate = 1 - (ProcurementAmount + OtherTotal) / BidAmount;
+            entity.ThisProcurementAmount = ProcurementAmount;
             switch (entity.ProcurementType)
             {
 
                 case ProcurementType.Materials:
-                    if (entity.AllProcurementAmount <= 0) throw new BingoX.LogicException("總採購金額 不爲正數");
-                    break;
+                    {
+                        if (string.IsNullOrEmpty(entity.MaterialUsage)) throw new BingoX.LogicException("材料用途 为空");
+                        // if (entity.AllProcurementAmount <= 0) throw new BingoX.LogicException("總採購金額 不爲正數");
+
+                        entity.BeenProcurementAmount = ProcurementEndAmount;
+                        entity.AllProcurementAmount = ProcurementAmount + ProcurementEndAmount;
+                        break;
+                    }
                 case ProcurementType.Outsourcing:
+                    {
+
+                        //   if (entity.TotalPurchaseAmount <= 0) throw new BingoX.LogicException("總採購金額 不爲正數");
+                        break;
+                    }
                 case ProcurementType.Other:
+                    {
+
+                        // if (entity.TotalPurchaseAmount <= 0) throw new BingoX.LogicException("總採購金額 不爲正數");
+                        break;
+                    }
                 case ProcurementType.Paid:
-                    if (entity.TotalPurchaseAmount <= 0) throw new BingoX.LogicException("總採購金額 不爲正數");
-                    break;
+                    {
+                        //  if (entity.TotalPurchaseAmount <= 0) throw new BingoX.LogicException("總採購金額 不爲正數");
+                        break;
+                    }
                 default:
                     break;
             }
@@ -116,15 +167,18 @@ namespace CostControlWebApplication.Services
                 }
             }
 
-            entity.State = ProcurementState.Enabled;
+            entity.State = ProcurementState.Save;
             var items = dto.Items.Where(n => n.Id == 0).Select(n =>
               {
                   var en = n.ProjectedAs<ProcurementBQItem>();
                   en.ProcurementId = entity.ID;
                   en.ProjectId = entity.ProjectId;
+                  en.ProcurementType = entity.ProcurementType;
                   en.Created(this);
                   return en;
               }).ToList();
+
+
             repository.AddBQItems(items);
 
             repository.UnitOfWork.Commit();

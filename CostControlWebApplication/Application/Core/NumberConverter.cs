@@ -23,8 +23,20 @@ namespace CostControlWebApplication
         {
             var typecode = Convert.GetTypeCode(value);
             if (typecode == TypeCode.DBNull) return;
-            if (Convert.ToInt32(value) == 0) writer.WriteValue("");
-            else if (typecode == TypeCode.Decimal || typecode == TypeCode.Double) writer.WriteValue(string.Format("{0:n2}", value));
+            if (typecode == TypeCode.Int32 && Convert.ToInt32(value) == 0) writer.WriteValue("");
+            else if (typecode == TypeCode.Decimal  )
+            {
+                var tem = Convert.ToDecimal(value);
+                if (tem == decimal.Zero) { writer.WriteValue(""); return; }
+                writer.WriteValue(string.Format("{0:n2}", tem));
+            }
+            else if (  typecode == TypeCode.Double)
+            {
+                var tem = Convert.ToDouble(value);
+             
+                if (tem == double.NaN) { writer.WriteValue(""); return; }
+                writer.WriteValue(string.Format("{0:n2}", value));
+            }
             else writer.WriteValue(value);
         }
     }

@@ -12,220 +12,290 @@
                append-to-body>
 
 
+        <span slot="footer" class="dialog-footer">
+            <el-button @@click="eldialogvisible = false">取 消</el-button>
+            <el-button type="danger" @@click="onSumbit()">保存</el-button>
+        </span>
+        <el-container>
+            <el-main>
 
-        <el-card>
+                <el-card class="box-card">
+                    <el-divider content-position="left">基礎信息</el-divider>
 
+                    <div class="row">
 
-            <div class="card-body">
-                <h5 class="card-title">{{rec.name}}[{{rec.code}}] </h5>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
 
-
-            </div>
-            <el-tabs v-model="activeName">
-                <el-tab-pane label="基本信息" name="tab0">
-                    <el-card>
-                        <el-divider content-position="left">基礎信息</el-divider>
-
-                        <div class="row">
-
-
-                            <div class="col-md-3 form-inline">
                                 <div class="form-group">
+                                    <label>所屬公司</label>
 
-                                    <label>項目类型</label>
+                                    {{rec.companyName}}
+                                </div>
 
-                                    <el-select v-model="rec.projectTypeId" filterable placeholder="項目类型">
-                                        <el-option v-for="item in projectTypeOptions"
-                                                   :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
-                                            <span style="float: left">{{ item.label }}</span>
-                                            <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>項目代码</label>
+                                {{rec.code}}
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>項目名稱</label>
+                                {{rec.name}}
+
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>項目主體</label>
+
+                                <el-select v-model="rec.projectMainId" filterable placeholder="項目主體">
+                                    <el-option v-for="item in projectTypeOptions"
+                                               :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>合約結算方式</label>
+
+                                <el-select v-model="rec.settlementMethodId" filterable placeholder="合約結算方式">
+                                    <el-option v-for="item in settlementMethodOptions"
+                                               :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>合約類別</label>
+
+                                <el-select v-model="rec.contractTypeId" filterable placeholder="合約類別">
+                                    <el-option v-for="item in contractTypeOptions"
+                                               :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>承接类型</label>
+
+                                <el-select v-model="rec.undertakingId" filterable placeholder="承接类型">
+                                    <el-option v-for="item in undertakingOptions"
+                                               :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+
+                    <div class="row">
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <div class="form-group">
+                                    <label>項目經理</label>
+                                    <el-select placeholder="項目經理" v-model="rec.managerId" filterable>
+                                        <el-option v-for="item in userOptions"
+                                                   :key="item.value" :label="item.label" :value="item.id">
                                         </el-option>
                                     </el-select>
-                                </div>
-
-                            </div>
-                        </div>
-
-                        <div class="row">
-                            <div class="col-md-3 form-inline">
-                                <div class="form-group">
-
-                                    <div class="form-group">
-                                        <label>項目經理</label>
-                                        <el-select placeholder="項目經理" v-model="rec.managerId" filterable>
-                                            <el-option v-for="item in userOptions"
-                                                       :key="item.value" :label="item.label" :value="item.id">
-                                            </el-option>
-                                        </el-select>
-
-                                    </div>
-
-                                </div>
-
-                            </div>
-                            <div class="col-md-3 form-inline">
-                                <div class="form-group">
-
-                                    <label>合約金額</label>
-                                    <el-input-number v-model="rec.contractAmount" placeholder="合約金額"></el-input-number>
 
                                 </div>
 
                             </div>
 
                         </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
 
-                        <div class="row">
-
-
-                            <div class="col-md-12 form-inline">
-                                <div class="form-group">
-
-                                    <label>項目地址</label>
-                                    <input type="text" class="form-control" v-model="rec.address" style="width: 700px;" placeholder="項目地址">
-
-                                </div>
+                                <label>合約金額</label>
+                                <el-input-number v-model="rec.contractAmount" placeholder="合約金額"></el-input-number>
 
                             </div>
+
                         </div>
 
-                        <el-divider content-position="left">判給關係</el-divider>
-                        <div class="row">
+                    </div>
 
-                            <div class="col-md-3 form-inline">
-                                <div class="form-group">
+                    <div class="row">
 
-                                    <label>定作人</label>
-                                    <el-select placeholder="定作人" v-model="rec.setterId" filterable>
-                                        <el-option v-for="item in supplierOptions"
-                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
-                                        </el-option>
-                                    </el-select>
-                                </div>
+
+                        <div class="col-md-12 form-inline">
+                            <div class="form-group">
+
+                                <label>項目地址</label>
+                                <input type="text" class="form-control" v-model="rec.address" style="width: 700px;" placeholder="項目地址">
 
                             </div>
-                            <div class="col-md-3 form-inline">
-                                <div class="form-group">
 
-                                    <label>承建商</label>
-                                    <el-select placeholder="承建商" v-model="rec.contractorsId" filterable>
-                                        <el-option v-for="item in supplierOptions"
-                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
-                                        </el-option>
-                                    </el-select>
-                                </div>
-
-                            </div>
-                            <div class="col-md-3 form-inline">
-                                <div class="form-group">
-
-                                    <label>第一分判</label>
-                                    <el-select placeholder="第一分判" v-model="rec.firstId" filterable>
-                                        <el-option v-for="item in supplierOptions"
-                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
-                                        </el-option>
-                                    </el-select>
-                                </div>
-
-                            </div>
-                            <div class="col-md-3 form-inline">
-                                <div class="form-group">
-
-                                    <label>第二分判</label>
-                                    <el-select placeholder="第二分判" v-model="rec.secondId" filterable>
-                                        <el-option v-for="item in supplierOptions"
-                                                   :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
-                                        </el-option>
-                                    </el-select>
-                                </div>
-
-                            </div>
                         </div>
-                        <el-divider content-position="left">時間</el-divider>
-                        <div class="row">
+                    </div>
 
+                    <el-divider content-position="left">判給關係</el-divider>
+                    <div class="row">
 
-                            <div class="col-md-3 form-inline">
-                                <div class="form-group">
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
 
-                                    <label>預計開始</label>
-                                    <el-date-picker type="date" v-model="rec.estimatedBeginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估開始時間">
-                                    </el-date-picker>
-                                </div>
-
-                            </div>
-                            <div class="col-md-3 form-inline">
-                                <div class="form-group">
-
-                                    <label>預計結束</label>
-                                    <el-date-picker type="date" v-model="rec.estimatedEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估結束時間">
-                                    </el-date-picker>
-                                </div>
-
+                                <label>定作人</label>
+                                <el-select placeholder="定作人" v-model="rec.setterId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
                             </div>
 
-                            <div class="col-md-3 form-inline">
-                                <div class="form-group">
-
-                                    <label>實際開始</label>
-                                    <el-date-picker type="date" v-model="rec.beginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="實際開始">
-                                    </el-date-picker>
-                                </div>
-
-                            </div>
-                            <div class="col-md-3 form-inline">
-                                <div class="form-group">
-
-                                    <label>實際結束</label>
-                                    <el-date-picker type="date" v-model="rec.endDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="實際結束">
-                                    </el-date-picker>
-                                </div>
-
-                            </div>
                         </div>
-                        <div class="row">
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
 
-                            <div class="col-md-12 form-inline">
-                                <div class="form-group">
-
-                                    <label>備註</label>
-                                    <el-input type="textarea"
-                                              :autosize="{ minRows: 3, maxRows: 7}" style="width: 700px;"
-                                              placeholder="備註"
-                                              v-model="rec.remark">
-                                    </el-input>
-                                </div>
-
+                                <label>承建商</label>
+                                <el-select placeholder="承建商" v-model="rec.contractorsId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
                             </div>
+
                         </div>
-                    </el-card>
-                </el-tab-pane>
-                <el-tab-pane label="採購審批" name="tab1">
-                    <bg-procurement  :projectid="projectid" :datasource="rec.procurements"></bg-procurement>
-                </el-tab-pane>
-                <el-tab-pane label="項目收入" name="tab2">
-                    <bg-costin :projectid="projectid" :datasource="rec.costin"></bg-costin>
-                </el-tab-pane>
-                <el-tab-pane label="項目成本" name="tab3">
-                    <bg-costout :projectid="projectid" :datasource="rec.costout"></bg-costout>
-                </el-tab-pane>
-                <el-tab-pane label="項目臺帳" name="tab4">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
 
-                </el-tab-pane>
-                <el-tab-pane label="相關文件" name="tab5">
-                    <el-table border :data="files">
-                        <el-table-column label="文件分組" prop="fileType"> </el-table-column>
-                        <el-table-column label="文件名称" prop="fileName"> </el-table-column>
-                        <el-table-column label="大小" prop="fileSize"> </el-table-column>
-                        <el-table-column label="上传时间" prop="createdDate"> </el-table-column>
+                                <label>第一分判</label>
+                                <el-select placeholder="第一分判" v-model="rec.firstId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+                            </div>
 
-                    </el-table>
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
 
-                </el-tab-pane>
-            </el-tabs>
+                                <label>第二分判</label>
+                                <el-select placeholder="第二分判" v-model="rec.secondId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>第三分判</label>
+                                <el-select placeholder="第三分判" v-model="rec.thirdId" filterable>
+                                    <el-option v-for="item in supplierOptions"
+                                               :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                    </div>
+                    <el-divider content-position="left">時間</el-divider>
+                    <div class="row">
 
 
-        </el-card>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>預計開始</label>
+                                <el-date-picker type="date" v-model="rec.estimatedBeginDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估開始時間">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>預計結束</label>
+                                <el-date-picker type="date" v-model="rec.estimatedEndDate" format="yyyy-MM-dd" value-format="yyyy-MM-dd" placeholder="評估結束時間">
+                                </el-date-picker>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+                    <div class="row">
+
+                        <div class="col-md-12 form-inline">
+                            <div class="form-group">
+
+                                <label>備註</label>
+                                <el-input type="textarea"
+                                          :autosize="{ minRows: 3, maxRows: 7}" style="width: 700px;"
+                                          placeholder="備註"
+                                          v-model="rec.remark">
+                                </el-input>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-inline">
+                            <div class="form-group">
+
+                                <label>立項目文件：</label>
+
+                                <el-upload class="upload-demo"
+                                           ref="upload"
+                                           action="/api/Project/Master/File"
+                                           :data="updata"
+                                           :multiple="false"
+                                           :show-file-list="false"
+                                           :on-success="handleUploadExceed">
+                                    <el-button size="small" icon="el-icon-upload">選擇立項文件</el-button>
+
+                                </el-upload>        {{rec.createFileName}}
+                            </div>
+
+                        </div>
+
+                    </div>
+                </el-card>
+
+            </el-main>
+        </el-container>
     </el-dialog>
 
 
@@ -246,13 +316,12 @@
                     userOptions:@Html.GetUserOptions(),
                     supplierOptions:@Html.GetSupplier(),
                     projectTypeOptions:@Html.GetBasics(BasicsCode.ProjectMasterProjectType),
+                    undertakingOptions:@Html.GetBasics(BasicsCode.Undertaking),
+                    contractTypeOptions:@Html.GetBasics(BasicsCode.ContractType),
+                    settlementMethodOptions:@Html.GetBasics(BasicsCode.SettlementMethod),
                     rec: {  },
-                    innerVisibleProcurement:false,
-                    activeName: "tab0",
-               
                 
-                    datasourceprocurement: [],
-                    files:[]
+                    updata: {}
 
                 };
             },
@@ -260,19 +329,24 @@
 
             },
             methods: {
-            
+
                 getitemInfo: async function () {
 
                     this.$http.get("/api/Project/Master/" + this.projectid).then(result => {
                         this.rec = result.data;
-                        
-                      
+
+
                         this.files = this.rec.files;
                     });
 
                  //   this.costdatasource = await this.$http.get("/api/targetcost/detail/" + this.targetcostid).body;
                 },
-                onSearchCost: function () {},
+                onSearchCost: function () { },
+                handleUploadExceed: function (response, file, fileList) {
+
+                    this.rec.createFileId = response.id;
+                    this.rec.createFileName = response.fileName;
+                },
                 onSumbit: async function () {
 
                     await this.$http.put("/api/Project/Master/" + this.projectid, this.rec);
@@ -289,6 +363,7 @@
             watch: {
                 visible: function (val) {
                     if (val && this.projectid) {
+                        this.updata.id = this.projectid
                         this.getitemInfo();
                     }
                     this.eldialogvisible = val;

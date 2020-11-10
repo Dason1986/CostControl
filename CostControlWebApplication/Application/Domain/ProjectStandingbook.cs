@@ -9,21 +9,7 @@ namespace CostControlWebApplication.Domain
 
   
         public long ProjectId { get; set; }
-       
-        /// <summary>
-        /// 項目主體
-        /// </summary>
-        public long ProjectMainId { get; set; }
-
-        /// <summary>
-        /// 合約類別
-        /// </summary>
-        public long ContractTypeId { get; set; }
-
-        /// <summary>
-        /// 合約結算方式
-        /// </summary>
-        public long SettlementMethodId { get; set; }
+     
 
        
         /// <summary>
@@ -38,10 +24,7 @@ namespace CostControlWebApplication.Domain
         /// 完工百分比E（%）
         /// </summary>
         public decimal CompletionRatio { get; set; }
-        /// <summary>
-        /// 合同金額L
-        /// </summary>
-        public decimal ContractAmount { get; set; } 
+ 
 
      
        
@@ -74,14 +57,7 @@ namespace CostControlWebApplication.Domain
         /// 預計項目應付W
         /// </summary>
         public decimal EstimatedProjctPayableAmount { get; set; }
-        /// <summary>
-        /// 大判/分判  承接类型 
-        /// </summary>
-        public long UndertakingId { get; set; }
-        /// <summary>
-        /// 商業/政府/住宅 項目类型
-        /// </summary>
-        public long ProjectTypeId { get; set; }
+      
         /// <summary>
         /// 備註AH
         /// </summary>

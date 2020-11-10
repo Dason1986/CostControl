@@ -26,7 +26,7 @@ namespace CostControlWebApplication.Controllers
         [HttpGet()]
         public IPagingList GetList([FromServices] TargetCostService service, [FromQuery] ProjectQueryRequest queryRequest)
         {
-            IPagingList list = service.GetTargetCosts(queryRequest).ProjectedAsPagingList<ProjectTargetCostListItmeDto>();
+            IPagingList list = service.GetTargetCosts(queryRequest).ProjectedAsPagingList<ProjectTargetCostDto>();
             return list;
 
 

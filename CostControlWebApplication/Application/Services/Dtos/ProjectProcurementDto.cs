@@ -4,6 +4,7 @@ using System.ComponentModel;
 
 namespace CostControlWebApplication.Application.Services.Dtos
 {
+  
     public class ProjectProcurementDto : IDto
     {
         public long ID { get; set; }
@@ -122,9 +123,11 @@ namespace CostControlWebApplication.Application.Services.Dtos
         /// </summary>
         public string ExpenseCompany { get; set; }
 
-
         [DisplayName("狀態")]
-        public string State { get; set; }
+        public string StateDisplay { get; set; }
+
+    
+        public int State { get; set; }
         /// <summary>
         /// 備註AH
         /// </summary>

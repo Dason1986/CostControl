@@ -91,7 +91,7 @@ namespace CostControlWebApplication.Domain
         /// <summary>
         /// 代付金額  4类
         /// </summary>
-        public string PaidAmount { get; set; }
+        public decimal PaidAmount { get; set; }
         /// <summary>
         /// 費用承擔公司  4类
         /// </summary>

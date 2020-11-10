@@ -1,5 +1,6 @@
 ﻿using BingoX.ComponentModel.Data;
 using BingoX.DataAccessor;
+using BingoX.Domain;
 using BingoX.Repository;
 using CostControlWebApplication.Domain;
 using System;
@@ -26,6 +27,7 @@ namespace CostControlWebApplication.Application.Data
             dataAccessorProjectCalculation = CreateWrapper<ProjectCalculation>();
             dataAccessorProjectCalculationDetail = CreateWrapper<ProjectCalculationDetail>();
         }
+
 
 
         IDataAccessor<ProjectStandingbook> dataAccessorProjectStandingbook;
@@ -92,7 +94,10 @@ namespace CostControlWebApplication.Application.Data
         {
             dataAccessorAboutFiles.Update(entity);
         }
-
+        public void UpdateMaster(ProjectMaster entity)
+        {
+            dataAccessorProjectMaster.Update(entity);
+        }
         public void AddMaster(ProjectMaster entity)
         {
             dataAccessorProjectMaster.Add(entity);
@@ -105,7 +110,15 @@ namespace CostControlWebApplication.Application.Data
         {
             dataAccessorProjectTargetCost.Add(entity);
         }
-
+     
+        public ProjectCalculation GetCalculation(long id)
+        {
+            return dataAccessorProjectCalculation.Get(n => n.ProjectId == id);
+        }
+        public VIProjectCalculation GetVICalculation(long id)
+        {
+            return CreateWrapper<VIProjectCalculation>().GetId(id);
+        }
         public IList<ProjectAboutFile> GetProcurementFiles(long id)
         {
             return dataAccessorAboutFiles.Where(n => n.ForeignID == id).OrderByDescending(n => n.ID).ToList();
@@ -142,30 +155,11 @@ namespace CostControlWebApplication.Application.Data
         {
             dataAccessorProjectStandingbook.Add(entity);
         }
-        public IPagingList<VIProjectProcurement> PagingList(Specification<VIProjectProcurement> specification)
+
+        public IPagingList<T> PagingList<T>(ISpecification<T> specification) where T : IEntity<T>
         {
             int total = 0;
-            return dataAccessorVIProjectProcurement.PageList(specification, ref total).ProjectedAsPagingList(total, specification);
-        }
-        public IPagingList<VIProjectMaster> PagingList(ISpecification<VIProjectMaster> specification)
-        {
-            int total = 0;
-            return dataAccessorVIProjectMaster.PageList(specification, ref total).ProjectedAsPagingList(total, specification);
-        }
-        public IPagingList<VIProjectStandingbook> PagingList(ISpecification<VIProjectStandingbook> specification)
-        {
-            int total = 0;
-            return dataAccessorVIProjectInfo.PageList(specification, ref total).ProjectedAsPagingList(total, specification);
-        }
-        public IPagingList<VIProjectCostIn> PagingList(ISpecification<VIProjectCostIn> specification)
-        {
-            int total = 0;
-            return CreateWrapper<VIProjectCostIn>().PageList(specification, ref total).ProjectedAsPagingList(total, specification);
-        }
-        public IPagingList<VIProjectCostOut> PagingList(ISpecification<VIProjectCostOut> specification)
-        {
-            int total = 0;
-            return CreateWrapper<VIProjectCostOut>().PageList(specification, ref total).ProjectedAsPagingList(total, specification);
+            return CreateWrapper<T>().PageList(specification, ref total).ProjectedAsPagingList(total, specification);
         }
 
 

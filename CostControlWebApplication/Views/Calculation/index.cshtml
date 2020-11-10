@@ -1,4 +1,4 @@
-﻿ 
+﻿
 @{
     Layout = "_ManagmentLayout";
 
@@ -10,12 +10,14 @@
 
     <section class="content-header">
         <h1>
-            項目臺帳
-            <small>查詢</small>
+            工程管理
+
         </h1>
         <ol class="breadcrumb">
             <li>工程管理</li>
-            <li class="active">項目臺帳</li>
+            <li>目標測算</li>
+
+
         </ol>
     </section>
     <!-- 主內容 -->
@@ -26,9 +28,9 @@
 
                 <div class="box box-info">
                     <div class="box-header with-border">
-                        <h3 class="box-title">項目臺帳</h3>
+                        <h3 class="box-title">目標測算</h3>
 
-                        
+
                     </div>
                     <div class="box-body">
 
@@ -36,7 +38,7 @@
                             <div class="col-md-4 form-inline">
                                 <div class="form-group">
                                     <label>項目編號</label>
-                                    <input type="text" class="form-control" placeholder="項目編號" v-model="filterColumns.projectCode">
+                                    <input type="text" class="form-control" placeholder="項目編號" v-model="filterColumns.code">
                                 </div>
 
                             </div>
@@ -82,23 +84,25 @@
 
                     <div class="box-footer" align="right">
 
-                        <el-table :data="datasource">
+                        <el-table :data="datasource" border>
 
-                            <el-table-column label="操作" width="180">
+                            <el-table-column label="操作">
                                 <template slot-scope="scope">
                                     <el-button type="text" style="padding: 0px;" @@click="onOpenProject(scope.row)"> 查看 </el-button>
+
                                 </template>
                             </el-table-column>
+                            @Html.GetTableColumn(typeof(ProjectCalculationDto))
 
 
-                            @Html.GetTableColumn(typeof(ProjectStandingbookDto))
+
                         </el-table>
 
-                        <bg-edit-project :visible.sync="innerVisibleEditProject" v-on:closed="onSearchBatch" :projectid="rec.id"></bg-edit-project>
                     </div>
                 </div>
             </div>
         </div>
+        <bg-edit-calculation :visible.sync="innerVisibleEdit" :projectid="recid" ></bg-edit-calculation>
     </section>
 </div>
 
@@ -108,85 +112,80 @@
     Vue.use(DYVue);
 </script>
 
-<partial name="~/Views/Standingbook/PartialEditProject.cshtml" />
-
-
+<partial name="~/Views/Calculation/PartialEditProjectCalculation.cshtml" />
 <script type="text/javascript">
 
 
 
-        new Vue({
-            el: '#appProject',
+    new Vue({
+        el: '#appProject',
 
-            data: function () {
-                return {
+        data: function () {
+            return {
 
-                    total:0 ,
-                    pagesize: 10,
-                    contractAmountRangeOption:@Html.GetBasics(BasicsCode.ContractAmountRange) ,
-                    datasource: [],
-                    rec: {id:''},
-                    innerVisibleAddProject: false,
-                    innerVisibleEditProject:false,
-                    filterColumns: this.onreset()
-                };
-            },
-            filters: {
-            },
-            methods: {
+                total: 0,
+                pagesize: 20,
 
-                onSearchBatch: async function (flag) {
-                    if (flag) { this.filterColumns.pageno = 1; }
-                    var filter =  { ...this.filterColumns }
+                datasource: [],
+                innerVisibleEdit: false,
+                recid: undefined,
 
-                    var response = await this.$http.get("/api/Project/Standingbook", { params: filter });
+                filterColumns: this.onreset()
+            };
+        },
+        filters: {
+        },
+        methods: {
+
+            onSearchBatch: async function (flag) {
+                if (flag) { this.filterColumns.pageno = 1; }
+                var filter = { ...this.filterColumns }
+
+                this.$http.get("/api/Project/Calculation", { params: filter }).then(response => {
                     this.total = response.data.total;
                     this.datasource = response.data.items;
-
-
-                },
-                onreset: function () {
-                   return {
-                       projectCode: '',
-                       projectName: '',
-                       projectMain: '',
-                       projectManager: '',
-                       projectState: '',
-                       contractAmount: '',
-                       contractType: '',
-                        greeCode: [],
-                        pageno: 1};
-                },
-                onChangePager: function (current) {
-
-                    this.pageno = current;
-                    this.onSearchBatch(false);
-                },
-                onAddProject: function (){
-                    this.innerVisibleAddProject = true;
-                },
-                onOpenProject: function (entity) {
-                    this.rec = entity;
-                    this.innerVisibleEditProject = true;
-                }
-
-
+                });
 
 
 
             },
-            created: function () {
-                this.onSearchBatch(true);
+            onreset: function () {
+                return {
+                    code: '',
+                    name: '',
+
+                    pageno: 1
+                };
             },
-            updated: function(){
+            onChangePager: function (current) {
 
+                this.pageno = current;
+                this.onSearchBatch(false);
             },
-            watch: {
 
-
+            onOpenProject: function (item) {
+                this.recid = item.id;
+                this.innerVisibleEdit = true;
             }
 
-        });
+
+
+
+
+
+        },
+        created: function () {
+            this.onSearchBatch(true);
+        },
+        updated: function () {
+
+        },
+        watch: {
+
+
+        }
+
+    });
 
 
 </script>

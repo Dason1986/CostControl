@@ -4,18 +4,24 @@ using System;
 
 namespace CostControlWebApplication.Domain
 {
-    public class VIProjectMaster : ProjectMaster, ISnowflakeEntity<VIProjectMaster>
+    public class VIProjectMaster : ProjectMaster, ISnowflakeEntity<VIProjectMaster>, IProjectEntity
     {
         public string ProjectMain { get; set; }
 
         public string FirstName { get; set; }
         public string SecondName { get; set; }
+        public string ThirdName { get; set; }
 
         public string SetterName { get; set; }
 
         public string ManagerName { get; set; }
-
+        public string CreateFileName { get; set; }
+        public string CompanyName { get; set; }
         public string ContractorsName { get; set; }
+        public string ContractType { get; set; }
+        public string ProjectType { get; set; }
+        public string SettlementMethod { get; set; }
+        public string Undertaking { get; set; }
     }
     public class ProjectMaster : Entity, ISnowflakeEntity<ProjectMaster>, IDate
     {
@@ -39,11 +45,33 @@ namespace CostControlWebApplication.Domain
         /// </summary>
         public long SetterId { get; set; }
         /// <summary>
+        /// 立项目文件
+        /// </summary>
+        public long CreateFileId { get; set; }
+        /// <summary>
         /// 承建商
         /// </summary>
         public long ContractorsId { get; set; }
 
+        /// <summary>
+        /// 大判/分判  承接类型 
+        /// </summary>
+        public long UndertakingId { get; set; }
+        /// <summary>
+        /// 商業/政府/住宅 項目类型
+        /// </summary>
+        public long ProjectTypeId { get; set; }
+ 
 
+        /// <summary>
+        /// 合約類別
+        /// </summary>
+        public long ContractTypeId { get; set; }
+
+        /// <summary>
+        /// 合約結算方式
+        /// </summary>
+        public long SettlementMethodId { get; set; }
         /// <summary>
         /// 第一分判J
         /// </summary>

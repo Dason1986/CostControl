@@ -3,7 +3,7 @@ using System;
 
 namespace CostControlWebApplication.Domain
 {
-    public class VIProjectStandingbook : ProjectStandingbook, BingoX.Domain.ISnowflakeEntity<VIProjectStandingbook>, IDate
+    public class VIProjectStandingbook : ProjectStandingbook, BingoX.Domain.ISnowflakeEntity<VIProjectStandingbook>,IProjectEntity, IDate
     {
 
      
@@ -70,5 +70,7 @@ namespace CostControlWebApplication.Domain
         /// 預計結束日期
         /// </summary>
         public DateTime? EstimatedEndDate { get; set; }
+
+        public long ManagerId { get; set; }
     }
 }

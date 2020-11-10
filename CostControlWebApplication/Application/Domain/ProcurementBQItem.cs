@@ -83,5 +83,6 @@ namespace CostControlWebApplication.Domain
         /// 備註AH
         /// </summary>
         public string Remark { get; set; }
+        public ProcurementType ProcurementType { get;   set; }
     }
 }

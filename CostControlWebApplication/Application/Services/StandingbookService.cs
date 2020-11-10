@@ -18,7 +18,7 @@ namespace CostControlWebApplication.Services
         public IPagingList<VIProjectStandingbook> GetProjects(ProjectQueryRequest queryRequest)
         {
 
-            Specification<VIProjectStandingbook> specification = EntityHelper.GetSpecification<VIProjectStandingbook>();
+            Specification<VIProjectStandingbook> specification = this.GetSpecification<VIProjectStandingbook>();
             specification.SetPage(queryRequest);
             return repository.PagingList(specification);
 

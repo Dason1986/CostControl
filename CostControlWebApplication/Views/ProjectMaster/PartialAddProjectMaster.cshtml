@@ -67,6 +67,52 @@
                             </div>
 
                         </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>合約結算方式</label>
+
+                                <el-select v-model="rec.settlementMethodId" filterable placeholder="合約結算方式">
+                                    <el-option v-for="item in settlementMethodOptions"
+                                               :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>合約類別</label>
+
+                                <el-select v-model="rec.contractTypeId" filterable placeholder="合約類別">
+                                    <el-option v-for="item in contractTypeOptions"
+                                               :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                        <div class="col-md-3 form-inline">
+                            <div class="form-group">
+
+                                <label>承接类型</label>
+
+                                <el-select v-model="rec.undertakingId" filterable placeholder="承接类型">
+                                    <el-option v-for="item in undertakingOptions"
+                                               :key="item.id" :label="item.label" :value="item.id" :disabled="item.disabled">
+                                        <span style="float: left">{{ item.label }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.value }}</span>
+                                    </el-option>
+                                </el-select>
+                            </div>
+
+                        </div>
+                  
                     </div>
 
                     <div class="row">
@@ -263,6 +309,9 @@
                     supplierOptions:@Html.GetSupplier(),
                     companyOptions:@Html.GetCompany(),
                     projectTypeOptions:@Html.GetBasics(BasicsCode.ProjectMasterProjectType),
+                    undertakingOptions:@Html.GetBasics(BasicsCode.Undertaking),
+                    contractTypeOptions:@Html.GetBasics(BasicsCode.ContractType),
+                    settlementMethodOptions:@Html.GetBasics(BasicsCode.SettlementMethod),
                     rec: { fileName:''}
                 };
             },
@@ -277,11 +326,11 @@
                     //var upload = this.$refs.upload;
                     //if (upload.uploadFiles.length == 0) {
 
-                      
+
 
                     //        Vue.prototype.$notify({ title: "沒選擇立項目文件" });
                     //        return;
-                        
+
                     //}
                     //console.log('   this.$refs.upload', this.$refs.upload);
                     //upload.uploadFiles =[ upload.uploadFiles[upload.uploadFiles.length-1] ]
@@ -292,7 +341,7 @@
                     this.eldialogvisible = false;
                     this.$emit('closed', true);
 
-                }, 
+                },
                 handleUploadExceed: function (response, file, fileList) {
 
                     this.rec.createFileId = response.id;

@@ -35,12 +35,27 @@ namespace CostControlWebApplication
                 BingoX.Helper.FastReflectionExtensions.FastSetValue(item, entry, value);
             }
         }
+        public static bool IsManager(this IHtmlHelper helper)
+        {
+            var stafferRequest = helper.ViewContext.HttpContext.RequestServices.GetService<IStaffeUser>();
+            if (stafferRequest == null) return false;
+            if( string.Equals(stafferRequest.Role, "Manager", System.StringComparison.CurrentCultureIgnoreCase))return true;
+            if (string.Equals(stafferRequest.Role, "Admin", System.StringComparison.CurrentCultureIgnoreCase))return true;
+            return false;
+        }
         public static bool IsManager(this IStaffeUser stafferRequest)
         {
             if (stafferRequest == null) throw new LogicException("未登錄");
 
             return string.Equals(stafferRequest.Role, "Manager", System.StringComparison.CurrentCultureIgnoreCase);
         }
+        public static bool IsStaffer(this IStaffeUser stafferRequest)
+        {
+            if (stafferRequest == null) throw new LogicException("未登錄");
+
+            return string.Equals(stafferRequest.Role, "Staffer", System.StringComparison.CurrentCultureIgnoreCase);
+        }
+
         public static bool IsAdmin(this IStaffeUser stafferRequest)
         {
             if (stafferRequest == null) throw new LogicException("未登錄");
@@ -102,7 +117,7 @@ namespace CostControlWebApplication
                     {
                         new SidebarMenu{Name = "项目立项", Url = "/ProjectMaster", Icon = "fa fa-cube"  },
                         new SidebarMenu{Name = "采购审批", Url = "/Procurement", Icon = "fa fa-cube"  },
-                        new SidebarMenu{Name = "目标測算", Url = "/TargetCost" , Icon = "fa fa-cubes" },
+                        new SidebarMenu{Name = "目標測算", Url = "/Calculation" , Icon = "fa fa-cubes" },
                         new SidebarMenu{Name = "項目收入", Url = "/ProjectIncome", Icon = "fa fa-cube"  },
                         new SidebarMenu{Name = "項目成本", Url = "/ProjectCost", Icon = "fa fa-cube"  },
                         new SidebarMenu{Name = "项目核算", Url = "/ProjectCost", Icon = "fa fa-cube"  },

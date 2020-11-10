@@ -11,6 +11,7 @@ namespace CostControlWebApplication.Application.MappingResolvers
             mapping.ForMember(n => n.ProcurementTypeName, opt => opt.MapFrom((x, y) => BingoX.Utility.EnumUtility.GetDescription(x.ProcurementType)));
             mapping.ForMember(n => n.ProcurementType, opt => opt.MapFrom((x, y) => x.ProcurementType.GetType().ToString()));
 
+            mapping.ForMember(n => n.StateDisplay, opt => opt.MapFrom((x, y) => BingoX.Utility.EnumUtility.GetDescription(x.State)));
 
         }
 

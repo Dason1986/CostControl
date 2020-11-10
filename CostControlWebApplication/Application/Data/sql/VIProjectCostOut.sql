@@ -3,6 +3,7 @@ SELECT
  
 projectmaster.`Code`,
 projectmaster.`Name`,
+ProjectMaster.ManagerId,
 projectcostout.ID,
 projectcostout.CreatedDate,
 projectcostout.Created,

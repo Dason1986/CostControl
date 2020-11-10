@@ -16,8 +16,8 @@
                append-to-body>
         <span slot="footer" class="dialog-footer">
             <el-button @@click="eldialogvisible = false">取 消</el-button>
-            <el-button type="danger" @@click="onSave()">保存</el-button>
-            <el-button type="danger" @@click="onSubmit()">提交</el-button>
+            <el-button type="danger" @@click="onSave()" v-if="rec.state!==2">保存</el-button>
+            <el-button type="danger" @@click="onSubmit()" v-if="!disabledProject()">提交</el-button>
         </span>
 
         <el-container>
@@ -137,7 +137,7 @@
                                     <div class="form-group">
 
                                         <label>本次外判對應item、金額</label>
-                                        <el-input-number v-model="rec.thisProcurementAmount" placeholder="對業主的BQ合同"></el-input-number>
+                                        <input type="text" class="form-control"  v-model="rec.itemAmount" placeholder="對業主的BQ合同" disabled/>
 
                                     </div>
 
@@ -146,7 +146,7 @@
                                     <div class="form-group">
 
                                         <label>本次採購總金額</label>
-                                        <el-input-number v-model="rec.thisProcurementAmount" placeholder="本次採購總金額"></el-input-number>
+                                        <input type="text" class="form-control"  v-model="rec.thisProcurementAmount" placeholder="本次採購總金額" disabled/>
                                     </div>
 
                                 </div>
@@ -154,7 +154,7 @@
                                     <div class="form-group">
 
                                         <label>暫估其它費用</label>
-                                        <el-input-number v-model="rec.otherAmount" placeholder="暫估其它費用"></el-input-number>
+                                        <input type="text" class="form-control"   v-model="rec.otherAmount" placeholder="暫估其它費用" disabled/>
                                     </div>
 
                                 </div>
@@ -162,7 +162,7 @@
                                     <div class="form-group">
 
                                         <label>利潤比例</label>
-                                        <el-input-number v-model="rec.profitsRate" placeholder="利潤比例"></el-input-number>
+                                        <input  type="text" class="form-control"  v-model="rec.profitsRate" placeholder="利潤比例" disabled/>
                                     </div>
 
                                 </div>
@@ -187,7 +187,7 @@
                                         <el-select placeholder="支付方式" v-model="rec.paymentMethodId" @@change="paymentMethodchange">
 
                                             <el-option v-for="item in paymentMethodOptions"
-                                                       :key="item.value" :label="item.label" :value="item.value" :disabled="item.disabled">
+                                                       :key="item.value" :label="item.label" :value="item.id" :disabled="item.disabled">
 
                                             </el-option>
                                         </el-select>
@@ -221,7 +221,7 @@
                                     <div class="form-group">
 
                                         <label>本次外判對應item、金額</label>
-                                        <el-input-number v-model="rec.thisProcurementAmount" placeholder="對業主的BQ合同"></el-input-number>
+                                        <input  type="text" class="form-control"  v-model="rec.itemAmount" placeholder="對業主的BQ合同"  disabled /> 
 
                                     </div>
 
@@ -230,7 +230,7 @@
                                     <div class="form-group">
 
                                         <label>本次採購總金額</label>
-                                        <el-input-number v-model="rec.thisProcurementAmount" placeholder="本次採購總金額"></el-input-number>
+                                        <input  type="text" class="form-control"  v-model="rec.thisProcurementAmount" placeholder="本次採購總金額" disabled/> 
                                     </div>
 
                                 </div>
@@ -238,7 +238,7 @@
                                     <div class="form-group">
 
                                         <label>暫估其它費用</label>
-                                        <el-input-number v-model="rec.otherAmount" placeholder="暫估其它費用"></el-input-number>
+                                        <input  type="text" class="form-control"  v-model="rec.otherAmount" placeholder="暫估其它費用" disabled/>
                                     </div>
 
                                 </div>
@@ -246,7 +246,7 @@
                                     <div class="form-group">
 
                                         <label>利潤比例</label>
-                                        <el-input-number v-model="rec.profitsRate" placeholder="利潤比例"></el-input-number>
+                                        <input  type="text" class="form-control"  v-model="rec.profitsRate" placeholder="利潤比例" disabled/>
                                     </div>
 
                                 </div>
@@ -270,7 +270,7 @@
                                     <div class="form-group">
 
                                         <label>本次外判對應item、金額</label>
-                                        <el-input-number v-model="rec.thisProcurementAmount" placeholder="對業主的BQ合同"></el-input-number>
+                                        <input  type="text" class="form-control"  v-model="rec.itemAmount" placeholder="對業主的BQ合同" disabled/>
 
                                     </div>
 
@@ -279,7 +279,7 @@
                                     <div class="form-group">
 
                                         <label>本次採購總金額</label>
-                                        <el-input-number v-model="rec.thisProcurementAmount" placeholder="本次採購總金額"></el-input-number>
+                                        <input  type="text" class="form-control"  v-model="rec.thisProcurementAmount" placeholder="本次採購總金額" disabled/>
                                     </div>
 
                                 </div>
@@ -287,7 +287,7 @@
                                     <div class="form-group">
 
                                         <label>暫估其它費用</label>
-                                        <el-input-number v-model="rec.otherAmount" placeholder="暫估其它費用"></el-input-number>
+                                        <input  type="text" class="form-control"  v-model="rec.otherAmount" placeholder="暫估其它費用" disabled/>
                                     </div>
 
                                 </div>
@@ -295,7 +295,7 @@
                                     <div class="form-group">
 
                                         <label>利潤比例</label>
-                                        <el-input-number v-model="rec.profitsRate" placeholder="利潤比例"></el-input-number>
+                                        <input  type="text" class="form-control"  v-model="rec.profitsRate" placeholder="利潤比例" disabled/>
                                     </div>
 
                                 </div>
@@ -380,9 +380,9 @@
                                 <el-table-column label="摘要" prop="content"> </el-table-column>
                                 <el-table-column label="單位" prop="unit"> </el-table-column>
                                 <el-table-column label="中標造價">
-                                    <el-table-column label="單位" prop="bidQuantity"> </el-table-column>
-                                    <el-table-column label="數量" prop="bidPrice"> </el-table-column>
-                                    <el-table-column label="單價" prop="bidAmount"> </el-table-column>
+                                    <el-table-column label="數量" prop="bidQuantity"> </el-table-column>
+                                    <el-table-column label="單價" prop="bidPrice"> </el-table-column>
+                                    <el-table-column label="總計" prop="bidAmount"> </el-table-column>
                                 </el-table-column>
                                 <el-table-column label="包工包料" v-if="rec.procurementType!==1 && rec.procurementType!=='1'">
                                     <el-table-column label="採購數量" prop="procurementQuantity"> </el-table-column>
@@ -517,7 +517,7 @@
 
                                 <label>總計</label>
 
-                                <el-input-number v-model="bqItem.bidAmount" placeholder="總計"></el-input-number>
+                                <el-input-number :value="getbidAmount()" placeholder="總計" :disabled="true"></el-input-number>
 
 
 
@@ -526,194 +526,199 @@
                         </div>
 
                     </div>
-                    <div class="row" v-if="rec.procurementType===1 || rec.procurementType==='1'">
+                    <div v-if="rec.procurementType===1 || rec.procurementType==='1'">
 
                         <el-divider content-position="left">材料</el-divider>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
+                        <div class="row">
 
-                                <label>本次採購</label>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
 
-                                <el-input-number v-model="bqItem.thisProcurementAmount" placeholder="本次採購"></el-input-number>
+                                    <label>本次採購</label>
 
-
-
-                            </div>
-
-                        </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
-
-                                <label>已採購</label>
-
-                                <el-input-number v-model="bqItem.beenProcurementAmount" placeholder="已採購"></el-input-number>
+                                    <el-input-number v-model="bqItem.thisProcurementAmount" placeholder="本次採購"></el-input-number>
 
 
+
+                                </div>
 
                             </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
 
-                        </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
+                                    <label>已採購</label>
 
-                                <label>總採購</label>
-
-                                <el-input-number v-model="bqItem.allProcurementAmount" placeholder="總採購"></el-input-number>
+                                    <el-input-number v-model="bqItem.beenProcurementAmount" placeholder="已採購"></el-input-number>
 
 
 
-                            </div>
-
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
-
-                                <label>已採購數量</label>
-
-                                <el-input-number v-model="bqItem.procurementEndQuantity" placeholder="已採購數量"></el-input-number>
-
-
+                                </div>
 
                             </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
 
-                        </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
+                                    <label>總採購</label>
 
-                                <label>已採購單價</label>
-
-                                <el-input-number v-model="bqItem.procurementEndPrice" placeholder="已採購單價"></el-input-number>
+                                    <el-input-number :value="getallProcurementAmount()" placeholder="總採購" :disabled="true"></el-input-number>
 
 
 
-                            </div>
-
-                        </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
-
-                                <label>已採購金額</label>
-
-                                <el-input-number v-model="bqItem.procurementEndAmount" placeholder="已採購金額"></el-input-number>
-
-
+                                </div>
 
                             </div>
-
                         </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
 
-                                <label>總採購金額</label>
+                                    <label>已採購數量</label>
 
-                                <el-input-number v-model="bqItem.procurementEndTotalAmount" placeholder="總採購金額"></el-input-number>
+                                    <el-input-number v-model="bqItem.procurementEndQuantity" placeholder="已採購數量"></el-input-number>
 
 
+
+                                </div>
 
                             </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
 
-                        </div>
+                                    <label>已採購單價</label>
 
-                    </div>
-                    <div class="row" v-if="rec.procurementType!==1 && rec.procurementType!=='1'">
-
-                        <el-divider content-position="left">包工包料</el-divider>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
-
-                                <label>採購數量</label>
-
-                                <el-input-number v-model="bqItem.procurementQuantity" placeholder="採購數量"></el-input-number>
+                                    <el-input-number v-model="bqItem.procurementEndPrice" placeholder="已採購單價"></el-input-number>
 
 
+
+                                </div>
 
                             </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
 
-                        </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
+                                    <label>已採購金額</label>
 
-                                <label>採購單價</label>
-
-                                <el-input-number v-model="bqItem.procurementPrice" placeholder="採購單價"></el-input-number>
+                                    <el-input-number :value="getprocurementEndAmount()" placeholder="已採購金額" :disabled="true"></el-input-number>
 
 
+
+                                </div>
 
                             </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
 
-                        </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
+                                    <label>總採購金額</label>
 
-                                <label>採購金額</label>
-
-                                <el-input-number v-model="bqItem.procurementAmount" placeholder="採購金額"></el-input-number>
+                                    <el-input-number :value="getprocurementEndTotalAmount() " placeholder="總採購金額" :disabled="true"></el-input-number>
 
 
+
+                                </div>
 
                             </div>
 
                         </div>
 
                     </div>
-                    <div class="row">
 
-                        <el-divider content-position="left">其他暫估</el-divider>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
+                        <div class="row" v-if="rec.procurementType!==1 && rec.procurementType!=='1'">
 
-                                <label>總採購數量</label>
+                            <el-divider content-position="left">包工包料</el-divider>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
 
-                                <el-input-number v-model="bqItem.totalQuantity" placeholder="總採購數量"></el-input-number>
+                                    <label>採購數量</label>
+
+                                    <el-input-number v-model="bqItem.procurementQuantity" placeholder="採購數量"></el-input-number>
 
 
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>採購單價</label>
+
+                                    <el-input-number v-model="bqItem.procurementPrice" placeholder="採購單價"></el-input-number>
+
+
+
+                                </div>
+
+                            </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
+
+                                    <label>採購金額</label>
+
+                                    <el-input-number :value=" getprocurementAmount()" placeholder="採購金額" :disabled="true"></el-input-number>
+
+
+
+                                </div>
 
                             </div>
 
                         </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
+                        <div class="row">
 
-                                <label>單價</label>
+                            <el-divider content-position="left">其他暫估</el-divider>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
 
-                                <el-input-number v-model="bqItem.otherPrice" placeholder="單價"></el-input-number>
+                                    <label>總採購數量</label>
 
-
-
-                            </div>
-
-                        </div>
-                        <div class="col-md-3 form-inline">
-                            <div class="form-group">
-
-                                <label>總計</label>
-
-                                <el-input-number v-model="bqItem.total" placeholder="總計"></el-input-number>
+                                    <el-input-number v-model="bqItem.totalQuantity" placeholder="總採購數量"></el-input-number>
 
 
+
+                                </div>
 
                             </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
 
-                        </div>
-                    </div>
-                    <div class="row">
+                                    <label>單價</label>
 
-                        <div class="col-md-12 form-inline">
-                            <div class="form-group">
+                                    <el-input-number v-model="bqItem.otherPrice" placeholder="單價"></el-input-number>
 
-                                <label>備註</label>
-                                <el-input type="textarea"
-                                          :autosize="{ minRows: 3, maxRows: 7}" style="width: 700px;"
-                                          placeholder="備註"
-                                          v-model="bqItem.remark">
-                                </el-input>
+
+
+                                </div>
+
                             </div>
+                            <div class="col-md-3 form-inline">
+                                <div class="form-group">
 
+                                    <label>總計</label>
+
+                                    <el-input-number :value="getothertotal()" placeholder="總計"  :disabled="true"></el-input-number>
+
+
+
+                                </div>
+
+                            </div>
                         </div>
-                    </div>
-                </el-card>
+                        <div class="row">
+
+                            <div class="col-md-12 form-inline">
+                                <div class="form-group">
+
+                                    <label>備註</label>
+                                    <el-input type="textarea"
+                                              :autosize="{ minRows: 3, maxRows: 7}" style="width: 700px;"
+                                              placeholder="備註"
+                                              v-model="bqItem.remark">
+                                    </el-input>
+                                </div>
+
+                            </div>
+                        </div>
+</el-card>
 
                 <span slot="footer" class="dialog-footer">
                     <el-button @@click="innerVisiblecostin = false">取 消</el-button>
@@ -762,15 +767,97 @@
                 },
                 newBQItem: function () {
                     this.innerVisiblecostin = true;
-                    this.bqItem = {};
+                    this.bqItem = { bidAmount: 0, procurementAmount: 0, total: 0, procurementType: this.rec.procurementType };
                 },
                 addbqItem: function () {
                     this.innerVisiblecostin = false;
                     this.rec.items.push(this.bqItem);
 
+                    var sum = 0;
+                    var sum2 = 0;
+                    var sum3 = 0;
+                    this.rec.items.forEach(x => {
+                        sum += Number(x.bidAmount);
+                        sum2 += Number(x.procurementAmount);
+                        sum3 += Number( x.total);
+
+                    })
+
+                    switch (this.rec.procurementType) {
+                        case 1:  
+                        case '1': {
+                           
+                            break;
+                        }
+
+                        case 2:
+                        case '2': {
+
+                            break;
+                        }
+
+                        case 3:
+                        case '3': {
+
+                            break;
+                        }
+
+                        case 4:
+                        case '4': {
+
+                            break;
+                        }
+                    }
+                    this.rec.itemAmount = sum;
+                    this.rec.thisProcurementAmount = sum2;
+                    this.rec.otherAmount = sum3;
+                    this.rec.profitsRate = 1 - (sum2 + sum3) / sum;
+
+                },
+                getallProcurementAmount: function () {
+                      
+                    var allProcurementAmount = this.bqItem.thisProcurementAmount * this.bqItem.beenProcurementAmount;
+                    if (isNaN(allProcurementAmount)) allProcurementAmount = 0;
+                    this.bqItem.allProcurementAmount = allProcurementAmount;
+                    return allProcurementAmount;
+
+                },
+                getprocurementEndAmount: function () {
+                  
+                    var procurementEndAmount = this.bqItem.procurementEndPrice * this.bqItem.procurementEndQuantity;
+                    if (isNaN(procurementEndAmount)) procurementEndAmount = 0;
+                    this.bqItem.procurementEndAmount = procurementEndAmount;
+                    return procurementEndAmount;
+
+                },
+                getbidAmount: function () {
+                    var bidAmount = this.bqItem.bidPrice * this.bqItem.bidQuantity;
+                    if (isNaN(bidAmount)) bidAmount = 0;
+                    this.bqItem.bidAmount = bidAmount;
+                    return bidAmount;
+                 
+                },
+                getothertotal() {
+                    var total = this.bqItem.otherPrice * this.bqItem.totalQuantity;
+                           if (isNaN(total)) total = 0;
+                    this.bqItem.total = total;
+                    return total;
+                },
+                getprocurementEndTotalAmount: function () {
+                    var procurementEndTotalAmount = this.getprocurementEndAmount() + this.getallProcurementAmount();
+                    if (isNaN(procurementEndTotalAmount)) procurementEndTotalAmount = 0;
+                    this.bqItem.procurementEndTotalAmount = procurementEndTotalAmount;
+                    return procurementEndTotalAmount;
+               
+                },
+                getprocurementAmount() { 
+                   var procurementAmount = this.bqItem.procurementPrice * this.bqItem.procurementQuantity;
+                    if (isNaN(procurementAmount)) procurementAmount = 0;
+                    this.bqItem.procurementAmount = procurementAmount;
+                    return procurementAmount;
                 },
                 disabledProject: function () {
-                    return this.rec.projectId === undefined;
+                    return this.rec.projectId === undefined || this.rec.state === 2;
                 },
                 changeProject: function () {
                     this.uploaddata.projectId = this.rec.projectId;
@@ -791,13 +878,11 @@
                         this.rec = x.data;
                         this.uploaddata.procurementid = this.rec.id;
                         this.uploaddata.projectId = this.rec.projectId;
+                        this.getProcurementTypeDisabled = this.rec.items.length>0;
                     });
                 },
                 onSubmit: async function () {
-                    if (this.rec.items.length == 0) {
-                        alert("BQ明細爲空");
-                        return;
-                    }
+                   
                     if (this.rec.files.length == 0) {
                         alert("文件爲空");
                         return;
@@ -840,7 +925,8 @@
                     this.eldialogvisible = val;
                     if (val   ) {
                         if (this.id === undefined) {
-                         this.   rec.projectId = undefined;
+                            this.rec.projectId = undefined;
+                            this.rec.state = 0;
 
                         } else {
                             this.onGetitem(this.id);

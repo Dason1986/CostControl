@@ -2,6 +2,7 @@
 SELECT
 projectmaster.`Name`,
 projectmaster.`Code`,
+ProjectMaster.ManagerId,
 projectprocurement.ID,
 projectprocurement.ProjectId,
 projectprocurement.ProcurementType,

@@ -9,7 +9,8 @@ SELECT
 	projectcalculation.HumanCost AS HumanCost,
 	projectcalculation.Salary AS Salary,
 	projectmaster.Code AS Code,
-	projectmaster.Name AS Name,
+	projectmaster.Name AS Name,	
+ProjectMaster.ManagerId,
 	projectmaster.BeginDate AS BeginDate,
 	projectmaster.EndDate AS EndDate,
 	projectmaster.FirstId AS FirstId,
@@ -23,7 +24,8 @@ SELECT
 	thirdid.Name AS ThirdName,
 	
 (SELECT sum(projectprocurement.ThisProcurementAmount) FROM	projectprocurement WHERE projectprocurement.State = 2  AND  projectprocurement.ProcurementType IN  (3, 4 ) ) AS MangerCost,
-(SELECT sum(projectprocurement.ThisProcurementAmount) FROM 	projectprocurement WHERE projectprocurement.State = 2  AND  projectprocurement.ProcurementType = 1 ) AS MaterialCost 
+(SELECT sum(projectprocurement.ThisProcurementAmount) FROM 	projectprocurement WHERE projectprocurement.State = 2  AND  projectprocurement.ProcurementType = 1 ) AS MaterialCost ,
+(SELECT sum(projectprocurement.ThisProcurementAmount) FROM 	projectprocurement WHERE projectprocurement.State = 2  AND  projectprocurement.ProcurementType = 2 ) AS OutsourcingCost
 FROM
 	projectcalculation 
 	JOIN projectmaster ON   projectcalculation.ProjectId = projectmaster.ID   

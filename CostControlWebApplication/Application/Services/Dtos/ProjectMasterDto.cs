@@ -19,10 +19,10 @@ namespace CostControlWebApplication.Application.Services.Dtos
         [DisplayName("項目名稱")]
         public string Name { get; set; }
 
-        [DisplayName("公司名稱")]
         /// <summary>
         /// 項目編號A
         /// </summary>
+        [DisplayName("公司名稱")]
         public string CompanyName { get; set; }
         public long CompanyId { get; set; }
         /// <summary>
@@ -44,8 +44,19 @@ namespace CostControlWebApplication.Application.Services.Dtos
         public string SecondName { get; set; }
         [DisplayName("第三分判")]
         public string ThirdName { get; set; }
+        [DisplayName("合約類別")]
+        public string ContractType { get; set; }
+        [DisplayName("合約結算方式")]
+        public string SettlementMethod { get; set; }
+        [DisplayName("承接类型")]
+        public string Undertaking { get; set; }
+        public string CreateFileName { get; set; }
+
         public long CreateFileId { get; set; }
         public long ContractorsId { get; set; }
+        public long UndertakingId { get; set; }
+        public long SettlementMethodId { get; set; }
+        public long ContractTypeId { get; set; }
       
         public long ManagerId { get; set; }
         public long SetterId { get; set; }
